@@ -1,26 +1,46 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FridgeMonitoring</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fridge Chef - Выбор продуктов</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>❄️ FridgeMonitoring</h1>
-      <p>Выберите, что есть у вас в холодильнике</p>
-    </header>
+    <div class="container">
+        <header class="header fade-in">
+            <h1>
+                <span>🥘</span>
+                Fridge Chef
+            </h1>
+            <p>Выберите продукты, которые есть у вас в холодильнике</p>
+        </header>
 
-    <div class="products-grid" id="productsGrid"></div>
+        <!-- Категории продуктов -->
+        <div class="categories fade-in">
+            <button class="category-btn active" data-category="all">Все</button>
+            <button class="category-btn" data-category="vegetables">Овощи</button>
+            <button class="category-btn" data-category="fruits">Фрукты</button>
+            <button class="category-btn" data-category="dairy">Молочные</button>
+            <button class="category-btn" data-category="meat">Мясо</button>
+            <button class="category-btn" data-category="other">Другое</button>
+        </div>
 
-    <button id="sendBtn" class="send-btn" disabled>
-      Найти рецепты →
-    </button>
-  </div>
+        <!-- Сетка продуктов -->
+        <div class="products-grid" id="productsGrid"></div>
 
-  <script src="script.js"></script>
+        <!-- Кнопка отправки -->
+        <button class="send-btn" id="sendBtn" disabled>
+            Найти рецепты →
+        </button>
+
+        <!-- Счетчик выбранных продуктов -->
+        <div style="text-align: center; color: #64748b;" id="selectedCount">
+            Выбрано продуктов: 0
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
 </body>
 </html>
