@@ -1261,3 +1261,217 @@ body {
         bottom: -150px;
     }
 }
+
+/* ============ ИСПРАВЛЕНИЯ ДЛЯ ТЕМНОЙ ТЕМЫ ============ */
+
+/* Футер с кнопками */
+.dark-theme .footer-bar {
+    background: #2d2d2d !important;
+    border-top-color: #404040 !important;
+}
+
+.dark-theme .footer-btn.secondary {
+    background: #3d3d3d !important;
+    color: #e0e0e0 !important;
+}
+
+.dark-theme .footer-btn.danger {
+    background: #4a2a2a !important;
+    color: #ff8a8a !important;
+}
+
+.dark-theme .footer-btn.primary {
+    background: linear-gradient(135deg, #8b9eff 0%, #9f7aea 100%) !important;
+    color: white !important;
+}
+
+.dark-theme .footer-btn.primary:disabled {
+    background: #3d3d3d !important;
+    color: #808080 !important;
+}
+
+/* Крестик в поиске */
+.dark-theme #clearSearch {
+    background: #3d3d3d !important;
+    color: #e0e0e0 !important;
+    border: none !important;
+}
+
+.dark-theme #clearSearch:hover {
+    background: #4a4a4a !important;
+}
+
+/* Кнопка "Назад" */
+.dark-theme .back-btn {
+    background: #3d3d3d !important;
+    color: #e0e0e0 !important;
+}
+
+.dark-theme .back-btn:hover {
+    background: #4a4a4a !important;
+}
+
+/* Фильтры (Супы, Основные и т.д.) */
+.dark-theme .filter-chip {
+    background: #3d3d3d !important;
+    color: #e0e0e0 !important;
+}
+
+.dark-theme .filter-chip.active {
+    background: #8b9eff !important;
+    color: white !important;
+}
+
+.dark-theme .filter-chip:hover:not(.active) {
+    background: #4a4a4a !important;
+}
+
+/* Статистика */
+.dark-theme .stats-bar {
+    background: #3d3d3d !important;
+    color: #e0e0e0 !important;
+}
+
+.dark-theme .stats-bar span {
+    color: #e0e0e0 !important;
+}
+
+/* Поле поиска */
+.dark-theme #searchInput {
+    background: #3d3d3d !important;
+    border-color: #404040 !important;
+    color: white !important;
+}
+
+.dark-theme #searchInput::placeholder {
+    color: #a0a0a0 !important;
+}
+
+/* Категории */
+.dark-theme .category-btn {
+    background: #3d3d3d !important;
+    color: #e0e0e0 !important;
+}
+
+.dark-theme .category-btn.active {
+    background: #8b9eff !important;
+    color: white !important;
+}
+
+/* Карточки продуктов */
+.dark-theme .product-item {
+    background: #2d2d2d !important;
+    border-color: #404040 !important;
+    color: white !important;
+}
+
+.dark-theme .product-item.selected {
+    background: linear-gradient(135deg, #8b9eff 0%, #9f7aea 100%) !important;
+    color: white !important;
+}
+
+/* Карточки рецептов */
+.dark-theme .recipe-card {
+    background: #2d2d2d !important;
+}
+
+.dark-theme .recipe-title {
+    color: white !important;
+}
+
+.dark-theme .recipe-category {
+    background: #3d3d3d !important;
+    color: #a0a0a0 !important;
+}
+
+/* Текст "Не хватает" */
+.dark-theme p[style*="color: #ef4444"] {
+    background: #4a2a2a !important;
+    color: #ff8a8a !important;
+}
+
+.dark-theme p[style*="color: #22c55e"] {
+    background: #22c55e !important;
+    color: white !important;
+}
+
+/* Счетчик */
+.dark-theme .selected-count {
+    color: #a0a0a0 !important;
+    border-top-color: #404040 !important;
+}
+
+/* Детальный рецепт */
+.dark-theme .recipe-detail {
+    background: #2d2d2d !important;
+}
+
+.dark-theme .ingredients-list {
+    background: #3d3d3d !important;
+}
+
+.dark-theme .ingredients-list li {
+    background: #2d2d2d !important;
+    color: white !important;
+}
+
+.dark-theme .ingredients-list li span:last-child {
+    color: #8b9eff !important;
+}
+
+.dark-theme .instructions {
+    color: #e0e0e0 !important;
+}
+
+.dark-theme .instructions li span {
+    background: #8b9eff !important;
+    color: white !important;
+}
+
+/* ============ ИСПРАВЛЕНИЕ БЕЛОЙ ОБЛАСТИ ИНГРЕДИЕНТОВ ============ */
+
+.dark-theme .ingredients-list {
+    background: #3d3d3d !important;
+}
+
+.dark-theme .ingredients-list li {
+    background: #2d2d2d !important;
+    color: white !important;
+    border: 1px solid #404040 !important;
+}
+
+.dark-theme .ingredients-list li span {
+    color: white !important;
+}
+
+.dark-theme .ingredients-list li span:last-child {
+    color: #8b9eff !important;
+    font-weight: 600;
+}
+
+.dark-theme .ingredients-list h3 {
+    color: white !important;
+}
+
+/* Если есть другие белые элементы внутри рецепта */
+.dark-theme .recipe-detail {
+    background: #2d2d2d !important;
+}
+
+.dark-theme .instructions {
+    color: #e0e0e0 !important;
+}
+
+.dark-theme .instructions li {
+    color: #e0e0e0 !important;
+}
+
+.dark-theme .instructions li span {
+    background: #8b9eff !important;
+    color: white !important;
+}
+
+.dark-theme .recipe-meta .meta-item {
+    background: #3d3d3d !important;
+    color: #e0e0e0 !important;
+}
