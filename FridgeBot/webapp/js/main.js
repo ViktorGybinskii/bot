@@ -9,6 +9,13 @@ let currentRecipes = [];
 let isSearchFocused = false;
 let searchTimeout;
 
+// Новые переменные для пагинации
+let visibleProducts = [];
+let currentPage_index = 0;
+const PRODUCTS_PER_PAGE = 50;
+let isLoading = false;
+let hasMoreProducts = true;
+
 // База данных продуктов (РАСШИРЕННАЯ - 300+ продуктов)
 const productsDatabase = [
     // ============ ОВОЩИ (40 шт) ============
@@ -556,6 +563,9 @@ function updateFooterVisibility() {
 // Функция показа страницы с продуктами
 function showProductsPage() {
     currentPage = 'products';
+    currentPage_index = 0;
+    visibleProducts = [];
+    hasMoreProducts = true;
     renderProductsPage();
     renderProductsFooter();
 }
@@ -588,23 +598,102 @@ function showAllRecipesPage() {
     renderRecipesFooter();
 }
 
-// Отрисовка страницы с продуктами
-function renderProductsPage() {
-    const content = document.getElementById('content');
-    
-    let filteredProducts = productsDatabase;
+// Получение отфильтрованных продуктов
+function getFilteredProducts() {
+    let filtered = productsDatabase;
     
     if (currentCategory !== 'all') {
-        filteredProducts = filteredProducts.filter(p => p.category === currentCategory);
+        filtered = filtered.filter(p => p.category === currentCategory);
     }
     
     if (searchQuery.trim() !== '') {
         const query = searchQuery.toLowerCase().trim();
-        filteredProducts = filteredProducts.filter(p => 
+        filtered = filtered.filter(p => 
             p.name.toLowerCase().includes(query) || 
             p.category.toLowerCase().includes(query)
         );
     }
+    
+    return filtered;
+}
+
+// Загрузка следующей порции продуктов
+function loadMoreProducts() {
+    if (isLoading || !hasMoreProducts) return;
+    
+    isLoading = true;
+    
+    // Показываем индикатор загрузки
+    const loadingIndicator = document.getElementById('loading-indicator');
+    if (loadingIndicator) {
+        loadingIndicator.style.display = 'block';
+    }
+    
+    // Имитируем небольшую задержку для плавности
+    setTimeout(() => {
+        const filteredProducts = getFilteredProducts();
+        const start = currentPage_index * PRODUCTS_PER_PAGE;
+        const end = start + PRODUCTS_PER_PAGE;
+        
+        if (start >= filteredProducts.length) {
+            hasMoreProducts = false;
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'none';
+            }
+            isLoading = false;
+            return;
+        }
+        
+        const newProducts = filteredProducts.slice(start, end);
+        visibleProducts = [...visibleProducts, ...newProducts];
+        currentPage_index++;
+        
+        // Добавляем новые продукты в DOM
+        appendProductsToGrid(newProducts);
+        
+        if (loadingIndicator) {
+            loadingIndicator.style.display = 'none';
+        }
+        
+        isLoading = false;
+        
+        // Если загрузили все продукты
+        if (end >= filteredProducts.length) {
+            hasMoreProducts = false;
+            const endMessage = document.getElementById('end-message');
+            if (endMessage) {
+                endMessage.style.display = 'block';
+            }
+        }
+    }, 100);
+}
+
+// Добавление продуктов в сетку
+function appendProductsToGrid(products) {
+    const grid = document.getElementById('productsGrid');
+    if (!grid) return;
+    
+    products.forEach(product => {
+        const productEl = document.createElement('div');
+        productEl.className = `product-item ${selectedProducts.has(product.id) ? 'selected' : ''}`;
+        productEl.dataset.id = product.id;
+        productEl.onclick = () => toggleProduct(product.id);
+        productEl.innerHTML = `
+            <span class="product-icon">${product.icon}</span>
+            <span class="product-name">${product.name}</span>
+        `;
+        grid.appendChild(productEl);
+    });
+}
+
+// Отрисовка страницы с продуктами
+function renderProductsPage() {
+    const content = document.getElementById('content');
+    
+    const filteredProducts = getFilteredProducts();
+    visibleProducts = filteredProducts.slice(0, PRODUCTS_PER_PAGE);
+    currentPage_index = 1;
+    hasMoreProducts = filteredProducts.length > PRODUCTS_PER_PAGE;
     
     let productsHtml = `
         <header class="header fade-in">
@@ -629,12 +718,9 @@ function renderProductsPage() {
                     ✕
                 </button>
             </div>
-            ${isSearchFocused ? 
-                '<p style="font-size: 12px; color: #667eea; margin-top: 8px; text-align: center;">Найдете нужное - нажмите "Готово" на клавиатуре</p>' : 
-                ''}
         </div>
         
-        <div class="categories" style="margin-bottom: 15px; overflow-x: auto; white-space: nowrap; padding: 5px 0; ${isSearchFocused ? 'opacity: 0.5;' : ''}">
+        <div class="categories" style="margin-bottom: 15px; overflow-x: auto; white-space: nowrap; padding: 5px 0;">
             <button class="category-btn ${currentCategory === 'all' ? 'active' : ''}" data-category="all">Все</button>
             <button class="category-btn ${currentCategory === 'vegetables' ? 'active' : ''}" data-category="vegetables">Овощи</button>
             <button class="category-btn ${currentCategory === 'herbs' ? 'active' : ''}" data-category="herbs">Зелень</button>
@@ -645,6 +731,13 @@ function renderProductsPage() {
             <button class="category-btn ${currentCategory === 'groceries' ? 'active' : ''}" data-category="groceries">Бакалея</button>
             <button class="category-btn ${currentCategory === 'canned' ? 'active' : ''}" data-category="canned">Консервы</button>
             <button class="category-btn ${currentCategory === 'spices' ? 'active' : ''}" data-category="spices">Специи</button>
+            <button class="category-btn ${currentCategory === 'nuts' ? 'active' : ''}" data-category="nuts">Орехи</button>
+            <button class="category-btn ${currentCategory === 'frozen' ? 'active' : ''}" data-category="frozen">Заморозка</button>
+        </div>
+        
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; color: #64748b;">
+            <span>📦 Всего продуктов: ${filteredProducts.length}</span>
+            <span>✅ Выбрано: ${selectedProducts.size}</span>
         </div>
     `;
     
@@ -656,24 +749,38 @@ function renderProductsPage() {
                 <p style="font-size: 14px;">Попробуйте изменить запрос</p>
             </div>
         `;
+        content.innerHTML = productsHtml;
     } else {
-        productsHtml += `<div class="products-grid">`;
+        productsHtml += `<div class="products-grid" id="productsGrid"></div>`;
+        productsHtml += `
+            <div id="loading-indicator" style="text-align: center; padding: 20px; display: none;">
+                <div class="loading-spinner" style="width: 30px; height: 30px; border: 3px solid #f3f3f3; border-top: 3px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+                <p style="margin-top: 10px; color: #64748b;">Загрузка...</p>
+            </div>
+            <div id="end-message" style="text-align: center; padding: 20px; color: #64748b; display: ${hasMoreProducts ? 'none' : 'block'};">
+                <p>✨ Все продукты загружены</p>
+            </div>
+            <div id="scroll-trigger" style="height: 20px;"></div>
+        `;
         
-        filteredProducts.forEach(product => {
-            productsHtml += `
-                <div class="product-item ${selectedProducts.has(product.id) ? 'selected' : ''}" 
-                     data-id="${product.id}"
-                     onclick="toggleProduct('${product.id}')">
-                    <span class="product-icon">${product.icon}</span>
-                    <span class="product-name">${product.name}</span>
-                </div>
-            `;
-        });
+        content.innerHTML = productsHtml;
         
-        productsHtml += `</div>`;
+        const grid = document.getElementById('productsGrid');
+        appendProductsToGrid(visibleProducts);
+        
+        // Настраиваем Intersection Observer для бесконечного скролла
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && hasMoreProducts && !isLoading) {
+                    loadMoreProducts();
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '100px' });
+        
+        const trigger = document.getElementById('scroll-trigger');
+        if (trigger) observer.observe(trigger);
     }
     
-    content.innerHTML = productsHtml;
     attachProductsEventListeners();
 }
 
@@ -682,14 +789,14 @@ function renderRecipesPage() {
     const content = document.getElementById('content');
     
     let recipesHtml = `
-        <div class="results-header">
-            <button class="back-btn" onclick="showProductsPage()">
+        <div class="results-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <button class="back-btn" onclick="showProductsPage()" style="background: #f1f5f9; border: none; padding: 8px 15px; border-radius: 30px; cursor: pointer;">
                 ← Назад
             </button>
             <span style="font-weight: 600; color: #475569;">Найдено: ${currentRecipes.length}</span>
         </div>
         
-        <div class="filter-chips">
+        <div class="filter-chips" style="display: flex; gap: 8px; overflow-x: auto; padding: 10px 0; margin-bottom: 15px;">
             <span class="filter-chip active" onclick="filterRecipes(event, 'all')">Все</span>
             <span class="filter-chip" onclick="filterRecipes(event, 'breakfast')">Завтраки</span>
             <span class="filter-chip" onclick="filterRecipes(event, 'soup')">Супы</span>
@@ -707,8 +814,8 @@ function renderRecipesPage() {
             <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
                 <span style="font-size: 48px;">😔</span>
                 <p style="margin-top: 20px; font-size: 18px;">Рецептов не найдено</p>
-                <p style="font-size: 14px; color: #64748b; margin-top: 10px;">Попробуйте выбрать другие продукты</p>
-                <button class="footer-btn primary" onclick="showProductsPage()" style="margin-top: 20px; width: auto; padding: 12px 30px;">
+                <p style="font-size: 14px; color: #64748b;">Попробуйте выбрать другие продукты</p>
+                <button class="footer-btn primary" onclick="showProductsPage()" style="margin-top: 20px; width: auto; padding: 12px 30px; background: #667eea; color: white; border: none; border-radius: 30px;">
                     ← Выбрать продукты
                 </button>
             </div>
@@ -727,14 +834,14 @@ function renderRecipesPage() {
             
             recipesHtml += `
                 <div class="recipe-card" onclick="viewRecipe(${recipe.id})">
-                    <div class="recipe-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <div class="recipe-image" style="height: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; display: flex; align-items: center; justify-content: center; font-size: 3em;">
                         ${recipe.emoji || '🍽️'}
                     </div>
-                    <div class="recipe-info">
-                        <h3 class="recipe-title">${recipe.name}</h3>
-                        <span class="recipe-category">${recipe.category} · ${recipe.time}</span>
+                    <div class="recipe-info" style="padding: 15px;">
+                        <h3 class="recipe-title" style="font-size: 16px; margin-bottom: 5px;">${recipe.name}</h3>
+                        <span class="recipe-category" style="font-size: 12px; color: #64748b;">${recipe.category} · ${recipe.time}</span>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0;">
-                            <span class="match-badge" style="background: ${badgeColor}; padding: 4px 8px; border-radius: 20px; font-size: 12px;">
+                            <span class="match-badge" style="background: ${badgeColor}; padding: 4px 8px; border-radius: 20px; font-size: 12px; color: white;">
                                 Совпадение: ${recipe.matchPercentage}%
                             </span>
                             <span style="font-size: 12px; color: #64748b;">${recipe.calories} ккал</span>
@@ -788,8 +895,8 @@ window.viewRecipe = function(id) {
     const content = document.getElementById('content');
     
     content.innerHTML = `
-        <div class="results-header">
-            <button class="back-btn" onclick="renderRecipesPage()">
+        <div class="results-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <button class="back-btn" onclick="renderRecipesPage()" style="background: #f1f5f9; border: none; padding: 8px 15px; border-radius: 30px; cursor: pointer;">
                 ← К рецептам
             </button>
         </div>
@@ -799,13 +906,13 @@ window.viewRecipe = function(id) {
                 ${recipe.emoji || '🍽️'}
             </div>
             
-            <h1 style="font-size: 28px; margin: 20px 0; text-align: center;">${recipe.name}</h1>
+            <h1 style="font-size: 24px; margin: 20px 0; text-align: center;">${recipe.name}</h1>
             
             <div style="display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0; justify-content: center;">
-                <span class="filter-chip" style="background: #667eea; color: white;">⏱️ ${recipe.time}</span>
-                <span class="filter-chip" style="background: #667eea; color: white;">👥 ${recipe.servings} порции</span>
-                <span class="filter-chip" style="background: #667eea; color: white;">🔥 ${recipe.calories} ккал</span>
-                <span class="filter-chip" style="background: #667eea; color: white;">📊 ${recipe.difficulty}</span>
+                <span class="filter-chip" style="background: #667eea; color: white; padding: 5px 10px;">⏱️ ${recipe.time}</span>
+                <span class="filter-chip" style="background: #667eea; color: white; padding: 5px 10px;">👥 ${recipe.servings} порции</span>
+                <span class="filter-chip" style="background: #667eea; color: white; padding: 5px 10px;">🔥 ${recipe.calories} ккал</span>
+                <span class="filter-chip" style="background: #667eea; color: white; padding: 5px 10px;">📊 ${recipe.difficulty}</span>
             </div>
             
             <div style="background: #f8fafc; border-radius: 20px; padding: 20px; margin: 20px 0;">
@@ -865,8 +972,7 @@ function renderProductsFooter() {
     document.getElementById('resetBtn')?.addEventListener('click', () => {
         selectedProducts.clear();
         saveSelectedProducts();
-        renderProductsPage();
-        renderProductsFooter();
+        showProductsPage();
     });
 }
 
@@ -897,8 +1003,6 @@ window.handleSearchFocus = function(focused) {
             updateFooterVisibility();
         }, 200);
     }
-    
-    renderProductsPage();
 };
 
 // Переключение продукта
@@ -910,8 +1014,32 @@ window.toggleProduct = function(productId) {
     }
     
     saveSelectedProducts();
-    renderProductsPage();
-    renderProductsFooter();
+    
+    // Обновляем только конкретный элемент
+    const productEl = document.querySelector(`.product-item[data-id="${productId}"]`);
+    if (productEl) {
+        if (selectedProducts.has(productId)) {
+            productEl.classList.add('selected');
+        } else {
+            productEl.classList.remove('selected');
+        }
+    }
+    
+    // Обновляем счетчик
+    const countElement = document.getElementById('selectedCount');
+    if (countElement) {
+        countElement.textContent = `Выбрано продуктов: ${selectedProducts.size}`;
+    }
+    
+    // Обновляем состояние кнопок
+    const findBtn = document.getElementById('findRecipesBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    if (findBtn) {
+        findBtn.disabled = selectedProducts.size === 0;
+    }
+    if (resetBtn) {
+        resetBtn.disabled = selectedProducts.size === 0;
+    }
 };
 
 // Обработчики для страницы продуктов
@@ -922,7 +1050,7 @@ function attachProductsEventListeners() {
             clearTimeout(window.searchTimeout);
             window.searchTimeout = setTimeout(() => {
                 searchQuery = searchInput.value;
-                renderProductsPage();
+                showProductsPage();
             }, 300);
         });
     }
@@ -931,7 +1059,7 @@ function attachProductsEventListeners() {
     if (clearSearch) {
         clearSearch.addEventListener('click', () => {
             searchQuery = '';
-            renderProductsPage();
+            showProductsPage();
         });
     }
     
@@ -939,10 +1067,20 @@ function attachProductsEventListeners() {
     categoryBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
             currentCategory = e.target.dataset.category;
-            renderProductsPage();
+            showProductsPage();
         });
     });
 }
+
+// Добавляем стили для анимации загрузки
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+`;
+document.head.appendChild(style);
 
 // Инициализация
 document.addEventListener('DOMContentLoaded', () => {
@@ -960,3 +1098,7 @@ document.addEventListener('DOMContentLoaded', () => {
 window.showProductsPage = showProductsPage;
 window.showRecipesPage = showRecipesPage;
 window.showAllRecipesPage = showAllRecipesPage;
+window.handleSearchFocus = handleSearchFocus;
+window.toggleProduct = toggleProduct;
+window.filterRecipes = filterRecipes;
+window.viewRecipe = viewRecipe;
