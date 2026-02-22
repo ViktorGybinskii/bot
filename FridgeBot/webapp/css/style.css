@@ -442,3 +442,95 @@ body {
 .notification.error {
     border-left: 4px solid #ef4444;
 }
+/* Дополнительные стили для новой навигации */
+
+/* Адаптивность для маленьких экранов */
+@media (max-width: 480px) {
+    .footer-buttons {
+        flex-direction: column;
+    }
+    
+    .footer-btn {
+        width: 100%;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+    
+    .product-item {
+        padding: 10px 3px;
+    }
+    
+    .product-icon {
+        font-size: 1.3em;
+    }
+    
+    .product-name {
+        font-size: 11px;
+    }
+}
+
+/* Анимации переходов */
+.fade-enter {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.fade-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.3s ease;
+}
+
+/* Улучшения для скролла */
+.content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.content::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+.content::-webkit-scrollbar-thumb {
+    background: #94a3b8;
+    border-radius: 4px;
+}
+
+/* Анимация нажатия */
+.footer-btn:active {
+    transform: scale(0.98);
+}
+
+/* Стили для чипсов фильтров */
+.filter-chip {
+    transition: all 0.2s ease;
+}
+
+.filter-chip:active {
+    transform: scale(0.95);
+}
+
+/* Карточки рецептов */
+.recipe-card {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.recipe-card:active {
+    transform: scale(0.98);
+}
+
+/* Затемнение фона при загрузке */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255,255,255,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}

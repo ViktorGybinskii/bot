@@ -2,72 +2,190 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Fridge Chef - Выбор продуктов</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        /* Дополнительные стили для фиксированных кнопок */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 20px 0 20px;
+        }
+        
+        .footer-bar {
+            background: white;
+            border-top: 2px solid #e2e8f0;
+            padding: 15px 20px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+            border-radius: 20px 20px 0 0;
+            margin-top: 10px;
+        }
+        
+        .footer-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-btn {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-width: 120px;
+        }
+        
+        .footer-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+        
+        .footer-btn.primary:disabled {
+            background: #cbd5e1;
+            box-shadow: none;
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .footer-btn.secondary {
+            background: #f1f5f9;
+            color: #475569;
+        }
+        
+        .footer-btn.danger {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+        
+        .footer-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+        }
+        
+        .selected-count {
+            text-align: center;
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #e2e8f0;
+        }
+        
+        /* Компактные продукты */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .product-item {
+            padding: 15px 5px;
+        }
+        
+        .product-icon {
+            font-size: 1.5em;
+        }
+        
+        .product-name {
+            font-size: 13px;
+        }
+        
+        /* Стили для страницы результатов */
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .back-btn {
+            background: #f1f5f9;
+            border: none;
+            border-radius: 30px;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .filter-chips {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 10px 0;
+            margin-bottom: 15px;
+            scrollbar-width: none;
+        }
+        
+        .filter-chip {
+            background: #f1f5f9;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 14px;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        
+        .filter-chip.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .recipe-card {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .recipe-image {
+            height: 150px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <header class="header fade-in">
-            <h1>
-                <span>🥘</span>
-                Fridge Chef
-            </h1>
-            <p>Выберите продукты, которые есть у вас в холодильнике</p>
-        </header>
-
-        <!-- Поиск продуктов -->
-        <div class="search-container fade-in" style="margin-bottom: 20px;">
-            <div style="display: flex; gap: 10px;">
-                <input type="text" 
-                       id="searchInput" 
-                       placeholder="🔍 Поиск продуктов..." 
-                       style="flex: 1; padding: 12px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 16px;">
-                <button id="clearSearch" 
-                        style="padding: 0 20px; background: #f1f5f9; border: none; border-radius: 12px; cursor: pointer;">
-                    ✕
-                </button>
-            </div>
+    <div class="app-container">
+        <!-- Контент (прокручивается) -->
+        <div class="content" id="content">
+            <!-- Сюда будет подгружаться либо выбор продуктов, либо рецепты -->
         </div>
-
-        <!-- Категории продуктов -->
-        <div class="categories fade-in">
-            <button class="category-btn active" data-category="all">Все</button>
-            <button class="category-btn" data-category="vegetables">Овощи</button>
-            <button class="category-btn" data-category="herbs">Зелень</button>
-            <button class="category-btn" data-category="fruits">Фрукты</button>
-            <button class="category-btn" data-category="dairy">Молочные</button>
-            <button class="category-btn" data-category="meat">Мясо</button>
-            <button class="category-btn" data-category="seafood">Рыба</button>
-            <button class="category-btn" data-category="groceries">Бакалея</button>
-            <button class="category-btn" data-category="canned">Консервы</button>
-            <button class="category-btn" data-category="spices">Специи</button>
-        </div>
-
-        <!-- Сетка продуктов -->
-        <div class="products-grid" id="productsGrid"></div>
-
-        <!-- Кнопки действий -->
-        <button class="send-btn" id="sendBtn" disabled>
-            Найти рецепты →
-        </button>
         
-        <div style="display: flex; gap: 10px; margin-top: 10px;">
-            <button class="send-btn" id="allRecipesBtn" style="background: #3498db; margin: 0;">
-                📚 Все рецепты
-            </button>
-            <button class="send-btn" id="resetBtn" style="background: #e74c3c; margin: 0;">
-                🗑️ Сбросить
-            </button>
-        </div>
-
-        <!-- Счетчик выбранных продуктов -->
-        <div style="text-align: center; color: #64748b; margin-top: 20px;" id="selectedCount">
-            Выбрано продуктов: 0
+        <!-- Фиксированная нижняя панель -->
+        <div class="footer-bar" id="footerBar">
+            <div class="footer-buttons" id="footerButtons">
+                <!-- Кнопки будут подгружаться динамически -->
+            </div>
+            <div class="selected-count" id="selectedCount">
+                Выбрано продуктов: 0
+            </div>
         </div>
     </div>
 
     <script src="js/main.js"></script>
+    <script src="js/recipes.js"></script>
 </body>
 </html>
