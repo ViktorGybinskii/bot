@@ -672,12 +672,29 @@ function showRecipesPage() {
 function showAllRecipesPage() {
     currentPage = 'recipes';
     currentFilterCategory = 'all';
+    
+    // Получаем все рецепты из базы
     currentRecipes = getAllRecipes().map(recipe => ({
         ...recipe,
         matchPercentage: 100,
         missingIngredients: []
     }));
+    
+    // Сохраняем оригинальный список
     window._allRecipes = [...currentRecipes];
+    
+    // Получаем поисковый запрос из URL если есть
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get('search') || '';
+    
+    // Если есть поисковый запрос, фильтруем
+    if (searchQuery) {
+        currentRecipes = currentRecipes.filter(recipe =>
+            recipe.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            recipe.category.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    }
+    
     renderRecipesPage();
     renderRecipesFooter();
 }
@@ -882,38 +899,24 @@ function renderProductsPage() {
 
 // Отрисовка страницы с рецептами
 function renderRecipesPage() {
-    if (!window._allRecipes) {
-        window._allRecipes = [...currentRecipes];
-    }
-    
     const content = document.getElementById('content');
-    const showAllMode = window.location.search.includes('all=true');
     
-    // Получаем поисковый запрос из URL если есть
+    // Определяем, в каком мы режиме (по URL)
     const urlParams = new URLSearchParams(window.location.search);
+    const isAllMode = urlParams.has('all');
     const searchQuery = urlParams.get('search') || '';
-    
-    let recipesToShow = currentRecipes;
-    
-    // Если есть поисковый запрос, фильтруем
-    if (searchQuery) {
-        recipesToShow = window._allRecipes.filter(recipe =>
-            recipe.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            recipe.category.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-    }
     
     let recipesHtml = `
         <div class="results-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
             <button class="back-btn" onclick="showProductsPage()" style="background: #f1f5f9; border: none; padding: 8px 15px; border-radius: 30px; cursor: pointer;">
                 ← Назад
             </button>
-            <span style="font-weight: 600; color: #475569;">Найдено: ${recipesToShow.length}</span>
+            <span style="font-weight: 600; color: #475569;">Найдено: ${currentRecipes.length}</span>
         </div>
     `;
     
     // Добавляем поиск только в режиме "Все рецепты"
-    if (showAllMode) {
+    if (isAllMode) {
         recipesHtml += `
             <div class="search-container" style="margin-bottom: 15px;">
                 <div style="display: flex; gap: 8px;">
@@ -931,6 +934,7 @@ function renderRecipesPage() {
         `;
     }
     
+    // Добавляем фильтры
     recipesHtml += `
         <div class="filter-chips" style="display: flex; gap: 8px; overflow-x: auto; padding: 10px 0; margin-bottom: 15px;">
             <span class="filter-chip ${currentFilterCategory === 'all' ? 'active' : ''}" onclick="filterRecipes(event, 'all')">Все</span>
@@ -945,7 +949,7 @@ function renderRecipesPage() {
         <div class="recipes-grid">
     `;
     
-    if (recipesToShow.length === 0) {
+    if (currentRecipes.length === 0) {
         recipesHtml += `
             <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
                 <span style="font-size: 48px;">😔</span>
@@ -954,7 +958,7 @@ function renderRecipesPage() {
             </div>
         `;
     } else {
-        recipesToShow.forEach(recipe => {
+        currentRecipes.forEach(recipe => {
             let badgeColor = '#ef4444';
             if (recipe.matchPercentage >= 80) badgeColor = '#22c55e';
             else if (recipe.matchPercentage >= 50) badgeColor = '#eab308';
@@ -994,7 +998,7 @@ function renderRecipesPage() {
     content.innerHTML = recipesHtml;
     
     // Добавляем обработчики для поиска если нужно
-    if (showAllMode) {
+    if (isAllMode) {
         const searchInput = document.getElementById('recipeSearchInput');
         const clearSearch = document.getElementById('clearRecipeSearch');
         
@@ -1035,7 +1039,7 @@ window.filterRecipes = function(event, category) {
         'dessert': 'Десерт'
     };
     
-    // Убираем активный класс у всех фильтров
+    // Убираем активный класс у всех
     document.querySelectorAll('.filter-chip').forEach(chip => {
         chip.classList.remove('active');
     });
@@ -1045,27 +1049,31 @@ window.filterRecipes = function(event, category) {
         event.target.classList.add('active');
     }
     
-    // Сохраняем выбранную категорию
     currentFilterCategory = category;
     
-    // Фильтруем рецепты
-    if (category === 'all') {
-        currentRecipes = window._allRecipes || [];
-    } else {
-        currentRecipes = (window._allRecipes || []).filter(r => r.category === categoryMap[category]);
+    // Получаем поисковый запрос из URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get('search') || '';
+    
+    // Получаем все рецепты из оригинального списка
+    let filtered = window._allRecipes || [];
+    
+    // Фильтруем по категории
+    if (category !== 'all') {
+        filtered = filtered.filter(r => r.category === categoryMap[category]);
     }
     
-    // Перерисовываем страницу с отфильтрованными рецептами
-    renderRecipesPage();
+    // Фильтруем по поиску если есть
+    if (searchQuery) {
+        filtered = filtered.filter(recipe =>
+            recipe.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            recipe.category.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    }
     
-    // Прокручиваем к началу списка рецептов
-    setTimeout(() => {
-        const recipesGrid = document.querySelector('.recipes-grid');
-        if (recipesGrid) {
-            recipesGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    }, 100);
-}
+    currentRecipes = filtered;
+    renderRecipesPage();
+};
 
 // Просмотр детального рецепта
 window.viewRecipe = function(id) {
