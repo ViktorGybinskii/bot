@@ -1,7 +1,7 @@
-// webapp/js/recipes.js
+// webapp/js/recipes.js (фрагмент с обновленными картинками)
 
 const recipesDatabase = [
-    // ============ ЗАВТРАКИ (15 рецептов) ============
+    // ============ ЗАВТРАКИ ============
     {
         id: 1,
         name: "Омлет с сыром и помидорами",
@@ -10,7 +10,7 @@ const recipesDatabase = [
         time: "15 минут",
         servings: 2,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1510693206972-df098062cb71?w=400",
+        image: "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "яйца", amount: "3 шт" },
             { name: "молоко", amount: "50 мл" },
@@ -38,7 +38,7 @@ const recipesDatabase = [
         time: "25 минут",
         servings: 3,
         difficulty: "Средне",
-        image: "https://images.unsplash.com/photo-1533083352257-3753389f52e8?w=400",
+        image: "https://images.pexels.com/photos/10322948/pexels-photo-10322948.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "творог", amount: "400 г" },
             { name: "яйца", amount: "1 шт" },
@@ -65,7 +65,7 @@ const recipesDatabase = [
         time: "10 минут",
         servings: 2,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?w=400",
+        image: "https://images.pexels.com/photos/793785/pexels-photo-793785.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "овсяные хлопья", amount: "100 г" },
             { name: "молоко", amount: "300 мл" },
@@ -84,14 +84,14 @@ const recipesDatabase = [
         tags: ["полезно", "быстро", "фрукты"]
     },
     {
-        id: 21,
+        id: 4,
         name: "Яичница глазунья с беконом",
         category: "Завтрак",
         cuisine: "Английская",
         time: "10 минут",
         servings: 1,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=400",
+        image: "https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "яйца", amount: "2 шт" },
             { name: "бекон", amount: "100 г" },
@@ -109,14 +109,14 @@ const recipesDatabase = [
         tags: ["сытный", "быстрый", "мясной"]
     },
     {
-        id: 22,
+        id: 5,
         name: "Блинчики с творогом",
         category: "Завтрак",
         cuisine: "Русская",
         time: "45 минут",
         servings: 4,
         difficulty: "Средне",
-        image: "https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400",
+        image: "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "мука", amount: "200 г" },
             { name: "молоко", amount: "500 мл" },
@@ -135,65 +135,17 @@ const recipesDatabase = [
         calories: 290,
         tags: ["сладкое", "сытное", "выходной"]
     },
+    
+    // ============ СУПЫ ============
     {
-        id: 23,
-        name: "Гранола с йогуртом",
-        category: "Завтрак",
-        cuisine: "Американская",
-        time: "5 минут",
-        servings: 1,
-        difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?w=400",
-        ingredients: [
-            { name: "йогурт натуральный", amount: "150 г" },
-            { name: "гранола", amount: "50 г" },
-            { name: "ягоды", amount: "50 г" },
-            { name: "мед", amount: "1 ч.л" }
-        ],
-        instructions: [
-            "Выложите йогурт в тарелку",
-            "Посыпьте гранолой и ягодами",
-            "Полейте медом"
-        ],
-        calories: 180,
-        tags: ["полезно", "быстро", "без готовки"]
-    },
-    {
-        id: 24,
-        name: "Сэндвич с яйцом и авокадо",
-        category: "Завтрак",
-        cuisine: "Американская",
-        time: "10 минут",
-        servings: 1,
-        difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=400",
-        ingredients: [
-            { name: "хлеб тостовый", amount: "2 куска" },
-            { name: "яйца", amount: "1 шт" },
-            { name: "авокадо", amount: "1/2 шт" },
-            { name: "сыр", amount: "20 г" },
-            { name: "масло сливочное", amount: "10 г" }
-        ],
-        instructions: [
-            "Поджарьте тосты",
-            "Яйцо пожарьте глазунью",
-            "Авокадо разомните вилкой",
-            "Соберите сэндвич: тост, авокадо, яйцо, сыр"
-        ],
-        calories: 380,
-        tags: ["модный", "полезный", "быстрый"]
-    },
-
-    // ============ СУПЫ (15 рецептов) ============
-    {
-        id: 4,
+        id: 6,
         name: "Борщ с мясом",
         category: "Суп",
         cuisine: "Русская",
         time: "90 минут",
         servings: 6,
         difficulty: "Сложно",
-        image: "https://images.unsplash.com/photo-1582672074816-6b8b5d3d3e5a?w=400",
+        image: "https://images.pexels.com/photos/539451/pexels-photo-539451.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "говядина", amount: "500 г" },
             { name: "свекла", amount: "2 шт" },
@@ -202,8 +154,7 @@ const recipesDatabase = [
             { name: "лук", amount: "1 шт" },
             { name: "капуста", amount: "200 г" },
             { name: "томатная паста", amount: "2 ст.л" },
-            { name: "чеснок", amount: "2 зубчика" },
-            { name: "соль", amount: "по вкусу" }
+            { name: "чеснок", amount: "2 зубчика" }
         ],
         instructions: [
             "Сварите мясной бульон (1 час)",
@@ -219,14 +170,14 @@ const recipesDatabase = [
         tags: ["традиционное", "сытное", "обед"]
     },
     {
-        id: 5,
+        id: 7,
         name: "Куриный суп с лапшой",
         category: "Суп",
         cuisine: "Русская",
         time: "45 минут",
         servings: 4,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400",
+        image: "https://images.pexels.com/photos/2474648/pexels-photo-2474648.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "курица", amount: "300 г" },
             { name: "морковь", amount: "1 шт" },
@@ -249,14 +200,14 @@ const recipesDatabase = [
         tags: ["легкий", "обед", "быстро"]
     },
     {
-        id: 6,
+        id: 8,
         name: "Грибной суп-пюре",
         category: "Суп",
         cuisine: "Французская",
         time: "40 минут",
         servings: 4,
         difficulty: "Средне",
-        image: "https://images.unsplash.com/photo-1603105037880-4cd0a5c3e3c4?w=400",
+        image: "https://images.pexels.com/photos/105564/pexels-photo-105564.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "шампиньоны", amount: "500 г" },
             { name: "лук", amount: "1 шт" },
@@ -277,14 +228,14 @@ const recipesDatabase = [
         tags: ["кремовый", "обед", "грибы"]
     },
     {
-        id: 25,
+        id: 9,
         name: "Солянка сборная мясная",
         category: "Суп",
         cuisine: "Русская",
         time: "60 минут",
         servings: 6,
         difficulty: "Средне",
-        image: "https://images.unsplash.com/photo-1604152135912-04a022e23696?w=400",
+        image: "https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "говядина", amount: "300 г" },
             { name: "колбаса вареная", amount: "200 г" },
@@ -307,14 +258,14 @@ const recipesDatabase = [
         tags: ["сытный", "праздничный", "мясной"]
     },
     {
-        id: 26,
+        id: 10,
         name: "Уха из семги",
         category: "Суп",
         cuisine: "Русская",
         time: "40 минут",
         servings: 4,
         difficulty: "Средне",
-        image: "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400",
+        image: "https://images.pexels.com/photos/8747708/pexels-photo-8747708.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "семга", amount: "400 г" },
             { name: "картофель", amount: "3 шт" },
@@ -335,72 +286,16 @@ const recipesDatabase = [
         calories: 120,
         tags: ["рыбный", "легкий", "диетический"]
     },
+      // ============ ОСНОВНЫЕ БЛЮДА ============
     {
-        id: 27,
-        name: "Суп-пюре из тыквы",
-        category: "Суп",
-        cuisine: "Европейская",
-        time: "35 минут",
-        servings: 4,
-        difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1603105037880-4cd0a5c3e3c4?w=400",
-        ingredients: [
-            { name: "тыква", amount: "500 г" },
-            { name: "морковь", amount: "1 шт" },
-            { name: "лук", amount: "1 шт" },
-            { name: "сливки", amount: "150 мл" },
-            { name: "имбирь", amount: "1 см" },
-            { name: "соль", amount: "по вкусу" }
-        ],
-        instructions: [
-            "Обжарьте лук с морковью и имбирем",
-            "Добавьте тыкву и воду",
-            "Варите 20 минут",
-            "Измельчите блендером",
-            "Добавьте сливки и прогрейте"
-        ],
-        calories: 130,
-        tags: ["осенний", "полезный", "кремовый"]
-    },
-    {
-        id: 28,
-        name: "Лапша с курицей по-азиатски",
-        category: "Суп",
-        cuisine: "Азиатская",
-        time: "25 минут",
-        servings: 3,
-        difficulty: "Средне",
-        image: "https://images.unsplash.com/photo-1559314809-0d155014e29e?w=400",
-        ingredients: [
-            { name: "курица", amount: "200 г" },
-            { name: "лапша рисовая", amount: "150 г" },
-            { name: "морковь", amount: "1 шт" },
-            { name: "перец болгарский", amount: "1 шт" },
-            { name: "соус соевый", amount: "3 ст.л" },
-            { name: "чеснок", amount: "2 зубчика" },
-            { name: "имбирь", amount: "1 см" }
-        ],
-        instructions: [
-            "Обжарьте курицу с чесноком и имбирем",
-            "Добавьте овощи",
-            "Залейте водой и соевым соусом",
-            "Варите 10 минут",
-            "Добавьте лапшу, варите 5 минут"
-        ],
-        calories: 260,
-        tags: ["азиатский", "острый", "быстрый"]
-    },
-
-    // ============ ОСНОВНЫЕ БЛЮДА (25 рецептов) ============
-    {
-        id: 7,
+        id: 11,
         name: "Курица запеченная с картошкой",
         category: "Основное блюдо",
         cuisine: "Русская",
         time: "60 минут",
         servings: 4,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=400",
+        image: "https://images.pexels.com/photos/616354/pexels-photo-616354.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "курица", amount: "1 шт" },
             { name: "картофель", amount: "1 кг" },
@@ -421,14 +316,14 @@ const recipesDatabase = [
         tags: ["сытное", "ужин", "запеканка"]
     },
     {
-        id: 8,
+        id: 12,
         name: "Макароны по-флотски",
         category: "Основное блюдо",
         cuisine: "Русская",
         time: "30 минут",
         servings: 3,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1551892374-ecf8754cf8b0?w=400",
+        image: "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "макароны", amount: "300 г" },
             { name: "фарш мясной", amount: "300 г" },
@@ -447,14 +342,14 @@ const recipesDatabase = [
         tags: ["быстро", "ужин", "экономно"]
     },
     {
-        id: 9,
+        id: 13,
         name: "Плов с курицей",
         category: "Основное блюдо",
         cuisine: "Узбекская",
         time: "60 минут",
         servings: 5,
         difficulty: "Средне",
-        image: "https://images.unsplash.com/photo-1516714435131-44d6b64dc6a2?w=400",
+        image: "https://images.pexels.com/photos/6659583/pexels-photo-6659583.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "курица", amount: "500 г" },
             { name: "рис", amount: "2 стакана" },
@@ -478,14 +373,14 @@ const recipesDatabase = [
         tags: ["сытное", "обед", "традиционное"]
     },
     {
-        id: 10,
+        id: 14,
         name: "Котлеты домашние",
         category: "Основное блюдо",
         cuisine: "Русская",
         time: "40 минут",
         servings: 4,
         difficulty: "Средне",
-        image: "https://images.unsplash.com/photo-1559847844-5315695dadae?w=400",
+        image: "https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "фарш мясной", amount: "500 г" },
             { name: "лук", amount: "1 шт" },
@@ -508,14 +403,14 @@ const recipesDatabase = [
         tags: ["ужин", "мясное", "домашнее"]
     },
     {
-        id: 29,
+        id: 15,
         name: "Спагетти Карбонара",
         category: "Основное блюдо",
         cuisine: "Итальянская",
         time: "25 минут",
         servings: 2,
         difficulty: "Средне",
-        image: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400",
+        image: "https://images.pexels.com/photos/1487511/pexels-photo-1487511.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "спагетти", amount: "200 г" },
             { name: "бекон", amount: "150 г" },
@@ -535,14 +430,14 @@ const recipesDatabase = [
         tags: ["итальянский", "паста", "сытный"]
     },
     {
-        id: 30,
+        id: 16,
         name: "Куриные ножки запеченные",
         category: "Основное блюдо",
         cuisine: "Европейская",
         time: "45 минут",
         servings: 4,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=400",
+        image: "https://images.pexels.com/photos/6210876/pexels-photo-6210876.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "куриные ножки", amount: "4 шт" },
             { name: "картофель", amount: "500 г" },
@@ -562,14 +457,14 @@ const recipesDatabase = [
         tags: ["курица", "простой", "ужин"]
     },
     {
-        id: 31,
+        id: 17,
         name: "Рыба в кляре",
         category: "Основное блюдо",
         cuisine: "Европейская",
         time: "30 минут",
         servings: 3,
         difficulty: "Средне",
-        image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400",
+        image: "https://images.pexels.com/photos/46239/salmon-dish-food-meal-46239.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "филе рыбы", amount: "500 г" },
             { name: "яйца", amount: "2 шт" },
@@ -588,14 +483,14 @@ const recipesDatabase = [
         tags: ["рыба", "жареное", "быстро"]
     },
     {
-        id: 32,
+        id: 18,
         name: "Лазанья с мясом",
         category: "Основное блюдо",
         cuisine: "Итальянская",
         time: "80 минут",
         servings: 6,
         difficulty: "Сложно",
-        image: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400",
+        image: "https://images.pexels.com/photos/5949886/pexels-photo-5949886.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "листы лазаньи", amount: "250 г" },
             { name: "фарш мясной", amount: "500 г" },
@@ -616,14 +511,14 @@ const recipesDatabase = [
         tags: ["итальянский", "праздничный", "сытный"]
     },
     {
-        id: 33,
+        id: 19,
         name: "Гуляш из говядины",
         category: "Основное блюдо",
         cuisine: "Венгерская",
         time: "90 минут",
         servings: 5,
         difficulty: "Средне",
-        image: "https://images.unsplash.com/photo-1559847844-5315695dadae?w=400",
+        image: "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "говядина", amount: "600 г" },
             { name: "лук", amount: "2 шт" },
@@ -643,14 +538,14 @@ const recipesDatabase = [
         tags: ["мясное", "подлива", "сытное"]
     },
     {
-        id: 34,
+        id: 20,
         name: "Овощное рагу",
         category: "Основное блюдо",
         cuisine: "Русская",
         time: "40 минут",
         servings: 4,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400",
+        image: "https://images.pexels.com/photos/5846068/pexels-photo-5846068.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "кабачки", amount: "2 шт" },
             { name: "баклажаны", amount: "2 шт" },
@@ -669,44 +564,17 @@ const recipesDatabase = [
         calories: 120,
         tags: ["вегетарианское", "овощи", "полезно"]
     },
-    {
-        id: 35,
-        name: "Пельмени домашние",
-        category: "Основное блюдо",
-        cuisine: "Русская",
-        time: "90 минут",
-        servings: 6,
-        difficulty: "Сложно",
-        image: "https://images.unsplash.com/photo-1559847844-5315695dadae?w=400",
-        ingredients: [
-            { name: "мука", amount: "500 г" },
-            { name: "яйца", amount: "2 шт" },
-            { name: "вода", amount: "200 мл" },
-            { name: "фарш мясной", amount: "500 г" },
-            { name: "лук", amount: "1 шт" },
-            { name: "соль", amount: "по вкусу" }
-        ],
-        instructions: [
-            "Замесите тесто из муки, яиц и воды",
-            "Смешайте фарш с луком",
-            "Раскатайте тесто, вырежьте кружочки",
-            "Слепите пельмени",
-            "Отварите в подсоленной воде"
-        ],
-        calories: 290,
-        tags: ["традиционное", "мясное", "домашнее"]
-    },
 
-    // ============ САЛАТЫ (15 рецептов) ============
+    // ============ САЛАТЫ ============
     {
-        id: 11,
+        id: 21,
         name: "Оливье",
         category: "Салат",
         cuisine: "Русская",
         time: "40 минут",
         servings: 5,
         difficulty: "Средне",
-        image: "https://images.unsplash.com/photo-1574484179007-8b3f7b1b3b3b?w=400",
+        image: "https://images.pexels.com/photos/4198023/pexels-photo-4198023.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "картофель", amount: "3 шт" },
             { name: "морковь", amount: "2 шт" },
@@ -717,7 +585,8 @@ const recipesDatabase = [
             { name: "майонез", amount: "200 г" },
             { name: "соль", amount: "по вкусу" }
         ],
-        instructions: [   "Отварите картофель, морковь и яйца",
+        instructions: [
+            "Отварите картофель, морковь и яйца",
             "Нарежьте все ингредиенты кубиками",
             "Смешайте с горошком",
             "Заправьте майонезом",
@@ -727,14 +596,14 @@ const recipesDatabase = [
         tags: ["праздничный", "традиционный", "салат"]
     },
     {
-        id: 12,
+        id: 22,
         name: "Цезарь с курицей",
         category: "Салат",
         cuisine: "Итальянская",
         time: "20 минут",
         servings: 2,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=400",
+        image: "https://images.pexels.com/photos/5878503/pexels-photo-5878503.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "курица", amount: "200 г" },
             { name: "салат айсберг", amount: "100 г" },
@@ -755,14 +624,14 @@ const recipesDatabase = [
         tags: ["ресторанный", "салат", "курица"]
     },
     {
-        id: 13,
+        id: 23,
         name: "Греческий салат",
         category: "Салат",
         cuisine: "Греческая",
         time: "15 минут",
         servings: 3,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400",
+        image: "https://images.pexels.com/photos/5813441/pexels-photo-5813441.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "помидоры", amount: "2 шт" },
             { name: "огурцы", amount: "2 шт" },
@@ -783,14 +652,14 @@ const recipesDatabase = [
         tags: ["летний", "овощной", "легкий"]
     },
     {
-        id: 36,
+        id: 24,
         name: "Винегрет",
         category: "Салат",
         cuisine: "Русская",
         time: "35 минут",
         servings: 4,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1574484179007-8b3f7b1b3b3b?w=400",
+        image: "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "свекла", amount: "2 шт" },
             { name: "картофель", amount: "3 шт" },
@@ -811,14 +680,14 @@ const recipesDatabase = [
         tags: ["постный", "овощной", "традиционный"]
     },
     {
-        id: 37,
+        id: 25,
         name: "Сельдь под шубой",
         category: "Салат",
         cuisine: "Русская",
         time: "50 минут",
         servings: 6,
         difficulty: "Средне",
-        image: "https://images.unsplash.com/photo-1574484179007-8b3f7b1b3b3b?w=400",
+        image: "https://images.pexels.com/photos/7500734/pexels-photo-7500734.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "сельдь соленая", amount: "300 г" },
             { name: "свекла", amount: "3 шт" },
@@ -838,14 +707,14 @@ const recipesDatabase = [
         tags: ["праздничный", "слоеный", "рыбный"]
     },
     {
-        id: 38,
+        id: 26,
         name: "Теплый салат с курицей",
         category: "Салат",
         cuisine: "Европейская",
         time: "20 минут",
         servings: 2,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=400",
+        image: "https://images.pexels.com/photos/5846068/pexels-photo-5846068.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "курица", amount: "200 г" },
             { name: "листья салата", amount: "100 г" },
@@ -864,16 +733,16 @@ const recipesDatabase = [
         tags: ["теплый", "быстрый", "оригинальный"]
     },
 
-    // ============ ВЫПЕЧКА (15 рецептов) ============
+    // ============ ВЫПЕЧКА ============
     {
-        id: 14,
+        id: 27,
         name: "Блины на молоке",
         category: "Выпечка",
         cuisine: "Русская",
         time: "40 минут",
         servings: 6,
         difficulty: "Средне",
-        image: "https://images.unsplash.com/photo-1575853121743-60c24f0a7502?w=400",
+        image: "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "молоко", amount: "500 мл" },
             { name: "яйца", amount: "2 шт" },
@@ -892,14 +761,14 @@ const recipesDatabase = [
         tags: ["завтрак", "масленица", "десерт"]
     },
     {
-        id: 15,
+        id: 28,
         name: "Пицца Маргарита",
         category: "Выпечка",
         cuisine: "Итальянская",
         time: "40 минут",
         servings: 4,
         difficulty: "Средне",
-        image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400",
+        image: "https://images.pexels.com/photos/6605219/pexels-photo-6605219.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "тесто для пиццы", amount: "500 г" },
             { name: "соус томатный", amount: "100 г" },
@@ -919,14 +788,14 @@ const recipesDatabase = [
         tags: ["итальянская", "пицца", "ужин"]
     },
     {
-        id: 16,
+        id: 29,
         name: "Шарлотка с яблоками",
         category: "Выпечка",
         cuisine: "Русская",
         time: "50 минут",
         servings: 6,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1587313378409-4c2b6b8b8b6b?w=400",
+        image: "https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "яйца", amount: "3 шт" },
             { name: "сахар", amount: "1 стакан" },
@@ -946,14 +815,14 @@ const recipesDatabase = [
         tags: ["десерт", "чай", "яблоки"]
     },
     {
-        id: 39,
+        id: 30,
         name: "Кекс творожный",
         category: "Выпечка",
         cuisine: "Европейская",
         time: "60 минут",
         servings: 8,
         difficulty: "Средне",
-        image: "https://images.unsplash.com/photo-1587313378409-4c2b6b8b8b6b?w=400",
+        image: "https://images.pexels.com/photos/10322948/pexels-photo-10322948.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "творог", amount: "300 г" },
             { name: "яйца", amount: "3 шт" },
@@ -974,14 +843,14 @@ const recipesDatabase = [
         tags: ["творог", "к чаю", "десерт"]
     },
     {
-        id: 40,
+        id: 31,
         name: "Сырные палочки",
         category: "Выпечка",
         cuisine: "Европейская",
         time: "25 минут",
         servings: 4,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400",
+        image: "https://images.pexels.com/photos/5949886/pexels-photo-5949886.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "слоеное тесто", amount: "500 г" },
             { name: "сыр твердый", amount: "150 г" },
@@ -1000,14 +869,14 @@ const recipesDatabase = [
         tags: ["закуска", "сыр", "быстро"]
     },
     {
-        id: 41,
+        id: 32,
         name: "Корзиночки с фруктами",
         category: "Выпечка",
         cuisine: "Французская",
         time: "45 минут",
         servings: 6,
         difficulty: "Средне",
-        image: "https://images.unsplash.com/photo-1587313378409-4c2b6b8b8b6b?w=400",
+        image: "https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "песочное тесто", amount: "500 г" },
             { name: "заварной крем", amount: "300 г" },
@@ -1025,16 +894,16 @@ const recipesDatabase = [
         tags: ["десерт", "праздничный", "фрукты"]
     },
 
-    // ============ ГАРНИРЫ (10 рецептов) ============
+    // ============ ГАРНИРЫ ============
     {
-        id: 17,
+        id: 33,
         name: "Пюре картофельное",
         category: "Гарнир",
         cuisine: "Европейская",
         time: "30 минут",
         servings: 4,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1587474260584-136574528ed5?w=400",
+        image: "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "картофель", amount: "1 кг" },
             { name: "молоко", amount: "200 мл" },
@@ -1052,14 +921,14 @@ const recipesDatabase = [
         tags: ["классика", "гарнир", "просто"]
     },
     {
-        id: 18,
+        id: 34,
         name: "Гречка с грибами",
         category: "Гарнир",
         cuisine: "Русская",
         time: "30 минут",
         servings: 3,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1593253787226-567eda4ad32a?w=400",
+        image: "https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "гречка", amount: "200 г" },
             { name: "грибы", amount: "200 г" },
@@ -1077,14 +946,14 @@ const recipesDatabase = [
         tags: ["полезно", "гарнир", "грибы"]
     },
     {
-        id: 42,
+        id: 35,
         name: "Рис отварной",
         category: "Гарнир",
         cuisine: "Азиатская",
         time: "20 минут",
         servings: 4,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1516684732162-798a0062be99?w=400",
+        image: "https://images.pexels.com/photos/6659583/pexels-photo-6659583.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "рис", amount: "200 г" },
             { name: "вода", amount: "400 мл" },
@@ -1101,14 +970,14 @@ const recipesDatabase = [
         tags: ["универсальный", "простой", "быстро"]
     },
     {
-        id: 43,
+        id: 36,
         name: "Овощи гриль",
         category: "Гарнир",
         cuisine: "Средиземноморская",
         time: "25 минут",
         servings: 3,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400",
+        image: "https://images.pexels.com/photos/5846068/pexels-photo-5846068.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "кабачки", amount: "2 шт" },
             { name: "баклажаны", amount: "2 шт" },
@@ -1127,16 +996,16 @@ const recipesDatabase = [
         tags: ["летний", "овощи", "полезно"]
     },
 
-    // ============ ДЕСЕРТЫ (15 рецептов) ============
+    // ============ ДЕСЕРТЫ ============
     {
-        id: 19,
+        id: 37,
         name: "Тирамису",
         category: "Десерт",
-        cuisine: "Итальянская",
+                cuisine: "Итальянская",
         time: "30 минут + охлаждение",
         servings: 6,
         difficulty: "Средне",
-        image: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400",
+        image: "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "маскарпоне", amount: "250 г" },
             { name: "сливки", amount: "200 мл" },
@@ -1160,14 +1029,14 @@ const recipesDatabase = [
         tags: ["десерт", "итальянский", "праздник"]
     },
     {
-        id: 20,
+        id: 38,
         name: "Панкейки",
         category: "Десерт",
         cuisine: "Американская",
         time: "20 минут",
         servings: 4,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=400",
+        image: "https://images.pexels.com/photos/793785/pexels-photo-793785.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "мука", amount: "200 г" },
             { name: "молоко", amount: "200 мл" },
@@ -1186,14 +1055,14 @@ const recipesDatabase = [
         tags: ["завтрак", "десерт", "быстро"]
     },
     {
-        id: 44,
+        id: 39,
         name: "Чизкейк Нью-Йорк",
         category: "Десерт",
         cuisine: "Американская",
         time: "80 минут + охлаждение",
         servings: 8,
         difficulty: "Сложно",
-        image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=400",
+        image: "https://images.pexels.com/photos/5949886/pexels-photo-5949886.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "печенье", amount: "200 г" },
             { name: "масло сливочное", amount: "100 г" },
@@ -1215,14 +1084,14 @@ const recipesDatabase = [
         tags: ["десерт", "праздничный", "сырный"]
     },
     {
-        id: 45,
+        id: 40,
         name: "Брауни с орехами",
         category: "Десерт",
         cuisine: "Американская",
         time: "40 минут",
         servings: 6,
         difficulty: "Средне",
-        image: "https://images.unsplash.com/photo-1587313378409-4c2b6b8b8b6b?w=400",
+        image: "https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "шоколад темный", amount: "200 г" },
             { name: "масло сливочное", amount: "150 г" },
@@ -1242,14 +1111,14 @@ const recipesDatabase = [
         tags: ["шоколад", "орехи", "десерт"]
     },
     {
-        id: 46,
+        id: 41,
         name: "Фруктовый салат",
         category: "Десерт",
         cuisine: "Европейская",
         time: "10 минут",
         servings: 2,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?w=400",
+        image: "https://images.pexels.com/photos/793785/pexels-photo-793785.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "банан", amount: "1 шт" },
             { name: "яблоко", amount: "1 шт" },
@@ -1267,14 +1136,14 @@ const recipesDatabase = [
         tags: ["легкий", "фрукты", "полезно"]
     },
     {
-        id: 47,
+        id: 42,
         name: "Пудинг рисовый",
         category: "Десерт",
         cuisine: "Английская",
         time: "40 минут",
         servings: 4,
         difficulty: "Средне",
-        image: "https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?w=400",
+        image: "https://images.pexels.com/photos/793785/pexels-photo-793785.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "рис", amount: "100 г" },
             { name: "молоко", amount: "500 мл" },
@@ -1294,16 +1163,16 @@ const recipesDatabase = [
         tags: ["десерт", "молочный", "детский"]
     },
 
-    // ============ БЫСТРЫЕ БЛЮДА (15 минут) ============
+    // ============ БЫСТРЫЕ БЛЮДА ============
     {
-        id: 48,
+        id: 43,
         name: "Бутерброды горячие с сыром",
         category: "Быстрое блюдо",
         cuisine: "Европейская",
         time: "10 минут",
         servings: 2,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=400",
+        image: "https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "хлеб", amount: "4 куска" },
             { name: "сыр", amount: "100 г" },
@@ -1320,14 +1189,14 @@ const recipesDatabase = [
         tags: ["быстро", "перекус", "сыр"]
     },
     {
-        id: 49,
+        id: 44,
         name: "Яичница в тосте",
         category: "Быстрое блюдо",
         cuisine: "Американская",
         time: "10 минут",
         servings: 1,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=400",
+        image: "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "хлеб для тостов", amount: "2 куска" },
             { name: "яйца", amount: "2 шт" },
@@ -1344,14 +1213,14 @@ const recipesDatabase = [
         tags: ["завтрак", "быстро", "оригинально"]
     },
     {
-        id: 50,
+        id: 45,
         name: "Макароны с сыром",
         category: "Быстрое блюдо",
         cuisine: "Американская",
         time: "15 минут",
         servings: 2,
         difficulty: "Легко",
-        image: "https://images.unsplash.com/photo-1551892374-ecf8754cf8b0?w=400",
+        image: "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=400",
         ingredients: [
             { name: "макароны", amount: "200 г" },
             { name: "сыр", amount: "150 г" },
@@ -1365,29 +1234,149 @@ const recipesDatabase = [
         ],
         calories: 340,
         tags: ["быстро", "сыр", "просто"]
+    },
+    {
+        id: 46,
+        name: "Сэндвич с тунцом",
+        category: "Быстрое блюдо",
+        cuisine: "Американская",
+        time: "10 минут",
+        servings: 2,
+        difficulty: "Легко",
+        image: "https://images.pexels.com/photos/46239/salmon-dish-food-meal-46239.jpeg?auto=compress&cs=tinysrgb&w=400",
+        ingredients: [
+            { name: "хлеб", amount: "4 куска" },
+            { name: "тунец консервированный", amount: "1 банка" },
+            { name: "майонез", amount: "2 ст.л" },
+            { name: "лук", amount: "1/2 шт" },
+            { name: "салат", amount: "2 листа" }
+        ],
+        instructions: [
+            "Разомните тунец вилкой",
+            "Смешайте с майонезом и луком",
+            "Выложите на хлеб",
+            "Добавьте салат",
+            "Накройте вторым куском хлеба"
+        ],
+        calories: 280,
+        tags: ["быстро", "перекус", "рыба"]
+    },
+    {
+        id: 47,
+        name: "Гренки с яйцом",
+        category: "Быстрое блюдо",
+        cuisine: "Европейская",
+        time: "10 минут",
+        servings: 2,
+        difficulty: "Легко",
+        image: "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=400",
+        ingredients: [
+            { name: "хлеб", amount: "4 куска" },
+            { name: "яйца", amount: "2 шт" },
+            { name: "молоко", amount: "50 мл" },
+            { name: "соль", amount: "по вкусу" },
+            { name: "масло растительное", amount: "для жарки" }
+        ],
+        instructions: [
+            "Взбейте яйца с молоком и солью",
+            "Обмакните хлеб в смесь",
+            "Обжарьте с двух сторон до золотистого цвета"
+        ],
+        calories: 200,
+        tags: ["быстро", "завтрак", "просто"]
+    },
+    {
+        id: 48,
+        name: "Паста с чесноком и маслом",
+        category: "Быстрое блюдо",
+        cuisine: "Итальянская",
+        time: "15 минут",
+        servings: 2,
+        difficulty: "Легко",
+        image: "https://images.pexels.com/photos/1487511/pexels-photo-1487511.jpeg?auto=compress&cs=tinysrgb&w=400",
+        ingredients: [
+            { name: "спагетти", amount: "200 г" },
+            { name: "чеснок", amount: "3 зубчика" },
+            { name: "масло оливковое", amount: "4 ст.л" },
+            { name: "петрушка", amount: "пучок" },
+            { name: "соль", amount: "по вкусу" }
+        ],
+        instructions: [
+            "Отварите спагетти",
+            "Обжарьте чеснок в масле",
+            "Смешайте пасту с чесночным маслом",
+            "Посыпьте петрушкой"
+        ],
+        calories: 320,
+        tags: ["быстро", "вегетарианское", "просто"]
+    },
+    {
+        id: 49,
+        name: "Овощи на пару",
+        category: "Быстрое блюдо",
+        cuisine: "Азиатская",
+        time: "15 минут",
+        servings: 2,
+        difficulty: "Легко",
+        image: "https://images.pexels.com/photos/5846068/pexels-photo-5846068.jpeg?auto=compress&cs=tinysrgb&w=400",
+        ingredients: [
+            { name: "брокколи", amount: "200 г" },
+            { name: "морковь", amount: "1 шт" },
+            { name: "цветная капуста", amount: "200 г" },
+            { name: "соус соевый", amount: "2 ст.л" },
+            { name: "кунжут", amount: "1 ч.л" }
+        ],
+        instructions: [
+            "Нарежьте овощи",
+            "Готовьте на пару 10 минут",
+            "Полейте соевым соусом",
+            "Посыпьте кунжутом"
+        ],
+        calories: 80,
+        tags: ["диетическое", "полезно", "быстро"]
+    },
+    {
+        id: 50,
+        name: "Рис с овощами",
+        category: "Быстрое блюдо",
+        cuisine: "Азиатская",
+        time: "20 минут",
+        servings: 3,
+        difficulty: "Легко",
+        image: "https://images.pexels.com/photos/6659583/pexels-photo-6659583.jpeg?auto=compress&cs=tinysrgb&w=400",
+        ingredients: [
+            { name: "рис", amount: "200 г" },
+            { name: "морковь", amount: "1 шт" },
+            { name: "горошек", amount: "100 г" },
+            { name: "кукуруза", amount: "100 г" },
+            { name: "соус соевый", amount: "2 ст.л" }
+        ],
+        instructions: [
+            "Отварите рис",
+            "Обжарьте овощи",
+            "Смешайте рис с овощами",
+            "Добавьте соевый соус"
+        ],
+        calories: 190,
+        tags: ["быстро", "вегетарианское", "просто"]
     }
 ];
-
-// Функция для получения рецептов по категориям
+// Функции для работы с рецептами
 function getRecipesByCategory(category) {
     return recipesDatabase.filter(recipe => recipe.category === category);
 }
 
-// Функция для получения популярных рецептов
 function getPopularRecipes() {
-    // Пока просто перемешиваем и берем первые 6
     const shuffled = [...recipesDatabase].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, 6);
+    return shuffled.slice(0, 8);
 }
 
-// Функция для поиска по ингредиентам
 function findRecipesByIngredients(userIngredients) {
     const userIngredientsLower = userIngredients.map(i => i.toLowerCase().trim());
     
     return recipesDatabase.map(recipe => {
         const recipeIngredients = recipe.ingredients.map(i => i.name.toLowerCase());
         
-        // Считаем совпадения
         const matchedIngredients = recipeIngredients.filter(ri =>
             userIngredientsLower.some(ui => ri.includes(ui) || ui.includes(ri))
         );
@@ -1407,11 +1396,10 @@ function findRecipesByIngredients(userIngredients) {
             missingIngredients
         };
     })
-    .filter(recipe => recipe.matchCount > 0)
+    .filter(recipe => recipe.matchCount > 0 && recipe.matchPercentage >= 30)
     .sort((a, b) => b.matchPercentage - a.matchPercentage);
 }
 
-// Функция поиска по названию
 function searchRecipesByName(query) {
     const searchQuery = query.toLowerCase().trim();
     return recipesDatabase.filter(recipe =>
@@ -1422,7 +1410,7 @@ function searchRecipesByName(query) {
     );
 }
 
-// Делаем функции доступными глобально
+// Делаем функции и базу доступными глобально
 window.recipesDatabase = recipesDatabase;
 window.getRecipesByCategory = getRecipesByCategory;
 window.getPopularRecipes = getPopularRecipes;
