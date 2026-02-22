@@ -534,25 +534,24 @@ tg.ready();
 tg.expand();
 tg.disableVerticalSwipes();
 
-// Определяем тему Telegram
-const isDarkTheme = tg.colorScheme === 'dark';
-
-// Применяем тему
-if (isDarkTheme) {
-    document.body.classList.add('dark-theme');
-} else {
-    document.body.classList.remove('dark-theme');
-}
-
-// Слушаем изменения темы в Telegram
-tg.onEvent('themeChanged', function() {
-    const newIsDark = tg.colorScheme === 'dark';
-    if (newIsDark) {
+// Принудительное применение темы Telegram
+function applyTelegramTheme() {
+    const isDark = tg.colorScheme === 'dark';
+    if (isDark) {
         document.body.classList.add('dark-theme');
+        // Убираем лишние стили, которые могут конфликтовать
+        document.body.style.backgroundColor = '';
+        document.body.style.color = '';
     } else {
         document.body.classList.remove('dark-theme');
     }
-});
+}
+
+// Применяем тему сразу
+applyTelegramTheme();
+
+// Слушаем изменения темы
+tg.onEvent('themeChanged', applyTelegramTheme);
 
 // Загрузка сохраненных продуктов из sessionStorage
 function loadSelectedProducts() {
@@ -755,9 +754,9 @@ function renderProductsPage() {
             <button class="category-btn ${currentCategory === 'frozen' ? 'active' : ''}" data-category="frozen">Заморозка</button>
         </div>
         
-        <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; color: #64748b;">
-            <span>📦 Всего продуктов: ${filteredProducts.length}</span>
-            <span>✅ Выбрано: ${selectedProducts.size}</span>
+        <div class="stats-bar" style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px;">
+            <span id="total-products">📦 Всего продуктов: ${filteredProducts.length}</span>
+            <span id="selected-products-counter">✅ Выбрано: ${selectedProducts.size}</span>
         </div>
     `;
     
@@ -1050,7 +1049,7 @@ window.toggleProduct = function(productId) {
     
     saveSelectedProducts();
     
-    // Обновляем только конкретный элемент
+    // Обновляем класс выбранного продукта
     const productEl = document.querySelector(`.product-item[data-id="${productId}"]`);
     if (productEl) {
         if (selectedProducts.has(productId)) {
@@ -1060,22 +1059,50 @@ window.toggleProduct = function(productId) {
         }
     }
     
-    // Обновляем счетчик
-    const countElement = document.getElementById('selectedCount');
-    if (countElement) {
-        countElement.textContent = `Выбрано продуктов: ${selectedProducts.size}`;
-    }
+    // Обновляем счетчик ВЕЗДЕ
+    updateAllCounters();
     
     // Обновляем состояние кнопок
+    updateButtonsState();
+}
+
+// Новая функция для обновления всех счетчиков
+function updateAllCounters() {
+    // Счетчик в stats-bar
+    const statsCounter = document.querySelector('.stats-bar span:last-child');
+    if (statsCounter) {
+        statsCounter.textContent = `✅ Выбрано: ${selectedProducts.size}`;
+    }
+    
+    // Счетчик в футере
+    const footerCounter = document.getElementById('selectedCount');
+    if (footerCounter) {
+        footerCounter.textContent = `Выбрано продуктов: ${selectedProducts.size}`;
+    }
+    
+    // Счетчик в stats-bar если там другой формат
+    const statsBar = document.querySelector('.stats-bar');
+    if (statsBar) {
+        const totalSpan = statsBar.querySelector('span:first-child');
+        const selectedSpan = statsBar.querySelector('span:last-child');
+        if (selectedSpan) {
+            selectedSpan.innerHTML = `✅ Выбрано: ${selectedProducts.size}`;
+        }
+    }
+}
+
+// Новая функция для обновления кнопок
+function updateButtonsState() {
     const findBtn = document.getElementById('findRecipesBtn');
     const resetBtn = document.getElementById('resetBtn');
+    
     if (findBtn) {
         findBtn.disabled = selectedProducts.size === 0;
     }
     if (resetBtn) {
         resetBtn.disabled = selectedProducts.size === 0;
     }
-};
+}
 
 // Обработчики для страницы продуктов
 function attachProductsEventListeners() {

@@ -1,5 +1,36 @@
 /* webapp/css/style.css */
 
+/* Сброс стилей для темной темы */
+.dark-theme * {
+    border-color: var(--border-color) !important;
+}
+
+.dark-theme [class*="primary"] {
+    color: var(--text-on-gradient) !important;
+}
+
+.dark-theme .product-item.selected * {
+    color: var(--text-on-gradient) !important;
+}
+
+/* Исправление для синего текста в темной теме */
+.dark-theme .ingredients-list li span:last-child {
+    color: #8b9eff !important;
+}
+
+.dark-theme .match-badge {
+    color: white !important;
+}
+
+/* Убираем белые фоны в темной теме */
+.dark-theme .product-item:not(.selected) {
+    background: var(--card-bg) !important;
+}
+
+.dark-theme .footer-btn.primary {
+    background: linear-gradient(135deg, #8b9eff 0%, #9f7aea 100%) !important;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -796,13 +827,14 @@ body {
     }
 }
 
-/* ============ ТЕМНАЯ ТЕМА ============ */
+/* ============ ТЕМНАЯ ТЕМА (ИСПРАВЛЕННАЯ) ============ */
 :root {
     --bg-primary: #f8fafc;
     --bg-secondary: #ffffff;
     --text-primary: #1e293b;
     --text-secondary: #475569;
     --text-muted: #64748b;
+    --text-on-gradient: #ffffff;
     --border-color: #e2e8f0;
     --card-bg: #ffffff;
     --header-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -812,24 +844,33 @@ body {
     --category-bg: #f1f5f9;
     --danger-bg: #fee2e2;
     --danger-text: #ef4444;
+    --success-bg: #22c55e;
+    --success-text: #ffffff;
+    --warning-bg: #eab308;
+    --link-color: #667eea;
 }
 
-/* Темная тема */
+/* Темная тема - все цвета переопределены */
 body.dark-theme {
     --bg-primary: #1a1a1a;
     --bg-secondary: #2d2d2d;
     --text-primary: #ffffff;
     --text-secondary: #e0e0e0;
     --text-muted: #a0a0a0;
+    --text-on-gradient: #ffffff;
     --border-color: #404040;
     --card-bg: #2d2d2d;
-    --header-gradient: linear-gradient(135deg, #4a4a4a 0%, #2d2d2d 100%);
+    --header-gradient: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
     --footer-bg: #2d2d2d;
     --input-bg: #3d3d3d;
     --shadow-color: rgba(0, 0, 0, 0.3);
     --category-bg: #3d3d3d;
     --danger-bg: #4a2a2a;
-    --danger-text: #ff6b6b;
+    --danger-text: #ff8a8a;
+    --success-bg: #22c55e;
+    --success-text: #ffffff;
+    --warning-bg: #eab308;
+    --link-color: #8b9eff;
 }
 
 /* Применяем переменные */
@@ -839,11 +880,18 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Шапка - всегда с градиентом и белым текстом */
 .header {
     background: var(--header-gradient);
-    color: white;
+    color: var(--text-on-gradient);
 }
 
+.header h1,
+.header p {
+    color: var(--text-on-gradient);
+}
+
+/* Карточки продуктов */
 .product-item {
     background: var(--card-bg);
     border-color: var(--border-color);
@@ -852,23 +900,45 @@ body {
 
 .product-item.selected {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    color: var(--text-on-gradient);
 }
 
+.product-item.selected .product-name,
+.product-item.selected .product-icon {
+    color: var(--text-on-gradient);
+}
+
+/* Кнопки категорий */
 .category-btn {
     background: var(--category-bg);
     color: var(--text-secondary);
+    border: none;
 }
 
 .category-btn.active {
     background: #667eea;
-    color: white;
+    color: var(--text-on-gradient);
 }
 
-.footer-bar {
-    background: var(--footer-bg);
-    border-top-color: var(--border-color);
-    box-shadow: 0 -5px 20px var(--shadow-color);
+.dark-theme .category-btn.active {
+    background: #8b9eff;
+    color: var(--text-on-gradient);
+}
+
+/* Статистика */
+.stats-bar {
+    background: var(--category-bg);
+    color: var(--text-secondary);
+}
+
+.stats-bar span {
+    color: var(--text-secondary);
+}
+
+/* Кнопки в футере */
+.footer-btn.primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: var(--text-on-gradient);
 }
 
 .footer-btn.secondary {
@@ -881,6 +951,7 @@ body {
     color: var(--danger-text);
 }
 
+/* Поле поиска */
 .search-container input {
     background: var(--input-bg);
     border-color: var(--border-color);
@@ -896,17 +967,13 @@ body {
     color: var(--text-secondary);
 }
 
-.stats-bar {
-    background: var(--category-bg);
-    color: var(--text-secondary);
-}
-
+/* Карточки рецептов */
 .recipe-card {
     background: var(--card-bg);
     box-shadow: 0 10px 30px var(--shadow-color);
 }
 
-.recipe-info {
+.recipe-title {
     color: var(--text-primary);
 }
 
@@ -915,11 +982,26 @@ body {
     color: var(--text-secondary);
 }
 
+.recipe-ingredients {
+    color: var(--text-muted);
+}
+
+/* Метчинг бейдж */
+.match-badge {
+    color: var(--text-on-gradient);
+}
+
+/* Кнопка назад */
 .back-btn {
     background: var(--category-bg);
     color: var(--text-secondary);
 }
 
+.back-btn:hover {
+    background: var(--border-color);
+}
+
+/* Фильтр чипсы */
 .filter-chip {
     background: var(--category-bg);
     color: var(--text-secondary);
@@ -927,17 +1009,31 @@ body {
 
 .filter-chip.active {
     background: #667eea;
-    color: white;
+    color: var(--text-on-gradient);
 }
 
+.dark-theme .filter-chip.active {
+    background: #8b9eff;
+}
+
+/* Счетчик выбранных продуктов */
 .selected-count {
     color: var(--text-muted);
     border-top-color: var(--border-color);
 }
 
+/* Детальный рецепт */
+.recipe-detail {
+    background: var(--card-bg);
+}
+
+.recipe-detail h1,
+.recipe-detail h3 {
+    color: var(--text-primary);
+}
+
 .ingredients-list {
     background: var(--category-bg);
-    color: var(--text-primary);
 }
 
 .ingredients-list li {
@@ -945,8 +1041,58 @@ body {
     color: var(--text-primary);
 }
 
+.ingredients-list li span {
+    color: var(--text-primary);
+}
+
+.ingredients-list li span:last-child {
+    color: #667eea;
+}
+
 .instructions {
     color: var(--text-secondary);
+}
+
+.instructions li {
+    color: var(--text-secondary);
+}
+
+.instructions li span {
+    background: #667eea;
+    color: var(--text-on-gradient);
+}
+
+/* Текст "Не хватает" */
+p[style*="color: #ef4444"] {
+    color: var(--danger-text) !important;
+    background: var(--danger-bg) !important;
+}
+
+p[style*="color: #22c55e"] {
+    color: var(--success-text) !important;
+    background: var(--success-bg) !important;
+}
+
+/* Исправление для синего текста */
+.dark-theme [style*="color: #667eea"] {
+    color: #8b9eff !important;
+}
+
+.dark-theme .product-item.selected {
+    color: var(--text-on-gradient) !important;
+}
+
+/* Футер */
+.footer-bar {
+    background: var(--footer-bg);
+    border-top-color: var(--border-color);
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .footer-bar {
+        background: var(--footer-bg);
+    }
 }
 
 /* ============ ИСПРАВЛЕННЫЙ ПОИСК ============ */
