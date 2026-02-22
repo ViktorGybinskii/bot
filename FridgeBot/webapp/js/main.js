@@ -73,13 +73,8 @@ function injectDarkThemeStyles() {
     console.log('Стили для темной темы внедрены');
 }
 
-// Вызываем функцию после загрузки страницы
-document.addEventListener('DOMContentLoaded', injectDarkThemeStyles);
-
 // База данных продуктов (РАСШИРЕННАЯ - 300+ продуктов)
 const productsDatabase = [
-    // ============ ОВОЩИ (40 шт) ============
-    // Базовые овощи
     { id: 'tomato', name: 'Помидоры', category: 'vegetables', icon: '🍅' },
     { id: 'cucumber', name: 'Огурцы', category: 'vegetables', icon: '🥒' },
     { id: 'potato', name: 'Картофель', category: 'vegetables', icon: '🥔' },
@@ -100,50 +95,36 @@ const productsDatabase = [
     { id: 'celery', name: 'Сельдерей', category: 'vegetables', icon: '🥬' },
     { id: 'parsnip', name: 'Пастернак', category: 'vegetables', icon: '🥕' },
     { id: 'horseradish', name: 'Хрен', category: 'vegetables', icon: '🌶️' },
-    
-    // Капуста разная
     { id: 'red-cabbage', name: 'Капуста краснокочанная', category: 'vegetables', icon: '🟣' },
     { id: 'savoy-cabbage', name: 'Капуста савойская', category: 'vegetables', icon: '🥬' },
     { id: 'brussels-sprouts', name: 'Брюссельская капуста', category: 'vegetables', icon: '🥬' },
     { id: 'kohlrabi', name: 'Кольраби', category: 'vegetables', icon: '🟢' },
     { id: 'pak-choi', name: 'Пак-чой', category: 'vegetables', icon: '🥬' },
     { id: 'kale', name: 'Кале (кудрявая капуста)', category: 'vegetables', icon: '🥬' },
-    
-    // Лук разный
     { id: 'red-onion', name: 'Лук красный', category: 'vegetables', icon: '🧅' },
     { id: 'leek', name: 'Лук-порей', category: 'vegetables', icon: '🧅' },
     { id: 'shallot', name: 'Лук-шалот', category: 'vegetables', icon: '🧅' },
     { id: 'spring-onion', name: 'Лук зеленый', category: 'vegetables', icon: '🧅' },
     { id: 'chives', name: 'Шнитт-лук', category: 'vegetables', icon: '🌱' },
-    
-    // Перцы разные
     { id: 'chili', name: 'Перец чили', category: 'vegetables', icon: '🌶️' },
     { id: 'jalapeno', name: 'Халапеньо', category: 'vegetables', icon: '🌶️' },
     { id: 'habanero', name: 'Хабанеро', category: 'vegetables', icon: '🌶️' },
     { id: 'sweet-pepper', name: 'Перец сладкий', category: 'vegetables', icon: '🫑' },
     { id: 'yellow-pepper', name: 'Перец желтый', category: 'vegetables', icon: '🫑' },
     { id: 'orange-pepper', name: 'Перец оранжевый', category: 'vegetables', icon: '🫑' },
-    
-    // Тыквенные
     { id: 'squash', name: 'Патиссон', category: 'vegetables', icon: '🟡' },
     { id: 'acorn-squash', name: 'Тыква желудевая', category: 'vegetables', icon: '🎃' },
     { id: 'butternut', name: 'Тыква мускатная', category: 'vegetables', icon: '🎃' },
     { id: 'spaghetti-squash', name: 'Тыква спагетти', category: 'vegetables', icon: '🎃' },
-    
-    // Бобовые овощи
     { id: 'green-beans', name: 'Фасоль стручковая', category: 'vegetables', icon: '🫛' },
     { id: 'peas-fresh', name: 'Горошек зеленый', category: 'vegetables', icon: '🫛' },
     { id: 'asparagus', name: 'Спаржа', category: 'vegetables', icon: '🌱' },
     { id: 'okra', name: 'Окра (бамия)', category: 'vegetables', icon: '🫛' },
-    
-    // Корнеплоды
     { id: 'sweet-potato', name: 'Батат (сладкий картофель)', category: 'vegetables', icon: '🍠' },
     { id: 'jerusalem-artichoke', name: 'Топинамбур', category: 'vegetables', icon: '🥔' },
     { id: 'daikon', name: 'Дайкон', category: 'vegetables', icon: '🥕' },
     { id: 'radicchio', name: 'Радиккьо', category: 'vegetables', icon: '🟣' },
     { id: 'artichoke', name: 'Артишок', category: 'vegetables', icon: '🌿' },
-    
-    // ============ ЗЕЛЕНЬ (25 шт) ============
     { id: 'dill', name: 'Укроп', category: 'herbs', icon: '🌿' },
     { id: 'parsley', name: 'Петрушка', category: 'herbs', icon: '🌿' },
     { id: 'cilantro', name: 'Кинза', category: 'herbs', icon: '🌱' },
@@ -169,9 +150,6 @@ const productsDatabase = [
     { id: 'celery-leaves', name: 'Сельдерей (листья)', category: 'herbs', icon: '🥬' },
     { id: 'basil-purple', name: 'Базилик фиолетовый', category: 'herbs', icon: '🟣' },
     { id: 'lemon-balm', name: 'Мелисса', category: 'herbs', icon: '🌿' },
-    
-    // ============ ФРУКТЫ (40 шт) ============
-    // Базовые фрукты
     { id: 'apple', name: 'Яблоки', category: 'fruits', icon: '🍎' },
     { id: 'banana', name: 'Бананы', category: 'fruits', icon: '🍌' },
     { id: 'lemon', name: 'Лимоны', category: 'fruits', icon: '🍋' },
@@ -184,21 +162,15 @@ const productsDatabase = [
     { id: 'kiwi', name: 'Киви', category: 'fruits', icon: '🥝' },
     { id: 'pineapple', name: 'Ананас', category: 'fruits', icon: '🍍' },
     { id: 'mango', name: 'Манго', category: 'fruits', icon: '🥭' },
-    
-    // Яблоки разных сортов
     { id: 'apple-green', name: 'Яблоки зеленые', category: 'fruits', icon: '🍏' },
     { id: 'apple-red', name: 'Яблоки красные', category: 'fruits', icon: '🍎' },
     { id: 'apple-golden', name: 'Яблоки золотые', category: 'fruits', icon: '🍎' },
     { id: 'apple-granny', name: 'Яблоки Гренни Смит', category: 'fruits', icon: '🍏' },
-    
-    // Цитрусовые
     { id: 'lime', name: 'Лайм', category: 'fruits', icon: '🍈' },
     { id: 'grapefruit', name: 'Грейпфрут', category: 'fruits', icon: '🍊' },
     { id: 'tangerine', name: 'Мандарины', category: 'fruits', icon: '🍊' },
     { id: 'pomelo', name: 'Помело', category: 'fruits', icon: '🍊' },
     { id: 'clementine', name: 'Клементин', category: 'fruits', icon: '🍊' },
-    
-    // Ягоды
     { id: 'raspberry', name: 'Малина', category: 'fruits', icon: '🍇' },
     { id: 'blueberry', name: 'Голубика', category: 'fruits', icon: '🫐' },
     { id: 'blackberry', name: 'Ежевика', category: 'fruits', icon: '🍇' },
@@ -209,8 +181,6 @@ const productsDatabase = [
     { id: 'currant-black', name: 'Смородина черная', category: 'fruits', icon: '🫐' },
     { id: 'gooseberry', name: 'Крыжовник', category: 'fruits', icon: '🍇' },
     { id: 'lingonberry', name: 'Брусника', category: 'fruits', icon: '🍓' },
-    
-    // Экзотические фрукты
     { id: 'avocado', name: 'Авокадо', category: 'fruits', icon: '🥑' },
     { id: 'pomegranate', name: 'Гранат', category: 'fruits', icon: '🍎' },
     { id: 'fig', name: 'Инжир', category: 'fruits', icon: '🟣' },
@@ -230,362 +200,7 @@ const productsDatabase = [
     { id: 'nectarine', name: 'Нектарины', category: 'fruits', icon: '🍑' },
     { id: 'plum', name: 'Сливы', category: 'fruits', icon: '🟣' },
     { id: 'prune', name: 'Чернослив', category: 'fruits', icon: '🟣' },
-    { id: 'dates', name: 'Финики', category: 'fruits', icon: '🌴' },
-    
-    // ============ МОЛОЧНЫЕ ПРОДУКТЫ (25 шт) ============
-    { id: 'milk', name: 'Молоко', category: 'dairy', icon: '🥛' },
-    { id: 'cheese', name: 'Сыр твердый', category: 'dairy', icon: '🧀' },
-    { id: 'mozzarella', name: 'Моцарелла', category: 'dairy', icon: '🧀' },
-    { id: 'parmesan', name: 'Пармезан', category: 'dairy', icon: '🧀' },
-    { id: 'butter', name: 'Масло сливочное', category: 'dairy', icon: '🧈' },
-    { id: 'yogurt', name: 'Йогурт', category: 'dairy', icon: '🥛' },
-    { id: 'eggs', name: 'Яйца', category: 'dairy', icon: '🥚' },
-    { id: 'sour-cream', name: 'Сметана', category: 'dairy', icon: '🥛' },
-    { id: 'cream', name: 'Сливки', category: 'dairy', icon: '🥛' },
-    { id: 'cottage-cheese', name: 'Творог', category: 'dairy', icon: '🧀' },
-    
-    // Сыры
-    { id: 'cheddar', name: 'Чеддер', category: 'dairy', icon: '🧀' },
-    { id: 'gouda', name: 'Гауда', category: 'dairy', icon: '🧀' },
-    { id: 'edam', name: 'Эдам', category: 'dairy', icon: '🧀' },
-    { id: 'maasdam', name: 'Маасдам', category: 'dairy', icon: '🧀' },
-    { id: 'emmental', name: 'Эмменталь', category: 'dairy', icon: '🧀' },
-    { id: 'brie', name: 'Бри', category: 'dairy', icon: '🧀' },
-    { id: 'camembert', name: 'Камамбер', category: 'dairy', icon: '🧀' },
-    { id: 'blue-cheese', name: 'Сыр с плесенью', category: 'dairy', icon: '🧀' },
-    { id: 'feta', name: 'Фета', category: 'dairy', icon: '🧀' },
-    { id: 'ricotta', name: 'Рикотта', category: 'dairy', icon: '🧀' },
-    { id: 'mascarpone', name: 'Маскарпоне', category: 'dairy', icon: '🧀' },
-    { id: 'cream-cheese', name: 'Сливочный сыр', category: 'dairy', icon: '🧀' },
-    
-    // Кисломолочные
-    { id: 'kefir', name: 'Кефир', category: 'dairy', icon: '🥛' },
-    { id: 'ryazhenka', name: 'Ряженка', category: 'dairy', icon: '🥛' },
-    { id: 'buttermilk', name: 'Пахта', category: 'dairy', icon: '🥛' },
-    { id: 'curdled-milk', name: 'Простокваша', category: 'dairy', icon: '🥛' },
-    { id: 'varenets', name: 'Варенец', category: 'dairy', icon: '🥛' },
-    { id: 'ayran', name: 'Айран', category: 'dairy', icon: '🥛' },
-    { id: 'tan', name: 'Тан', category: 'dairy', icon: '🥛' },
-    { id: 'matsoni', name: 'Мацони', category: 'dairy', icon: '🥛' },
-    
-    // ============ МЯСО (35 шт) ============
-    { id: 'chicken', name: 'Курица (филе)', category: 'meat', icon: '🍗' },
-    { id: 'chicken-thigh', name: 'Курица (бедро)', category: 'meat', icon: '🍗' },
-    { id: 'chicken-wing', name: 'Курица (крылья)', category: 'meat', icon: '🍗' },
-    { id: 'chicken-drumstick', name: 'Курица (голень)', category: 'meat', icon: '🍗' },
-    { id: 'chicken-breast', name: 'Куриная грудка', category: 'meat', icon: '🍗' },
-    { id: 'chicken-liver', name: 'Куриная печень', category: 'meat', icon: '🍗' },
-    { id: 'chicken-heart', name: 'Куриные сердца', category: 'meat', icon: '💓' },
-    { id: 'chicken-stomach', name: 'Куриные желудки', category: 'meat', icon: '🍗' },
-    
-    { id: 'beef', name: 'Говядина', category: 'meat', icon: '🥩' },
-    { id: 'beef-mince', name: 'Говяжий фарш', category: 'meat', icon: '🥩' },
-    { id: 'beef-liver', name: 'Говяжья печень', category: 'meat', icon: '🥩' },
-    { id: 'beef-tongue', name: 'Говяжий язык', category: 'meat', icon: '👅' },
-    { id: 'beef-heart', name: 'Говяжье сердце', category: 'meat', icon: '💓' },
-    { id: 'beef-kidney', name: 'Говяжьи почки', category: 'meat', icon: '🥩' },
-    { id: 'steak', name: 'Стейк', category: 'meat', icon: '🥩' },
-    { id: 'ribeye', name: 'Рибай', category: 'meat', icon: '🥩' },
-    { id: 'tenderloin', name: 'Вырезка', category: 'meat', icon: '🥩' },
-    
-    { id: 'pork', name: 'Свинина', category: 'meat', icon: '🐷' },
-    { id: 'pork-mince', name: 'Свиной фарш', category: 'meat', icon: '🐷' },
-    { id: 'bacon', name: 'Бекон', category: 'meat', icon: '🥓' },
-    { id: 'ham', name: 'Ветчина', category: 'meat', icon: '🍖' },
-    { id: 'pork-ribs', name: 'Свиные ребра', category: 'meat', icon: '🍖' },
-    { id: 'pork-loin', name: 'Свиная корейка', category: 'meat', icon: '🥩' },
-    { id: 'pork-neck', name: 'Свиная шея', category: 'meat', icon: '🥩' },
-    { id: 'pork-shank', name: 'Свиная рулька', category: 'meat', icon: '🍖' },
-    { id: 'pork-ear', name: 'Свиные уши', category: 'meat', icon: '👂' },
-    { id: 'pork-liver', name: 'Свиная печень', category: 'meat', icon: '🥩' },
-    
-    { id: 'lamb', name: 'Баранина', category: 'meat', icon: '🐑' },
-    { id: 'lamb-shoulder', name: 'Баранина (лопатка)', category: 'meat', icon: '🐑' },
-    { id: 'lamb-leg', name: 'Баранина (нога)', category: 'meat', icon: '🐑' },
-    { id: 'lamb-ribs', name: 'Бараньи ребра', category: 'meat', icon: '🍖' },
-    
-    { id: 'duck', name: 'Утка', category: 'meat', icon: '🦆' },
-    { id: 'duck-breast', name: 'Утиная грудка', category: 'meat', icon: '🦆' },
-    { id: 'duck-leg', name: 'Утиная ножка', category: 'meat', icon: '🦆' },
-    { id: 'turkey', name: 'Индейка', category: 'meat', icon: '🦃' },
-    { id: 'turkey-breast', name: 'Индейка (грудка)', category: 'meat', icon: '🦃' },
-    { id: 'turkey-mince', name: 'Фарш из индейки', category: 'meat', icon: '🦃' },
-    { id: 'rabbit', name: 'Кролик', category: 'meat', icon: '🐇' },
-    { id: 'quail', name: 'Перепелка', category: 'meat', icon: '🐦' },
-    { id: 'goose', name: 'Гусь', category: 'meat', icon: '🦢' },
-    { id: 'venison', name: 'Оленина', category: 'meat', icon: '🦌' },
-    { id: 'horse-meat', name: 'Конина', category: 'meat', icon: '🐎' },
-    
-    // Колбасные изделия
-    { id: 'sausage', name: 'Колбаса вареная', category: 'meat', icon: '🌭' },
-    { id: 'smoked-sausage', name: 'Колбаса копченая', category: 'meat', icon: '🌭' },
-    { id: 'salami', name: 'Салями', category: 'meat', icon: '🍖' },
-    { id: 'cervelat', name: 'Сервелат', category: 'meat', icon: '🍖' },
-    { id: 'doctor-sausage', name: 'Докторская колбаса', category: 'meat', icon: '🌭' },
-    { id: 'wieners', name: 'Сосиски', category: 'meat', icon: '🌭' },
-    { id: 'frankfurters', name: 'Сардельки', category: 'meat', icon: '🌭' },
-    { id: 'bacon-slices', name: 'Бекон ломтиками', category: 'meat', icon: '🥓' },
-    { id: 'pancetta', name: 'Панчетта', category: 'meat', icon: '🥓' },
-    { id: 'prosciutto', name: 'Прошутто', category: 'meat', icon: '🍖' },
-    
-    // ============ РЫБА И МОРЕПРОДУКТЫ (30 шт) ============
-    // Рыба
-    { id: 'fish', name: 'Рыба (филе)', category: 'seafood', icon: '🐟' },
-    { id: 'salmon', name: 'Семга/Лосось', category: 'seafood', icon: '🐠' },
-    { id: 'trout', name: 'Форель', category: 'seafood', icon: '🐟' },
-    { id: 'pink-salmon', name: 'Горбуша', category: 'seafood', icon: '🐟' },
-    { id: 'chum-salmon', name: 'Кета', category: 'seafood', icon: '🐟' },
-    { id: 'cod', name: 'Треска', category: 'seafood', icon: '🐟' },
-    { id: 'pollock', name: 'Минтай', category: 'seafood', icon: '🐟' },
-    { id: 'haddock', name: 'Пикша', category: 'seafood', icon: '🐟' },
-    { id: 'halibut', name: 'Палтус', category: 'seafood', icon: '🐟' },
-    { id: 'flounder', name: 'Камбала', category: 'seafood', icon: '🐟' },
-    { id: 'tuna', name: 'Тунец', category: 'seafood', icon: '🐟' },
-    { id: 'mackerel', name: 'Скумбрия', category: 'seafood', icon: '🐟' },
-    { id: 'herring', name: 'Сельдь', category: 'seafood', icon: '🐟' },
-    { id: 'sprats', name: 'Шпроты', category: 'seafood', icon: '🐟' },
-    { id: 'carp', name: 'Карп', category: 'seafood', icon: '🐟' },
-    { id: 'crucian-carp', name: 'Карась', category: 'seafood', icon: '🐟' },
-    { id: 'pike', name: 'Щука', category: 'seafood', icon: '🐟' },
-    { id: 'perch', name: 'Окунь', category: 'seafood', icon: '🐟' },
-    { id: 'zander', name: 'Судак', category: 'seafood', icon: '🐟' },
-    { id: 'catfish', name: 'Сом', category: 'seafood', icon: '🐟' },
-    { id: 'eel', name: 'Угорь', category: 'seafood', icon: '🐍' },
-    { id: 'red-fish', name: 'Красная рыба', category: 'seafood', icon: '🐠' },
-    
-    // Морепродукты
-    { id: 'shrimp', name: 'Креветки', category: 'seafood', icon: '🦐' },
-    { id: 'king-prawns', name: 'Королевские креветки', category: 'seafood', icon: '🦐' },
-    { id: 'tiger-prawns', name: 'Тигровые креветки', category: 'seafood', icon: '🦐' },
-    { id: 'squid', name: 'Кальмары', category: 'seafood', icon: '🦑' },
-    { id: 'octopus', name: 'Осьминог', category: 'seafood', icon: '🐙' },
-    { id: 'mussels', name: 'Мидии', category: 'seafood', icon: '🦪' },
-    { id: 'oysters', name: 'Устрицы', category: 'seafood', icon: '🦪' },
-    { id: 'scallops', name: 'Морские гребешки', category: 'seafood', icon: '🐚' },
-    { id: 'crab', name: 'Краб', category: 'seafood', icon: '🦀' },
-    { id: 'crab-sticks', name: 'Крабовые палочки', category: 'seafood', icon: '🦀' },
-    { id: 'lobster', name: 'Лобстер', category: 'seafood', icon: '🦞' },
-    { id: 'crayfish', name: 'Раки', category: 'seafood', icon: '🦞' },
-    { id: 'sea-cocktail', name: 'Морской коктейль', category: 'seafood', icon: '🍤' },
-    { id: 'caviar', name: 'Икра', category: 'seafood', icon: '🟠' },
-    { id: 'red-caviar', name: 'Красная икра', category: 'seafood', icon: '🔴' },
-    { id: 'black-caviar', name: 'Черная икра', category: 'seafood', icon: '⚫' },
-    
-    // ============ БАКАЛЕЯ (45 шт) ============
-    { id: 'pasta', name: 'Макароны', category: 'groceries', icon: '🍝' },
-    { id: 'spaghetti', name: 'Спагетти', category: 'groceries', icon: '🍝' },
-    { id: 'penne', name: 'Пенне', category: 'groceries', icon: '🍝' },
-    { id: 'fettuccine', name: 'Феттучини', category: 'groceries', icon: '🍝' },
-    { id: 'lasagna', name: 'Лазанья (листы)', category: 'groceries', icon: '🍝' },
-    { id: 'vermicelli', name: 'Вермишель', category: 'groceries', icon: '🍝' },
-    { id: 'noodles', name: 'Лапша', category: 'groceries', icon: '🍜' },
-    { id: 'rice-noodles', name: 'Рисовая лапша', category: 'groceries', icon: '🍜' },
-    { id: 'soba', name: 'Гречневая лапша соба', category: 'groceries', icon: '🍜' },
-    { id: 'udon', name: 'Лапша удон', category: 'groceries', icon: '🍜' },
-    
-    { id: 'rice', name: 'Рис', category: 'groceries', icon: '🍚' },
-    { id: 'rice-round', name: 'Рис круглозерный', category: 'groceries', icon: '🍚' },
-    { id: 'rice-long', name: 'Рис длиннозерный', category: 'groceries', icon: '🍚' },
-    { id: 'rice-basmati', name: 'Рис басмати', category: 'groceries', icon: '🍚' },
-    { id: 'rice-jasmine', name: 'Рис жасмин', category: 'groceries', icon: '🍚' },
-    { id: 'rice-brown', name: 'Рис бурый', category: 'groceries', icon: '🍚' },
-    { id: 'rice-wild', name: 'Рис дикий', category: 'groceries', icon: '🍚' },
-    { id: 'rice-arborio', name: 'Рис арборио', category: 'groceries', icon: '🍚' },
-    
-    { id: 'buckwheat', name: 'Гречка', category: 'groceries', icon: '🌾' },
-    { id: 'buckwheat-green', name: 'Гречка зеленая', category: 'groceries', icon: '🌾' },
-    { id: 'millet', name: 'Пшено', category: 'groceries', icon: '🌾' },
-    { id: 'barley', name: 'Перловка', category: 'groceries', icon: '🌾' },
-    { id: 'oatmeal', name: 'Овсянка', category: 'groceries', icon: '🥣' },
-    { id: 'oat-flakes', name: 'Овсяные хлопья', category: 'groceries', icon: '🥣' },
-    { id: 'cereal', name: 'Хлопья кукурузные', category: 'groceries', icon: '🥣' },
-    { id: 'muesli', name: 'Мюсли', category: 'groceries', icon: '🥣' },
-    { id: 'granola', name: 'Гранола', category: 'groceries', icon: '🥣' },
-    { id: 'semolina', name: 'Манка', category: 'groceries', icon: '🌾' },
-    { id: 'couscous', name: 'Кускус', category: 'groceries', icon: '🌾' },
-    { id: 'bulgur', name: 'Булгур', category: 'groceries', icon: '🌾' },
-    { id: 'quinoa', name: 'Киноа', category: 'groceries', icon: '🌾' },
-    { id: 'chickpeas', name: 'Нут', category: 'groceries', icon: '🫘' },
-    { id: 'lentils', name: 'Чечевица', category: 'groceries', icon: '🫘' },
-    { id: 'beans-dry', name: 'Фасоль сухая', category: 'groceries', icon: '🫘' },
-    { id: 'peas-dry', name: 'Горох сухой', category: 'groceries', icon: '🫘' },
-    
-    { id: 'flour', name: 'Мука пшеничная', category: 'groceries', icon: '🫓' },
-    { id: 'flour-rye', name: 'Мука ржаная', category: 'groceries', icon: '🫓' },
-    { id: 'flour-corn', name: 'Мука кукурузная', category: 'groceries', icon: '🫓' },
-    { id: 'flour-rice', name: 'Мука рисовая', category: 'groceries', icon: '🫓' },
-    { id: 'flour-buckwheat', name: 'Мука гречневая', category: 'groceries', icon: '🫓' },
-    { id: 'flour-almond', name: 'Мука миндальная', category: 'groceries', icon: '🫓' },
-    { id: 'starch', name: 'Крахмал', category: 'groceries', icon: '⚪' },
-    
-    { id: 'sugar', name: 'Сахар', category: 'groceries', icon: '🧁' },
-    { id: 'sugar-powder', name: 'Сахарная пудра', category: 'groceries', icon: '🧁' },
-    { id: 'vanilla-sugar', name: 'Ванильный сахар', category: 'groceries', icon: '🧁' },
-    { id: 'brown-sugar', name: 'Сахар коричневый', category: 'groceries', icon: '🧁' },
-    { id: 'honey', name: 'Мед', category: 'groceries', icon: '🍯' },
-    
-    { id: 'salt', name: 'Соль', category: 'groceries', icon: '🧂' },
-    { id: 'sea-salt', name: 'Соль морская', category: 'groceries', icon: '🧂' },
-    { id: 'iodized-salt', name: 'Соль йодированная', category: 'groceries', icon: '🧂' },
-    
-    { id: 'oil', name: 'Масло растительное', category: 'groceries', icon: '🫒' },
-    { id: 'olive-oil', name: 'Масло оливковое', category: 'groceries', icon: '🫒' },
-    { id: 'sunflower-oil', name: 'Масло подсолнечное', category: 'groceries', icon: '🫒' },
-    { id: 'corn-oil', name: 'Масло кукурузное', category: 'groceries', icon: '🫒' },
-    { id: 'linseed-oil', name: 'Масло льняное', category: 'groceries', icon: '🫒' },
-    { id: 'sesame-oil', name: 'Масло кунжутное', category: 'groceries', icon: '🫒' },
-    { id: 'coconut-oil', name: 'Масло кокосовое', category: 'groceries', icon: '🥥' },
-    
-    { id: 'vinegar', name: 'Уксус', category: 'groceries', icon: '🍶' },
-    { id: 'apple-vinegar', name: 'Уксус яблочный', category: 'groceries', icon: '🍶' },
-    { id: 'balsamic-vinegar', name: 'Уксус бальзамический', category: 'groceries', icon: '🍶' },
-    { id: 'wine-vinegar', name: 'Уксус винный', category: 'groceries', icon: '🍶' },
-    { id: 'rice-vinegar', name: 'Уксус рисовый', category: 'groceries', icon: '🍶' },
-    
-    { id: 'soy-sauce', name: 'Соевый соус', category: 'groceries', icon: '🍶' },
-    { id: 'teriyaki', name: 'Соус терияки', category: 'groceries', icon: '🍶' },
-    { id: 'oyster-sauce', name: 'Устричный соус', category: 'groceries', icon: '🍶' },
-    { id: 'fish-sauce', name: 'Рыбный соус', category: 'groceries', icon: '🍶' },
-    { id: 'worcestershire', name: 'Соус Вустерширский', category: 'groceries', icon: '🍶' },
-    { id: 'tabasco', name: 'Табаско', category: 'groceries', icon: '🌶️' },
-    { id: 'ketchup', name: 'Кетчуп', category: 'groceries', icon: '🍅' },
-    { id: 'mayonnaise', name: 'Майонез', category: 'groceries', icon: '🥫' },
-    { id: 'mustard', name: 'Горчица', category: 'groceries', icon: '🟡' },
-    { id: 'horseradish-sauce', name: 'Хрен', category: 'groceries', icon: '🌶️' },
-    { id: 'adjika', name: 'Аджика', category: 'groceries', icon: '🔴' },
-    { id: 'tkemali', name: 'Ткемали', category: 'groceries', icon: '🟢' },
-    { id: 'pesto', name: 'Песто', category: 'groceries', icon: '🌿' },
-    
-    { id: 'breadcrumbs', name: 'Панировочные сухари', category: 'groceries', icon: '🥖' },
-    { id: 'bread', name: 'Хлеб', category: 'groceries', icon: '🍞' },
-    { id: 'white-bread', name: 'Хлеб белый', category: 'groceries', icon: '🍞' },
-    { id: 'rye-bread', name: 'Хлеб ржаной', category: 'groceries', icon: '🍞' },
-    { id: 'loaf', name: 'Батон', category: 'groceries', icon: '🥖' },
-    { id: 'baguette', name: 'Багет', category: 'groceries', icon: '🥖' },
-    { id: 'ciabatta', name: 'Чиабатта', category: 'groceries', icon: '🥖' },
-    { id: 'pita', name: 'Пита', category: 'groceries', icon: '🫓' },
-    { id: 'lavash', name: 'Лаваш', category: 'groceries', icon: '🫓' },
-    { id: 'toast-bread', name: 'Хлеб для тостов', category: 'groceries', icon: '🍞' },
-    { id: 'buns', name: 'Булочки', category: 'groceries', icon: '🥐' },
-    { id: 'croissant', name: 'Круассан', category: 'groceries', icon: '🥐' },
-    { id: 'bagel', name: 'Бейгл', category: 'groceries', icon: '🥯' },
-    
-    // ============ КОНСЕРВЫ (15 шт) ============
-    { id: 'peas', name: 'Горошек консервированный', category: 'canned', icon: '🥫' },
-    { id: 'corn-canned', name: 'Кукуруза консервированная', category: 'canned', icon: '🥫' },
-    { id: 'beans-canned', name: 'Фасоль консервированная', category: 'canned', icon: '🥫' },
-    { id: 'olives', name: 'Оливки', category: 'canned', icon: '🫒' },
-    { id: 'black-olives', name: 'Маслины', category: 'canned', icon: '🫒' },
-    { id: 'pickles', name: 'Огурцы соленые', category: 'canned', icon: '🥒' },
-    { id: 'pickled-tomatoes', name: 'Помидоры соленые', category: 'canned', icon: '🍅' },
-    { id: 'sauerkraut', name: 'Квашеная капуста', category: 'canned', icon: '🥬' },
-    { id: 'lecho', name: 'Лечо', category: 'canned', icon: '🥫' },
-    { id: 'canned-tomatoes', name: 'Помидоры консервированные', category: 'canned', icon: '🥫' },
-    { id: 'tomato-paste', name: 'Томатная паста', category: 'canned', icon: '🥫' },
-    { id: 'tomato-sauce', name: 'Томатный соус', category: 'canned', icon: '🥫' },
-    { id: 'canned-fish', name: 'Рыбные консервы', category: 'canned', icon: '🥫' },
-    { id: 'sprats-canned', name: 'Шпроты', category: 'canned', icon: '🥫' },
-    { id: 'canned-tuna', name: 'Тунец консервированный', category: 'canned', icon: '🥫' },
-    { id: 'canned-salmon', name: 'Лосось консервированный', category: 'canned', icon: '🥫' },
-    { id: 'canned-sardines', name: 'Сардины', category: 'canned', icon: '🥫' },
-    { id: 'canned-meat', name: 'Тушенка', category: 'canned', icon: '🥫' },
-    { id: 'pate', name: 'Паштет', category: 'canned', icon: '🥫' },
-    { id: 'canned-mushrooms', name: 'Грибы консервированные', category: 'canned', icon: '🥫' },
-    { id: 'pickled-mushrooms', name: 'Грибы маринованные', category: 'canned', icon: '🍄' },
-    { id: 'jam', name: 'Варенье', category: 'canned', icon: '🍯' },
-    { id: 'preserves', name: 'Джем', category: 'canned', icon: '🍯' },
-    { id: 'marmalade', name: 'Мармелад', category: 'canned', icon: '🍊' },
-    { id: 'condensed-milk', name: 'Сгущенка', category: 'canned', icon: '🥛' },
-    
-    // ============ СПЕЦИИ И ПРИПРАВЫ (25 шт) ============
-    { id: 'pepper-black', name: 'Перец черный молотый', category: 'spices', icon: '⚫' },
-    { id: 'pepper-black-peas', name: 'Перец черный горошком', category: 'spices', icon: '⚫' },
-    { id: 'pepper-white', name: 'Перец белый', category: 'spices', icon: '⚪' },
-    { id: 'pepper-red', name: 'Перец красный', category: 'spices', icon: '🔴' },
-    { id: 'paprika', name: 'Паприка', category: 'spices', icon: '🫑' },
-    { id: 'cinnamon', name: 'Корица', category: 'spices', icon: '🥨' },
-    { id: 'vanilla', name: 'Ваниль', category: 'spices', icon: '🍨' },
-    { id: 'vanillin', name: 'Ванилин', category: 'spices', icon: '🍨' },
-    { id: 'bay-leaf', name: 'Лавровый лист', category: 'spices', icon: '🌿' },
-    { id: 'turmeric', name: 'Куркума', category: 'spices', icon: '🟡' },
-    { id: 'ginger', name: 'Имбирь', category: 'spices', icon: '🫚' },
-    { id: 'cumin', name: 'Зира (кумин)', category: 'spices', icon: '🌾' },
-    { id: 'coriander', name: 'Кориандр', category: 'spices', icon: '🌿' },
-    { id: 'coriander-seeds', name: 'Кориандр семена', category: 'spices', icon: '🌿' },
-    { id: 'clove', name: 'Гвоздика', category: 'spices', icon: '🌸' },
-    { id: 'nutmeg', name: 'Мускатный орех', category: 'spices', icon: '🥜' },
-    { id: 'cardamom', name: 'Кардамон', category: 'spices', icon: '🟢' },
-    { id: 'saffron', name: 'Шафран', category: 'spices', icon: '🔴' },
-    { id: 'star-anise', name: 'Бадьян', category: 'spices', icon: '⭐' },
-    { id: 'fennel-seeds', name: 'Семена фенхеля', category: 'spices', icon: '🌿' },
-    { id: 'dill-seeds', name: 'Семена укропа', category: 'spices', icon: '🌿' },
-    { id: 'caraway', name: 'Тмин', category: 'spices', icon: '🌾' },
-    { id: 'sesame', name: 'Кунжут', category: 'spices', icon: '⚪' },
-    { id: 'poppy', name: 'Мак', category: 'spices', icon: '⚫' },
-    { id: 'mustard-seeds', name: 'Горчица зерна', category: 'spices', icon: '🟡' },
-    { id: 'curry', name: 'Карри', category: 'spices', icon: '🟡' },
-    { id: 'chili-flakes', name: 'Перец чили хлопья', category: 'spices', icon: '🌶️' },
-    { id: 'italian-herbs', name: 'Итальянские травы', category: 'spices', icon: '🌿' },
-    { id: 'provencal-herbs', name: 'Прованские травы', category: 'spices', icon: '🌿' },
-    { id: 'hops-suneli', name: 'Хмели-сунели', category: 'spices', icon: '🌿' },
-    { id: 'adjika-dry', name: 'Аджика сухая', category: 'spices', icon: '🔴' },
-    { id: 'seasoning', name: 'Приправа универсальная', category: 'spices', icon: '🧂' },
-    { id: 'chicken-seasoning', name: 'Приправа для курицы', category: 'spices', icon: '🍗' },
-    { id: 'meat-seasoning', name: 'Приправа для мяса', category: 'spices', icon: '🥩' },
-    { id: 'fish-seasoning', name: 'Приправа для рыбы', category: 'spices', icon: '🐟' },
-    { id: 'potato-seasoning', name: 'Приправа для картофеля', category: 'spices', icon: '🥔' },
-    
-    // ============ ОРЕХИ И СУХОФРУКТЫ (15 шт) ============
-    { id: 'walnuts', name: 'Грецкие орехи', category: 'nuts', icon: '🥜' },
-    { id: 'almonds', name: 'Миндаль', category: 'nuts', icon: '🥜' },
-    { id: 'hazelnuts', name: 'Фундук', category: 'nuts', icon: '🥜' },
-    { id: 'cashews', name: 'Кешью', category: 'nuts', icon: '🥜' },
-    { id: 'pistachios', name: 'Фисташки', category: 'nuts', icon: '🥜' },
-    { id: 'peanuts', name: 'Арахис', category: 'nuts', icon: '🥜' },
-    { id: 'pine-nuts', name: 'Кедровые орехи', category: 'nuts', icon: '🌲' },
-    { id: 'pecans', name: 'Пекан', category: 'nuts', icon: '🥜' },
-    { id: 'macadamia', name: 'Макадамия', category: 'nuts', icon: '🥜' },
-    { id: 'chestnuts', name: 'Каштаны', category: 'nuts', icon: '🌰' },
-    { id: 'coconut', name: 'Кокос', category: 'nuts', icon: '🥥' },
-    { id: 'coconut-flakes', name: 'Кокосовая стружка', category: 'nuts', icon: '🥥' },
-    
-    { id: 'raisins', name: 'Изюм', category: 'nuts', icon: '🍇' },
-    { id: 'prunes', name: 'Чернослив', category: 'nuts', icon: '🟣' },
-    { id: 'dried-apricots', name: 'Курага', category: 'nuts', icon: '🟠' },
-    { id: 'dried-figs', name: 'Инжир сушеный', category: 'nuts', icon: '🟣' },
-    { id: 'dates-dried', name: 'Финики сушеные', category: 'nuts', icon: '🌴' },
-    { id: 'dried-apples', name: 'Сушеные яблоки', category: 'nuts', icon: '🍎' },
-    { id: 'dried-pears', name: 'Сушеные груши', category: 'nuts', icon: '🍐' },
-    { id: 'dried-bananas', name: 'Сушеные бананы', category: 'nuts', icon: '🍌' },
-    { id: 'candied-fruits', name: 'Цукаты', category: 'nuts', icon: '🍬' },
-    
-    // ============ ЗАМОРОЗКА (15 шт) ============
-    { id: 'frozen-vegetables', name: 'Овощи замороженные', category: 'frozen', icon: '❄️' },
-    { id: 'frozen-mixed', name: 'Овощная смесь', category: 'frozen', icon: '❄️' },
-    { id: 'frozen-broccoli', name: 'Брокколи замороженная', category: 'frozen', icon: '🥦' },
-    { id: 'frozen-cauliflower', name: 'Цветная капуста замороженная', category: 'frozen', icon: '🥦' },
-    { id: 'frozen-spinach', name: 'Шпинат замороженный', category: 'frozen', icon: '🍃' },
-    { id: 'frozen-peas', name: 'Горошек замороженный', category: 'frozen', icon: '🫛' },
-    { id: 'frozen-corn', name: 'Кукуруза замороженная', category: 'frozen', icon: '🌽' },
-    { id: 'frozen-beans', name: 'Фасоль стручковая замороженная', category: 'frozen', icon: '🫛' },
-    
-    { id: 'frozen-berries', name: 'Ягоды замороженные', category: 'frozen', icon: '❄️' },
-    { id: 'frozen-strawberries', name: 'Клубника замороженная', category: 'frozen', icon: '🍓' },
-    { id: 'frozen-raspberries', name: 'Малина замороженная', category: 'frozen', icon: '🍇' },
-    { id: 'frozen-blueberries', name: 'Голубика замороженная', category: 'frozen', icon: '🫐' },
-    { id: 'frozen-cherries', name: 'Вишня замороженная', category: 'frozen', icon: '🍒' },
-    
-    { id: 'frozen-fish', name: 'Рыба замороженная', category: 'frozen', icon: '🐟' },
-    { id: 'frozen-shrimp', name: 'Креветки замороженные', category: 'frozen', icon: '🦐' },
-    { id: 'frozen-squid', name: 'Кальмары замороженные', category: 'frozen', icon: '🦑' },
-    { id: 'frozen-mussels', name: 'Мидии замороженные', category: 'frozen', icon: '🦪' },
-    
-    { id: 'frozen-dumplings', name: 'Пельмени замороженные', category: 'frozen', icon: '🥟' },
-    { id: 'frozen-pelmeni', name: 'Пельмени', category: 'frozen', icon: '🥟' },
-    { id: 'frozen-vareniki', name: 'Вареники', category: 'frozen', icon: '🥟' },
-    { id: 'frozen-pizza', name: 'Пицца замороженная', category: 'frozen', icon: '🍕' },
-    { id: 'frozen-fries', name: 'Картошка фри замороженная', category: 'frozen', icon: '🍟' },
-    { id: 'frozen-dough', name: 'Тесто замороженное', category: 'frozen', icon: '🥐' }
+    { id: 'dates', name: 'Финики', category: 'fruits', icon: '🌴' }
 ];
 
 // Инициализация Telegram с поддержкой темы
@@ -608,13 +223,10 @@ function applyTheme() {
     }
 }
 
-// Применяем тему сразу
 applyTheme();
-
-// Слушаем изменения темы
 tg.onEvent('themeChanged', applyTheme);
 
-// Загрузка сохраненных продуктов из sessionStorage
+// Загрузка сохраненных продуктов
 function loadSelectedProducts() {
     const saved = sessionStorage.getItem('selectedProducts');
     if (saved) {
@@ -622,7 +234,6 @@ function loadSelectedProducts() {
     }
 }
 
-// Сохранение продуктов в sessionStorage
 function saveSelectedProducts() {
     sessionStorage.setItem('selectedProducts', JSON.stringify([...selectedProducts]));
 }
@@ -652,51 +263,18 @@ function showProductsPage() {
 
 // Функция показа страницы с рецептами
 function showRecipesPage() {
-    currentPage = 'recipes';
-    currentFilterCategory = 'all'; // Добавь эту строку
-    
     const selectedNames = Array.from(selectedProducts)
         .map(id => {
             const product = productsDatabase.find(p => p.id === id);
             return product ? product.name : id;
         });
     
-    currentRecipes = findRecipesByIngredients(selectedNames);
-    window._allRecipes = [...currentRecipes]; // Сохраняем оригинальный список
-    
-    renderRecipesPage();
-    renderRecipesFooter();
+    window.location.href = `recipes.html?ingredients=${encodeURIComponent(selectedNames.join(','))}`;
 }
 
 // Функция показа всех рецептов
 function showAllRecipesPage() {
-    currentPage = 'recipes';
-    currentFilterCategory = 'all';
-    
-    // Получаем все рецепты из базы
-    currentRecipes = getAllRecipes().map(recipe => ({
-        ...recipe,
-        matchPercentage: 100,
-        missingIngredients: []
-    }));
-    
-    // Сохраняем оригинальный список
-    window._allRecipes = [...currentRecipes];
-    
-    // Получаем поисковый запрос из URL если есть
-    const urlParams = new URLSearchParams(window.location.search);
-    const searchQuery = urlParams.get('search') || '';
-    
-    // Если есть поисковый запрос, фильтруем
-    if (searchQuery) {
-        currentRecipes = currentRecipes.filter(recipe =>
-            recipe.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            recipe.category.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-    }
-    
-    renderRecipesPage();
-    renderRecipesFooter();
+    window.location.href = 'recipes.html?all=true';
 }
 
 // Получение отфильтрованных продуктов
@@ -724,13 +302,11 @@ function loadMoreProducts() {
     
     isLoading = true;
     
-    // Показываем индикатор загрузки
     const loadingIndicator = document.getElementById('loading-indicator');
     if (loadingIndicator) {
         loadingIndicator.style.display = 'block';
     }
     
-    // Имитируем небольшую задержку для плавности
     setTimeout(() => {
         const filteredProducts = getFilteredProducts();
         const start = currentPage_index * PRODUCTS_PER_PAGE;
@@ -749,7 +325,6 @@ function loadMoreProducts() {
         visibleProducts = [...visibleProducts, ...newProducts];
         currentPage_index++;
         
-        // Добавляем новые продукты в DOM
         appendProductsToGrid(newProducts);
         
         if (loadingIndicator) {
@@ -758,7 +333,6 @@ function loadMoreProducts() {
         
         isLoading = false;
         
-        // Если загрузили все продукты
         if (end >= filteredProducts.length) {
             hasMoreProducts = false;
             const endMessage = document.getElementById('end-message');
@@ -779,16 +353,13 @@ function appendProductsToGrid(products) {
         productEl.className = `product-item ${selectedProducts.has(product.id) ? 'selected' : ''}`;
         productEl.dataset.id = product.id;
         
-        // Устанавливаем HTML содержимое
         productEl.innerHTML = `
             <span class="product-icon">${product.icon}</span>
             <span class="product-name">${product.name}</span>
         `;
         
-        // Добавляем обработчик клика
         productEl.onclick = () => {
             toggleProduct(product.id);
-            // Убираем фокус с поиска, если он был
             const searchInput = document.getElementById('searchInput');
             if (searchInput && document.activeElement === searchInput) {
                 searchInput.blur();
@@ -881,7 +452,6 @@ function renderProductsPage() {
         const grid = document.getElementById('productsGrid');
         appendProductsToGrid(visibleProducts);
         
-        // Настраиваем Intersection Observer для бесконечного скролла
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting && hasMoreProducts && !isLoading) {
@@ -901,30 +471,26 @@ function renderProductsPage() {
 function renderRecipesPage() {
     const content = document.getElementById('content');
     
-    // Определяем, в каком мы режиме (по URL)
     const urlParams = new URLSearchParams(window.location.search);
     const isAllMode = urlParams.has('all');
-    const searchQuery = urlParams.get('search') || '';
+    const urlSearchQuery = urlParams.get('search') || '';
     
-    let recipesHtml = `
-        <div class="results-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <button class="back-btn" onclick="showProductsPage()" style="background: #f1f5f9; border: none; padding: 8px 15px; border-radius: 30px; cursor: pointer;">
-                ← Назад
-            </button>
-            <span style="font-weight: 600; color: #475569;">Найдено: ${currentRecipes.length}</span>
-        </div>
-    `;
+   let recipesHtml = `
+    <div class="results-header" style="display: flex; justify-content: ${isAllMode ? 'center' : 'space-between'}; align-items: center; margin-bottom: 15px;">
+        ${!isAllMode ? '<button class="back-btn" onclick="showProductsPage()" style="background: #f1f5f9; border: none; padding: 8px 15px; border-radius: 30px; cursor: pointer;">← Назад</button>' : ''}
+        <span style="font-weight: 600; color: #475569;">Найдено: ${currentRecipes.length}</span>
+    </div>
+`;
     
-    // Добавляем поиск только в режиме "Все рецепты"
     if (isAllMode) {
         recipesHtml += `
             <div class="search-container" style="margin-bottom: 15px;">
                 <div style="display: flex; gap: 8px;">
                     <input type="text" 
-                           id="recipeSearchInput" 
-                           placeholder="🔍 Поиск по названию рецепта..." 
-                           value="${searchQuery}"
-                           style="flex: 1; padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 30px; font-size: 16px; transition: all 0.3s ease;">
+                        id="recipeSearchInput" 
+                        placeholder="🔍 Поиск по названию рецепта..." 
+                        value="${urlSearchQuery}"
+                        style="flex: 1; padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 30px; font-size: 16px; transition: all 0.3s ease;">
                     <button id="clearRecipeSearch" 
                             style="padding: 0 20px; background: #f1f5f9; border: none; border-radius: 30px; cursor: pointer; font-size: 18px;">
                         ✕
@@ -934,7 +500,6 @@ function renderRecipesPage() {
         `;
     }
     
-    // Добавляем фильтры
     recipesHtml += `
         <div class="filter-chips" style="display: flex; gap: 8px; overflow-x: auto; padding: 10px 0; margin-bottom: 15px;">
             <span class="filter-chip ${currentFilterCategory === 'all' ? 'active' : ''}" onclick="filterRecipes(event, 'all')">Все</span>
@@ -997,7 +562,6 @@ function renderRecipesPage() {
     recipesHtml += `</div>`;
     content.innerHTML = recipesHtml;
     
-    // Добавляем обработчики для поиска если нужно
     if (isAllMode) {
         const searchInput = document.getElementById('recipeSearchInput');
         const clearSearch = document.getElementById('clearRecipeSearch');
@@ -1039,35 +603,29 @@ window.filterRecipes = function(event, category) {
         'dessert': 'Десерт'
     };
     
-    // Убираем активный класс у всех
     document.querySelectorAll('.filter-chip').forEach(chip => {
         chip.classList.remove('active');
     });
     
-    // Добавляем активный класс нажатой кнопке
     if (event && event.target) {
         event.target.classList.add('active');
     }
     
     currentFilterCategory = category;
     
-    // Получаем поисковый запрос из URL
     const urlParams = new URLSearchParams(window.location.search);
-    const searchQuery = urlParams.get('search') || '';
+    const urlSearchQuery = urlParams.get('search') || '';
     
-    // Получаем все рецепты из оригинального списка
     let filtered = window._allRecipes || [];
     
-    // Фильтруем по категории
     if (category !== 'all') {
         filtered = filtered.filter(r => r.category === categoryMap[category]);
     }
     
-    // Фильтруем по поиску если есть
-    if (searchQuery) {
+    if (urlSearchQuery) {
         filtered = filtered.filter(recipe =>
-            recipe.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            recipe.category.toLowerCase().includes(searchQuery.toLowerCase())
+            recipe.name.toLowerCase().includes(urlSearchQuery.toLowerCase()) ||
+            recipe.category.toLowerCase().includes(urlSearchQuery.toLowerCase())
         );
     }
     
@@ -1163,43 +721,22 @@ function renderProductsFooter() {
         selectedProducts.clear();
         saveSelectedProducts();
         showProductsPage();
-        returnFooterAfterSearch(); // Добавь эту строку
+        returnFooterAfterSearch();
     });
-}
-
-// Отрисовка нижней панели для страницы рецептов
-function renderRecipesFooter() {
-    const footer = document.getElementById('footerButtons');
-    const countElement = document.getElementById('selectedCount');
-    
-    footer.innerHTML = `
-        <button class="footer-btn primary" onclick="showProductsPage()">
-            ← Выбрать продукты
-        </button>
-        <button class="footer-btn secondary" onclick="showAllRecipesPage()">
-            📚 Все рецепты
-        </button>
-    `;
-    
-    countElement.textContent = `Найдено рецептов: ${currentRecipes.length}`;
 }
 
 // Обработка фокуса поиска
 window.handleSearchFocus = function(focused) {
     const footerBar = document.querySelector('.footer-bar');
-    const searchContainer = document.querySelector('.search-container');
     
     if (focused) {
-        // При фокусе - прячем футер, но оставляем место
         if (footerBar) {
             footerBar.style.transform = 'translateY(100%)';
             footerBar.style.opacity = '0';
             footerBar.style.pointerEvents = 'none';
         }
-        // Добавляем класс для поиска
         document.body.classList.add('search-mode');
     } else {
-        // При потере фокуса - возвращаем футер
         if (footerBar) {
             footerBar.style.transform = 'translateY(0)';
             footerBar.style.opacity = '1';
@@ -1215,7 +752,6 @@ window.handleSearchFocus = function(focused) {
 function returnFooterAfterSearch() {
     const footerBar = document.querySelector('.footer-bar');
     if (footerBar && isSearchFocused) {
-        // Имитируем потерю фокуса
         handleSearchFocus(false);
     }
 }
@@ -1230,7 +766,6 @@ window.toggleProduct = function(productId) {
     
     saveSelectedProducts();
     
-    // Обновляем класс выбранного продукта
     const productEl = document.querySelector(`.product-item[data-id="${productId}"]`);
     if (productEl) {
         if (selectedProducts.has(productId)) {
@@ -1240,42 +775,25 @@ window.toggleProduct = function(productId) {
         }
     }
     
-    // Обновляем счетчик ВЕЗДЕ
     updateAllCounters();
-    
-    // Обновляем состояние кнопок
     updateButtonsState();
-    
-    // ВОЗВРАЩАЕМ ФУТЕР ПОСЛЕ ВЫБОРА ПРОДУКТА
     returnFooterAfterSearch();
-}
+};
 
-// Новая функция для обновления всех счетчиков
+// Обновление счетчиков
 function updateAllCounters() {
-    // Счетчик в stats-bar
     const statsCounter = document.querySelector('.stats-bar span:last-child');
     if (statsCounter) {
         statsCounter.textContent = `✅ Выбрано: ${selectedProducts.size}`;
     }
     
-    // Счетчик в футере
     const footerCounter = document.getElementById('selectedCount');
     if (footerCounter) {
         footerCounter.textContent = `Выбрано продуктов: ${selectedProducts.size}`;
     }
-    
-    // Счетчик в stats-bar если там другой формат
-    const statsBar = document.querySelector('.stats-bar');
-    if (statsBar) {
-        const totalSpan = statsBar.querySelector('span:first-child');
-        const selectedSpan = statsBar.querySelector('span:last-child');
-        if (selectedSpan) {
-            selectedSpan.innerHTML = `✅ Выбрано: ${selectedProducts.size}`;
-        }
-    }
 }
 
-// Новая функция для обновления кнопок
+// Обновление состояния кнопок
 function updateButtonsState() {
     const findBtn = document.getElementById('findRecipesBtn');
     const resetBtn = document.getElementById('resetBtn');
@@ -1292,16 +810,12 @@ function updateButtonsState() {
 function attachProductsEventListeners() {
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
-        // Убираем обработчик input
-        // searchInput.addEventListener('input', ...) - удаляем
-        
-        // Добавляем обработчик нажатия Enter
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                e.preventDefault(); // Предотвращаем отправку формы
+                e.preventDefault();
                 searchQuery = searchInput.value;
                 showProductsPage();
-                searchInput.blur(); // Убираем фокус с поиска
+                searchInput.blur();
             }
         });
     }
@@ -1323,7 +837,7 @@ function attachProductsEventListeners() {
     });
 }
 
-// Добавляем стили для анимации загрузки
+// Стили для анимации
 const style = document.createElement('style');
 style.textContent = `
     @keyframes spin {
@@ -1333,19 +847,55 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Инициализация
+// Определяем страницу
 document.addEventListener('DOMContentLoaded', () => {
-    loadSelectedProducts();
-    showProductsPage();
+    const path = window.location.pathname;
     
-    window.addEventListener('resize', () => {
-        if (!isSearchFocused) {
-            updateFooterVisibility();
+    if (path.includes('recipes.html')) {
+        loadSelectedProducts();
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        if (urlParams.has('all')) {
+            currentPage = 'recipes';
+            currentFilterCategory = 'all';
+            
+            currentRecipes = getAllRecipes().map(recipe => ({
+                ...recipe,
+                matchPercentage: 100,
+                missingIngredients: []
+            }));
+            
+            window._allRecipes = [...currentRecipes];
+            
+            const urlSearchQuery = urlParams.get('search') || '';
+            if (urlSearchQuery) {
+                currentRecipes = currentRecipes.filter(recipe =>
+                    recipe.name.toLowerCase().includes(urlSearchQuery.toLowerCase()) ||
+                    recipe.category.toLowerCase().includes(urlSearchQuery.toLowerCase())
+                );
+            }
+            
+            renderRecipesPage();
+        } else if (urlParams.has('ingredients')) {
+            const ingredients = urlParams.get('ingredients').split(',');
+            currentRecipes = findRecipesByIngredients(ingredients);
+            window._allRecipes = [...currentRecipes];
+            renderRecipesPage();
         }
-    });
+    } else {
+        loadSelectedProducts();
+        showProductsPage();
+        
+        window.addEventListener('resize', () => {
+            if (!isSearchFocused) {
+                updateFooterVisibility();
+            }
+        });
+    }
 });
 
-// Сохраняем функции в глобальную область
+// Глобальные функции
 window.showProductsPage = showProductsPage;
 window.showRecipesPage = showRecipesPage;
 window.showAllRecipesPage = showAllRecipesPage;

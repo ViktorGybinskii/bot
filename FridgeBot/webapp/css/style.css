@@ -1132,3 +1132,80 @@ body.dark-theme p[style*="color: #22c55e"] {
 body.dark-theme span[style*="color: #667eea"] {
     color: #8b9eff !important;
 }
+
+/* ============ ИСПРАВЛЕНИЯ ДЛЯ ПОИСКА В РЕЦЕПТАХ ============ */
+
+/* Поле поиска в светлой теме */
+#recipeSearchInput {
+    background: white !important;
+    border: 2px solid #e2e8f0 !important;
+    color: #1e293b !important;
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: 30px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+#recipeSearchInput::placeholder {
+    color: #94a3b8 !important;
+}
+
+#recipeSearchInput:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+    outline: none;
+}
+
+/* Кнопка очистки в светлой теме */
+#clearRecipeSearch {
+    background: #f1f5f9 !important;
+    color: #475569 !important;
+    border: none !important;
+    padding: 0 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.2s ease;
+}
+
+#clearRecipeSearch:hover {
+    background: #e2e8f0 !important;
+}
+
+/* Тёмная тема для поиска в рецептах */
+.dark-theme #recipeSearchInput {
+    background: #3d3d3d !important;
+    border-color: #404040 !important;
+    color: white !important;
+}
+
+.dark-theme #recipeSearchInput::placeholder {
+    color: #a0a0a0 !important;
+}
+
+.dark-theme #clearRecipeSearch {
+    background: #3d3d3d !important;
+    color: #e0e0e0 !important;
+}
+
+.dark-theme #clearRecipeSearch:hover {
+    background: #4a4a4a !important;
+}
+
+/* ============ УБИРАЕМ КНОПКУ НАЗАД ВО "ВСЕХ РЕЦЕПТАХ" ============ */
+
+/* Скрываем кнопку назад на странице со всеми рецептами */
+.recipes-page .back-btn {
+    display: none !important;
+}
+
+/* Альтернативный вариант - скрываем через URL параметр */
+body[data-page="all-recipes"] .back-btn {
+    display: none !important;
+}
+
+/* Центрируем заголовок когда нет кнопки назад */
+.recipes-page .results-header span {
+    margin: 0 auto !important;
+}
