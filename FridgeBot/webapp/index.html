@@ -17,26 +17,53 @@
             <p>Выберите продукты, которые есть у вас в холодильнике</p>
         </header>
 
+        <!-- Поиск продуктов -->
+        <div class="search-container fade-in" style="margin-bottom: 20px;">
+            <div style="display: flex; gap: 10px;">
+                <input type="text" 
+                       id="searchInput" 
+                       placeholder="🔍 Поиск продуктов..." 
+                       style="flex: 1; padding: 12px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 16px;">
+                <button id="clearSearch" 
+                        style="padding: 0 20px; background: #f1f5f9; border: none; border-radius: 12px; cursor: pointer;">
+                    ✕
+                </button>
+            </div>
+        </div>
+
         <!-- Категории продуктов -->
         <div class="categories fade-in">
             <button class="category-btn active" data-category="all">Все</button>
             <button class="category-btn" data-category="vegetables">Овощи</button>
+            <button class="category-btn" data-category="herbs">Зелень</button>
             <button class="category-btn" data-category="fruits">Фрукты</button>
             <button class="category-btn" data-category="dairy">Молочные</button>
             <button class="category-btn" data-category="meat">Мясо</button>
-            <button class="category-btn" data-category="other">Другое</button>
+            <button class="category-btn" data-category="seafood">Рыба</button>
+            <button class="category-btn" data-category="groceries">Бакалея</button>
+            <button class="category-btn" data-category="canned">Консервы</button>
+            <button class="category-btn" data-category="spices">Специи</button>
         </div>
 
         <!-- Сетка продуктов -->
         <div class="products-grid" id="productsGrid"></div>
 
-        <!-- Кнопка отправки -->
+        <!-- Кнопки действий -->
         <button class="send-btn" id="sendBtn" disabled>
             Найти рецепты →
         </button>
+        
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+            <button class="send-btn" id="allRecipesBtn" style="background: #3498db; margin: 0;">
+                📚 Все рецепты
+            </button>
+            <button class="send-btn" id="resetBtn" style="background: #e74c3c; margin: 0;">
+                🗑️ Сбросить
+            </button>
+        </div>
 
         <!-- Счетчик выбранных продуктов -->
-        <div style="text-align: center; color: #64748b;" id="selectedCount">
+        <div style="text-align: center; color: #64748b; margin-top: 20px;" id="selectedCount">
             Выбрано продуктов: 0
         </div>
     </div>
