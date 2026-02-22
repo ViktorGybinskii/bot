@@ -8,6 +8,7 @@ let searchQuery = '';
 let currentRecipes = [];
 let isSearchFocused = false;
 let searchTimeout;
+let currentFilterCategory = 'all';
 
 // Новые переменные для пагинации
 let visibleProducts = [];
@@ -15,6 +16,65 @@ let currentPage_index = 0;
 const PRODUCTS_PER_PAGE = 50;
 let isLoading = false;
 let hasMoreProducts = true;
+
+// Принудительное применение стилей для темной темы
+function injectDarkThemeStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+        /* Прямое внедрение стилей для темной темы */
+        body.dark-theme .recipe-detail .ingredients-list {
+            background: #3d3d3d !important;
+        }
+        
+        body.dark-theme .recipe-detail .ingredients-list li {
+            background: #2d2d2d !important;
+            border: 1px solid #404040 !important;
+            color: white !important;
+        }
+        
+        body.dark-theme .recipe-detail .ingredients-list li span:first-child {
+            color: white !important;
+        }
+        
+        body.dark-theme .recipe-detail .ingredients-list li span:last-child {
+            color: #8b9eff !important;
+        }
+        
+        body.dark-theme .filter-chips .filter-chip {
+            background: #3d3d3d !important;
+            color: #e0e0e0 !important;
+        }
+        
+        body.dark-theme .filter-chips .filter-chip.active {
+            background: #8b9eff !important;
+            color: white !important;
+        }
+        
+        body.dark-theme .back-btn {
+            background: #3d3d3d !important;
+            color: #e0e0e0 !important;
+        }
+        
+        body.dark-theme .meta-item {
+            background: #3d3d3d !important;
+            color: #e0e0e0 !important;
+        }
+        
+        body.dark-theme .instructions {
+            color: #e0e0e0 !important;
+        }
+        
+        body.dark-theme .instructions li span {
+            background: #8b9eff !important;
+            color: white !important;
+        }
+    `;
+    document.head.appendChild(style);
+    console.log('Стили для темной темы внедрены');
+}
+
+// Вызываем функцию после загрузки страницы
+document.addEventListener('DOMContentLoaded', injectDarkThemeStyles);
 
 // База данных продуктов (РАСШИРЕННАЯ - 300+ продуктов)
 const productsDatabase = [
@@ -534,24 +594,25 @@ tg.ready();
 tg.expand();
 tg.disableVerticalSwipes();
 
-// Принудительное применение темы Telegram
-function applyTelegramTheme() {
+// Принудительно применяем темную тему
+function applyTheme() {
     const isDark = tg.colorScheme === 'dark';
+    console.log('Тема Telegram:', isDark ? 'темная' : 'светлая');
+    
     if (isDark) {
         document.body.classList.add('dark-theme');
-        // Убираем лишние стили, которые могут конфликтовать
-        document.body.style.backgroundColor = '';
-        document.body.style.color = '';
+        console.log('Класс dark-theme добавлен');
     } else {
         document.body.classList.remove('dark-theme');
+        console.log('Класс dark-theme удален');
     }
 }
 
 // Применяем тему сразу
-applyTelegramTheme();
+applyTheme();
 
 // Слушаем изменения темы
-tg.onEvent('themeChanged', applyTelegramTheme);
+tg.onEvent('themeChanged', applyTheme);
 
 // Загрузка сохраненных продуктов из sessionStorage
 function loadSelectedProducts() {
@@ -592,6 +653,7 @@ function showProductsPage() {
 // Функция показа страницы с рецептами
 function showRecipesPage() {
     currentPage = 'recipes';
+    currentFilterCategory = 'all'; // Добавь эту строку
     
     const selectedNames = Array.from(selectedProducts)
         .map(id => {
@@ -600,6 +662,7 @@ function showRecipesPage() {
         });
     
     currentRecipes = findRecipesByIngredients(selectedNames);
+    window._allRecipes = [...currentRecipes]; // Сохраняем оригинальный список
     
     renderRecipesPage();
     renderRecipesFooter();
@@ -608,6 +671,7 @@ function showRecipesPage() {
 // Функция показа всех рецептов
 function showAllRecipesPage() {
     currentPage = 'recipes';
+    currentFilterCategory = 'all'; // Добавь эту строку
     currentRecipes = getAllRecipes().map(recipe => ({
         ...recipe,
         matchPercentage: 100,
@@ -696,11 +760,23 @@ function appendProductsToGrid(products) {
         const productEl = document.createElement('div');
         productEl.className = `product-item ${selectedProducts.has(product.id) ? 'selected' : ''}`;
         productEl.dataset.id = product.id;
-        productEl.onclick = () => toggleProduct(product.id);
+        
+        // Устанавливаем HTML содержимое
         productEl.innerHTML = `
             <span class="product-icon">${product.icon}</span>
             <span class="product-name">${product.name}</span>
         `;
+        
+        // Добавляем обработчик клика
+        productEl.onclick = () => {
+            toggleProduct(product.id);
+            // Убираем фокус с поиска, если он был
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput && document.activeElement === searchInput) {
+                searchInput.blur();
+            }
+        };
+        
         grid.appendChild(productEl);
     });
 }
@@ -726,12 +802,12 @@ function renderProductsPage() {
         <div class="search-container" style="margin-bottom: 15px;">
             <div style="display: flex; gap: 8px;">
                 <input type="text" 
-                       id="searchInput" 
-                       placeholder="🔍 Поиск продуктов..." 
-                       value="${searchQuery}"
-                       style="flex: 1; padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 30px; font-size: 16px; transition: all 0.3s ease;"
-                       onfocus="handleSearchFocus(true)"
-                       onblur="handleSearchFocus(false)">
+                    id="searchInput" 
+                    placeholder="🔍 Поиск продуктов..." 
+                    value="${searchQuery}"
+                    style="flex: 1; padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 30px; font-size: 16px; transition: all 0.3s ease;"
+                    onfocus="handleSearchFocus(true)"
+                    onblur="handleSearchFocus(false)">
                 <button id="clearSearch" 
                         style="padding: 0 20px; background: #f1f5f9; border: none; border-radius: 30px; cursor: pointer; font-size: 18px;">
                     ✕
@@ -805,6 +881,9 @@ function renderProductsPage() {
 
 // Отрисовка страницы с рецептами
 function renderRecipesPage() {
+     if (!window._allRecipes) {
+        window._allRecipes = [...currentRecipes];
+    }
     const content = document.getElementById('content');
     
     let recipesHtml = `
@@ -815,14 +894,14 @@ function renderRecipesPage() {
             <span style="font-weight: 600; color: #475569;">Найдено: ${currentRecipes.length}</span>
         </div>
         
-        <div class="filter-chips" style="display: flex; gap: 8px; overflow-x: auto; padding: 10px 0; margin-bottom: 15px;">
-            <span class="filter-chip active" onclick="filterRecipes(event, 'all')">Все</span>
-            <span class="filter-chip" onclick="filterRecipes(event, 'breakfast')">Завтраки</span>
-            <span class="filter-chip" onclick="filterRecipes(event, 'soup')">Супы</span>
-            <span class="filter-chip" onclick="filterRecipes(event, 'main')">Основные</span>
-            <span class="filter-chip" onclick="filterRecipes(event, 'salad')">Салаты</span>
-            <span class="filter-chip" onclick="filterRecipes(event, 'baking')">Выпечка</span>
-            <span class="filter-chip" onclick="filterRecipes(event, 'dessert')">Десерты</span>
+        <div class="filter-chips">
+            <span class="filter-chip ${currentFilterCategory === 'all' ? 'active' : ''}" onclick="filterRecipes(event, 'all')">Все</span>
+            <span class="filter-chip ${currentFilterCategory === 'breakfast' ? 'active' : ''}" onclick="filterRecipes(event, 'breakfast')">Завтраки</span>
+            <span class="filter-chip ${currentFilterCategory === 'soup' ? 'active' : ''}" onclick="filterRecipes(event, 'soup')">Супы</span>
+            <span class="filter-chip ${currentFilterCategory === 'main' ? 'active' : ''}" onclick="filterRecipes(event, 'main')">Основные</span>
+            <span class="filter-chip ${currentFilterCategory === 'salad' ? 'active' : ''}" onclick="filterRecipes(event, 'salad')">Салаты</span>
+            <span class="filter-chip ${currentFilterCategory === 'baking' ? 'active' : ''}" onclick="filterRecipes(event, 'baking')">Выпечка</span>
+            <span class="filter-chip ${currentFilterCategory === 'dessert' ? 'active' : ''}" onclick="filterRecipes(event, 'dessert')">Десерты</span>
         </div>
         
         <div class="recipes-grid">
@@ -891,20 +970,37 @@ window.filterRecipes = function(event, category) {
         'dessert': 'Десерт'
     };
     
+    // Убираем активный класс у всех фильтров
     document.querySelectorAll('.filter-chip').forEach(chip => {
         chip.classList.remove('active');
     });
-    event.target.classList.add('active');
     
-    const filtered = category === 'all' 
-        ? currentRecipes 
-        : currentRecipes.filter(r => r.category === categoryMap[category]);
+    // Добавляем активный класс нажатой кнопке
+    if (event && event.target) {
+        event.target.classList.add('active');
+    }
     
-    const tempRecipes = currentRecipes;
-    currentRecipes = filtered;
+    // Сохраняем выбранную категорию
+    currentFilterCategory = category;
+    
+    // Фильтруем рецепты
+    if (category === 'all') {
+        currentRecipes = window._allRecipes || [];
+    } else {
+        currentRecipes = (window._allRecipes || []).filter(r => r.category === categoryMap[category]);
+    }
+    
+    // Перерисовываем страницу с отфильтрованными рецептами
     renderRecipesPage();
-    currentRecipes = tempRecipes;
-};
+    
+    // Прокручиваем к началу списка рецептов
+    setTimeout(() => {
+        const recipesGrid = document.querySelector('.recipes-grid');
+        if (recipesGrid) {
+            recipesGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, 100);
+}
 
 // Просмотр детального рецепта
 window.viewRecipe = function(id) {
@@ -934,28 +1030,30 @@ window.viewRecipe = function(id) {
                 <span class="filter-chip" style="background: #667eea; color: white; padding: 5px 10px;">📊 ${recipe.difficulty}</span>
             </div>
             
-            <div style="background: #f8fafc; border-radius: 20px; padding: 20px; margin: 20px 0;">
-                <h3 style="margin-bottom: 15px;">📝 Ингредиенты:</h3>
-                <ul style="list-style: none; padding: 0;">
+            <div class="ingredients-list">
+                <h3>📝 Ингредиенты:</h3>
+                <ul>
                     ${recipe.ingredients.map(i => `
-                        <li style="padding: 10px; background: white; margin: 5px 0; border-radius: 10px; display: flex; justify-content: space-between;">
+                        <li>
                             <span>${i.name}</span>
-                            <span style="font-weight: 600; color: #667eea;">${i.amount}</span>
+                            <span class="amount">${i.amount}</span>
                         </li>
                     `).join('')}
                 </ul>
             </div>
             
             <div style="margin: 20px 0;">
-                <h3 style="margin-bottom: 15px;">👨‍🍳 Приготовление:</h3>
-                <ol style="padding-left: 20px;">
-                    ${recipe.instructions.map((step, index) => `
-                        <li style="margin: 15px 0; line-height: 1.6;">
-                            <span style="display: inline-block; background: #667eea; color: white; width: 24px; height: 24px; border-radius: 12px; text-align: center; line-height: 24px; font-size: 14px; margin-right: 10px;">${index + 1}</span>
-                            ${step}
-                        </li>
-                    `).join('')}
-                </ol>
+                <div class="instructions">
+                    <h3>👨‍🍳 Приготовление:</h3>
+                    <ol>
+                        ${recipe.instructions.map((step, index) => `
+                            <li>
+                                <span class="step-number">${index + 1}</span>
+                                ${step}
+                            </li>
+                        `).join('')}
+                    </ol>
+                </div>
             </div>
         </div>
     `;
@@ -992,6 +1090,7 @@ function renderProductsFooter() {
         selectedProducts.clear();
         saveSelectedProducts();
         showProductsPage();
+        returnFooterAfterSearch(); // Добавь эту строку
     });
 }
 
@@ -1039,6 +1138,15 @@ window.handleSearchFocus = function(focused) {
     isSearchFocused = focused;
 };
 
+// Возвращение футера после выбора продукта
+function returnFooterAfterSearch() {
+    const footerBar = document.querySelector('.footer-bar');
+    if (footerBar && isSearchFocused) {
+        // Имитируем потерю фокуса
+        handleSearchFocus(false);
+    }
+}
+
 // Переключение продукта
 window.toggleProduct = function(productId) {
     if (selectedProducts.has(productId)) {
@@ -1064,6 +1172,9 @@ window.toggleProduct = function(productId) {
     
     // Обновляем состояние кнопок
     updateButtonsState();
+    
+    // ВОЗВРАЩАЕМ ФУТЕР ПОСЛЕ ВЫБОРА ПРОДУКТА
+    returnFooterAfterSearch();
 }
 
 // Новая функция для обновления всех счетчиков
@@ -1108,12 +1219,17 @@ function updateButtonsState() {
 function attachProductsEventListeners() {
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
-        searchInput.addEventListener('input', () => {
-            clearTimeout(window.searchTimeout);
-            window.searchTimeout = setTimeout(() => {
+        // Убираем обработчик input
+        // searchInput.addEventListener('input', ...) - удаляем
+        
+        // Добавляем обработчик нажатия Enter
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault(); // Предотвращаем отправку формы
                 searchQuery = searchInput.value;
                 showProductsPage();
-            }, 300);
+                searchInput.blur(); // Убираем фокус с поиска
+            }
         });
     }
     
@@ -1164,3 +1280,6 @@ window.handleSearchFocus = handleSearchFocus;
 window.toggleProduct = toggleProduct;
 window.filterRecipes = filterRecipes;
 window.viewRecipe = viewRecipe;
+
+injectDarkThemeStyles();
+applyTheme();
