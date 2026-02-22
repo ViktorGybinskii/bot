@@ -671,12 +671,13 @@ function showRecipesPage() {
 // Функция показа всех рецептов
 function showAllRecipesPage() {
     currentPage = 'recipes';
-    currentFilterCategory = 'all'; // Добавь эту строку
+    currentFilterCategory = 'all';
     currentRecipes = getAllRecipes().map(recipe => ({
         ...recipe,
         matchPercentage: 100,
         missingIngredients: []
     }));
+    window._allRecipes = [...currentRecipes];
     renderRecipesPage();
     renderRecipesFooter();
 }
@@ -881,20 +882,57 @@ function renderProductsPage() {
 
 // Отрисовка страницы с рецептами
 function renderRecipesPage() {
-     if (!window._allRecipes) {
+    if (!window._allRecipes) {
         window._allRecipes = [...currentRecipes];
     }
+    
     const content = document.getElementById('content');
+    const showAllMode = window.location.search.includes('all=true');
+    
+    // Получаем поисковый запрос из URL если есть
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get('search') || '';
+    
+    let recipesToShow = currentRecipes;
+    
+    // Если есть поисковый запрос, фильтруем
+    if (searchQuery) {
+        recipesToShow = window._allRecipes.filter(recipe =>
+            recipe.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            recipe.category.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    }
     
     let recipesHtml = `
         <div class="results-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
             <button class="back-btn" onclick="showProductsPage()" style="background: #f1f5f9; border: none; padding: 8px 15px; border-radius: 30px; cursor: pointer;">
                 ← Назад
             </button>
-            <span style="font-weight: 600; color: #475569;">Найдено: ${currentRecipes.length}</span>
+            <span style="font-weight: 600; color: #475569;">Найдено: ${recipesToShow.length}</span>
         </div>
-        
-        <div class="filter-chips">
+    `;
+    
+    // Добавляем поиск только в режиме "Все рецепты"
+    if (showAllMode) {
+        recipesHtml += `
+            <div class="search-container" style="margin-bottom: 15px;">
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" 
+                           id="recipeSearchInput" 
+                           placeholder="🔍 Поиск по названию рецепта..." 
+                           value="${searchQuery}"
+                           style="flex: 1; padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 30px; font-size: 16px; transition: all 0.3s ease;">
+                    <button id="clearRecipeSearch" 
+                            style="padding: 0 20px; background: #f1f5f9; border: none; border-radius: 30px; cursor: pointer; font-size: 18px;">
+                        ✕
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+    
+    recipesHtml += `
+        <div class="filter-chips" style="display: flex; gap: 8px; overflow-x: auto; padding: 10px 0; margin-bottom: 15px;">
             <span class="filter-chip ${currentFilterCategory === 'all' ? 'active' : ''}" onclick="filterRecipes(event, 'all')">Все</span>
             <span class="filter-chip ${currentFilterCategory === 'breakfast' ? 'active' : ''}" onclick="filterRecipes(event, 'breakfast')">Завтраки</span>
             <span class="filter-chip ${currentFilterCategory === 'soup' ? 'active' : ''}" onclick="filterRecipes(event, 'soup')">Супы</span>
@@ -907,19 +945,16 @@ function renderRecipesPage() {
         <div class="recipes-grid">
     `;
     
-    if (currentRecipes.length === 0) {
+    if (recipesToShow.length === 0) {
         recipesHtml += `
             <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
                 <span style="font-size: 48px;">😔</span>
                 <p style="margin-top: 20px; font-size: 18px;">Рецептов не найдено</p>
-                <p style="font-size: 14px; color: #64748b;">Попробуйте выбрать другие продукты</p>
-                <button class="footer-btn primary" onclick="showProductsPage()" style="margin-top: 20px; width: auto; padding: 12px 30px; background: #667eea; color: white; border: none; border-radius: 30px;">
-                    ← Выбрать продукты
-                </button>
+                <p style="font-size: 14px; color: #64748b;">Попробуйте изменить запрос</p>
             </div>
         `;
     } else {
-        currentRecipes.forEach(recipe => {
+        recipesToShow.forEach(recipe => {
             let badgeColor = '#ef4444';
             if (recipe.matchPercentage >= 80) badgeColor = '#22c55e';
             else if (recipe.matchPercentage >= 50) badgeColor = '#eab308';
@@ -957,6 +992,36 @@ function renderRecipesPage() {
     
     recipesHtml += `</div>`;
     content.innerHTML = recipesHtml;
+    
+    // Добавляем обработчики для поиска если нужно
+    if (showAllMode) {
+        const searchInput = document.getElementById('recipeSearchInput');
+        const clearSearch = document.getElementById('clearRecipeSearch');
+        
+        if (searchInput) {
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const query = searchInput.value.trim();
+                    const url = new URL(window.location);
+                    if (query) {
+                        url.searchParams.set('search', query);
+                    } else {
+                        url.searchParams.delete('search');
+                    }
+                    window.location.href = url.toString();
+                }
+            });
+        }
+        
+        if (clearSearch) {
+            clearSearch.addEventListener('click', () => {
+                const url = new URL(window.location);
+                url.searchParams.delete('search');
+                window.location.href = url.toString();
+            });
+        }
+    }
 }
 
 // Фильтрация рецептов
