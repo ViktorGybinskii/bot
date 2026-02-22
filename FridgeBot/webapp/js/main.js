@@ -528,11 +528,31 @@ const productsDatabase = [
     { id: 'frozen-dough', name: 'Тесто замороженное', category: 'frozen', icon: '🥐' }
 ];
 
-// Инициализация Telegram
+// Инициализация Telegram с поддержкой темы
 const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 tg.disableVerticalSwipes();
+
+// Определяем тему Telegram
+const isDarkTheme = tg.colorScheme === 'dark';
+
+// Применяем тему
+if (isDarkTheme) {
+    document.body.classList.add('dark-theme');
+} else {
+    document.body.classList.remove('dark-theme');
+}
+
+// Слушаем изменения темы в Telegram
+tg.onEvent('themeChanged', function() {
+    const newIsDark = tg.colorScheme === 'dark';
+    if (newIsDark) {
+        document.body.classList.add('dark-theme');
+    } else {
+        document.body.classList.remove('dark-theme');
+    }
+});
 
 // Загрузка сохраненных продуктов из sessionStorage
 function loadSelectedProducts() {
@@ -995,14 +1015,29 @@ function renderRecipesFooter() {
 
 // Обработка фокуса поиска
 window.handleSearchFocus = function(focused) {
-    isSearchFocused = focused;
-    updateFooterVisibility();
+    const footerBar = document.querySelector('.footer-bar');
+    const searchContainer = document.querySelector('.search-container');
     
-    if (!focused) {
-        setTimeout(() => {
-            updateFooterVisibility();
-        }, 200);
+    if (focused) {
+        // При фокусе - прячем футер, но оставляем место
+        if (footerBar) {
+            footerBar.style.transform = 'translateY(100%)';
+            footerBar.style.opacity = '0';
+            footerBar.style.pointerEvents = 'none';
+        }
+        // Добавляем класс для поиска
+        document.body.classList.add('search-mode');
+    } else {
+        // При потере фокуса - возвращаем футер
+        if (footerBar) {
+            footerBar.style.transform = 'translateY(0)';
+            footerBar.style.opacity = '1';
+            footerBar.style.pointerEvents = 'auto';
+        }
+        document.body.classList.remove('search-mode');
     }
+    
+    isSearchFocused = focused;
 };
 
 // Переключение продукта
