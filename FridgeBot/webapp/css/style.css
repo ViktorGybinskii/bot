@@ -1,36 +1,5 @@
 /* webapp/css/style.css */
 
-/* Сброс стилей для темной темы */
-.dark-theme * {
-    border-color: var(--border-color) !important;
-}
-
-.dark-theme [class*="primary"] {
-    color: var(--text-on-gradient) !important;
-}
-
-.dark-theme .product-item.selected * {
-    color: var(--text-on-gradient) !important;
-}
-
-/* Исправление для синего текста в темной теме */
-.dark-theme .ingredients-list li span:last-child {
-    color: #8b9eff !important;
-}
-
-.dark-theme .match-badge {
-    color: white !important;
-}
-
-/* Убираем белые фоны в темной теме */
-.dark-theme .product-item:not(.selected) {
-    background: var(--card-bg) !important;
-}
-
-.dark-theme .footer-btn.primary {
-    background: linear-gradient(135deg, #8b9eff 0%, #9f7aea 100%) !important;
-}
-
 * {
     margin: 0;
     padding: 0;
@@ -42,6 +11,7 @@ body {
     background: #f8fafc;
     color: #1e293b;
     line-height: 1.5;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
@@ -50,7 +20,7 @@ body {
     padding: 20px;
 }
 
-/* Шапка */
+/* ============ ШАПКА ============ */
 .header {
     text-align: center;
     margin-bottom: 24px;
@@ -75,7 +45,7 @@ body {
     opacity: 0.95;
 }
 
-/* Категории продуктов */
+/* ============ КАТЕГОРИИ ============ */
 .categories {
     display: flex;
     gap: 8px;
@@ -94,7 +64,6 @@ body {
     font-size: 14px;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     white-space: nowrap;
 }
 
@@ -106,15 +75,15 @@ body {
 .category-btn.active {
     background: #667eea;
     color: white;
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
 }
 
-/* Сетка продуктов */
+/* ============ ПРОДУКТЫ ============ */
 .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
     gap: 10px;
     margin-bottom: 20px;
+    min-height: 200px;
 }
 
 .product-item {
@@ -125,8 +94,6 @@ body {
     text-align: center;
     cursor: pointer;
     transition: all 0.2s ease;
-    position: relative;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -135,7 +102,6 @@ body {
 
 .product-item:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     border-color: #667eea;
 }
 
@@ -162,7 +128,6 @@ body {
 
 .product-icon {
     font-size: 1.8em;
-    display: block;
 }
 
 .product-name {
@@ -170,35 +135,7 @@ body {
     font-size: 12px;
 }
 
-/* Кнопка отправки */
-.send-btn {
-    width: 100%;
-    padding: 14px;
-    font-size: 1.1em;
-    font-weight: 600;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-    margin-bottom: 10px;
-}
-
-.send-btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
-}
-
-.send-btn:disabled {
-    background: #cbd5e1;
-    box-shadow: none;
-    cursor: not-allowed;
-    opacity: 0.7;
-}
-
-/* Карточки рецептов */
+/* ============ РЕЦЕПТЫ ============ */
 .recipes-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -223,7 +160,6 @@ body {
 .recipe-image {
     width: 100%;
     height: 160px;
-    object-fit: cover;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     display: flex;
     align-items: center;
@@ -253,14 +189,6 @@ body {
     margin-bottom: 8px;
 }
 
-.recipe-ingredients {
-    font-size: 0.9em;
-    color: #64748b;
-    margin-bottom: 10px;
-    max-height: 45px;
-    overflow: hidden;
-}
-
 .match-badge {
     color: white;
     padding: 3px 6px;
@@ -269,26 +197,11 @@ body {
     display: inline-block;
 }
 
-/* Детальная страница рецепта */
+/* ============ ДЕТАЛЬНЫЙ РЕЦЕПТ ============ */
 .recipe-detail {
     background: white;
     border-radius: 24px;
-    overflow: hidden;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
     padding: 20px;
-}
-
-.recipe-detail-image {
-    width: 100%;
-    max-height: 300px;
-    object-fit: cover;
-    border-radius: 16px;
-}
-
-.recipe-detail-title {
-    font-size: 2em;
-    color: #1e293b;
-    margin-bottom: 15px;
 }
 
 .recipe-meta {
@@ -324,17 +237,22 @@ body {
 
 .ingredients-list ul {
     list-style: none;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 12px;
 }
 
 .ingredients-list li {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 8px;
+    padding: 10px;
+    background: white;
+    margin: 5px 0;
+    border-radius: 10px;
     color: #475569;
-    font-size: 0.95em;
+}
+
+.ingredients-list li span:last-child {
+    font-weight: 600;
+    color: #667eea;
 }
 
 .instructions {
@@ -351,7 +269,20 @@ body {
     margin: 10px 0;
 }
 
-/* Навигация */
+.instructions li span {
+    display: inline-block;
+    background: #667eea;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    text-align: center;
+    line-height: 24px;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+/* ============ НАВИГАЦИЯ ============ */
 .nav-bar {
     display: flex;
     justify-content: space-between;
@@ -360,7 +291,6 @@ body {
     background: white;
     border-radius: 15px;
     margin-bottom: 20px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
 }
 
 .nav-links {
@@ -387,57 +317,22 @@ body {
     color: white;
 }
 
-/* Анимации */
+/* ============ АНИМАЦИИ ============ */
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .fade-in {
     animation: fadeIn 0.5s ease forwards;
 }
 
-/* Адаптивность */
-@media (max-width: 768px) {
-    .container {
-        padding: 15px;
-    }
-    
-    .header h1 {
-        font-size: 1.8em;
-    }
-    
-    .products-grid {
-        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-    }
-    
-    .recipe-detail-content {
-        padding: 15px;
-    }
-    
-    .recipe-detail-title {
-        font-size: 1.6em;
-    }
-    
-    .ingredients-list ul {
-        grid-template-columns: 1fr;
-    }
-    
-    .categories {
-        justify-content: flex-start;
-        overflow-x: auto;
-        padding-bottom: 10px;
-        flex-wrap: nowrap;
-    }
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
-/* Загрузка */
+/* ============ ЗАГРУЗКА ============ */
 .loading {
     text-align: center;
     padding: 40px;
@@ -453,12 +348,7 @@ body {
     margin: 20px auto;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Уведомления */
+/* ============ УВЕДОМЛЕНИЯ ============ */
 .notification {
     position: fixed;
     top: 20px;
@@ -472,25 +362,14 @@ body {
 }
 
 @keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
 }
 
-.notification.success {
-    border-left: 4px solid #22c55e;
-}
+.notification.success { border-left: 4px solid #22c55e; }
+.notification.error { border-left: 4px solid #ef4444; }
 
-.notification.error {
-    border-left: 4px solid #ef4444;
-}
-
-/* Фиксированная нижняя панель */
+/* ============ ФИКСИРОВАННАЯ НИЖНЯЯ ПАНЕЛЬ ============ */
 .app-container {
     display: flex;
     flex-direction: column;
@@ -522,17 +401,14 @@ body {
     background: white;
     border-top: 2px solid #e2e8f0;
     padding: 15px 20px;
-    box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
     border-radius: 20px 20px 0 0;
     margin-top: 10px;
     transition: transform 0.3s ease;
-    will-change: transform;
 }
 
 .footer-buttons {
     display: flex;
     gap: 10px;
-    flex-wrap: wrap;
 }
 
 .footer-btn {
@@ -554,12 +430,10 @@ body {
 .footer-btn.primary {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
 }
 
 .footer-btn.primary:disabled {
     background: #cbd5e1;
-    box-shadow: none;
     opacity: 0.5;
     cursor: not-allowed;
 }
@@ -578,10 +452,6 @@ body {
     transform: translateY(-2px);
 }
 
-.footer-btn:active {
-    transform: scale(0.98);
-}
-
 .selected-count {
     text-align: center;
     color: #64748b;
@@ -591,20 +461,7 @@ body {
     border-top: 1px dashed #e2e8f0;
 }
 
-/* Компактные продукты */
-.product-item {
-    padding: 10px 3px;
-}
-
-.product-icon {
-    font-size: 1.5em;
-}
-
-.product-name {
-    font-size: 11px;
-}
-
-/* Стили для страницы результатов */
+/* ============ СТРАНИЦА РЕЗУЛЬТАТОВ ============ */
 .results-header {
     display: flex;
     justify-content: space-between;
@@ -619,15 +476,8 @@ body {
     padding: 8px 16px;
     font-size: 14px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 5px;
     color: #475569;
     font-weight: 500;
-}
-
-.back-btn:hover {
-    background: #e2e8f0;
 }
 
 .filter-chips {
@@ -636,12 +486,6 @@ body {
     overflow-x: auto;
     padding: 10px 0;
     margin-bottom: 15px;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-}
-
-.filter-chips::-webkit-scrollbar {
-    display: none;
 }
 
 .filter-chip {
@@ -651,7 +495,6 @@ body {
     font-size: 13px;
     white-space: nowrap;
     cursor: pointer;
-    transition: all 0.2s ease;
     color: #475569;
 }
 
@@ -660,15 +503,7 @@ body {
     color: white;
 }
 
-.filter-chip:hover {
-    background: #e2e8f0;
-}
-
-.filter-chip.active:hover {
-    background: #5a67d8;
-}
-
-/* Статистика */
+/* ============ СТАТИСТИКА ============ */
 .stats-bar {
     display: flex;
     justify-content: space-between;
@@ -680,883 +515,238 @@ body {
     border-radius: 30px;
 }
 
-/* Сообщение о конце списка */
-.end-message {
-    text-align: center;
-    padding: 20px;
-    color: #64748b;
-    font-size: 13px;
+/* ============ ПОИСК ============ */
+.search-container {
+    position: relative;
+    z-index: 10;
 }
 
-/* Стили для детального рецепта */
-.recipe-detail {
+#searchInput {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 30px;
+    font-size: 16px;
     background: white;
-    border-radius: 24px;
-    padding: 20px;
 }
 
-/* Адаптация для очень маленьких экранов */
-@media (max-width: 480px) {
-    .footer-buttons {
-        flex-direction: row;
-    }
-    
-    .footer-btn {
-        padding: 10px 8px;
-        font-size: 12px;
-        min-width: 70px;
-    }
-    
-    .products-grid {
-        grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
-    }
-    
-    .product-icon {
-        font-size: 1.3em;
-    }
-    
-    .product-name {
-        font-size: 10px;
-    }
-    
-    .category-btn {
-        padding: 6px 12px;
-        font-size: 12px;
-    }
-    
-    .header h1 {
-        font-size: 1.5em;
-    }
-    
-    .header p {
-        font-size: 0.9em;
-    }
-}
-
-/* Анимация для футера */
-.footer-bar {
-    transition: transform 0.3s ease;
-    will-change: transform;
-}
-
-/* Стили для поля поиска при фокусе */
 #searchInput:focus {
     border-color: #667eea !important;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
     outline: none;
 }
 
-/* Затемнение категорий при поиске */
-.categories {
-    transition: opacity 0.3s ease;
-}
-
-/* Подсказка для поиска */
-.search-hint {
-    animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Улучшения для мобильных */
-@media (max-width: 480px) {
-    .footer-bar {
-        position: sticky;
-        bottom: 0;
-        background: white;
-        z-index: 100;
-    }
-    
-    #searchInput {
-        font-size: 16px; /* Предотвращает зум на iPhone */
-    }
-}
-
-/* Стили для кнопок в детальном просмотре */
-.filter-chip {
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-}
-
-/* Анимация для карточек рецептов */
-.recipe-card {
-    transition: all 0.2s ease;
-}
-
-.recipe-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-
-/* Дополнительные стили для модальных окон */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    animation: fadeIn 0.3s ease;
-}
-
-.modal-content {
-    background: white;
-    border-radius: 20px;
-    padding: 20px;
-    max-width: 90%;
-    max-height: 80vh;
-    overflow-y: auto;
-    animation: slideUp 0.3s ease;
-}
-
-@keyframes slideUp {
-    from {
-        transform: translateY(50px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-/* ============ ТЕМНАЯ ТЕМА (ИСПРАВЛЕННАЯ) ============ */
-:root {
-    --bg-primary: #f8fafc;
-    --bg-secondary: #ffffff;
-    --text-primary: #1e293b;
-    --text-secondary: #475569;
-    --text-muted: #64748b;
-    --text-on-gradient: #ffffff;
-    --border-color: #e2e8f0;
-    --card-bg: #ffffff;
-    --header-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --footer-bg: #ffffff;
-    --input-bg: #ffffff;
-    --shadow-color: rgba(0, 0, 0, 0.1);
-    --category-bg: #f1f5f9;
-    --danger-bg: #fee2e2;
-    --danger-text: #ef4444;
-    --success-bg: #22c55e;
-    --success-text: #ffffff;
-    --warning-bg: #eab308;
-    --link-color: #667eea;
-}
-
-/* Темная тема - все цвета переопределены */
-body.dark-theme {
-    --bg-primary: #1a1a1a;
-    --bg-secondary: #2d2d2d;
-    --text-primary: #ffffff;
-    --text-secondary: #e0e0e0;
-    --text-muted: #a0a0a0;
-    --text-on-gradient: #ffffff;
-    --border-color: #404040;
-    --card-bg: #2d2d2d;
-    --header-gradient: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
-    --footer-bg: #2d2d2d;
-    --input-bg: #3d3d3d;
-    --shadow-color: rgba(0, 0, 0, 0.3);
-    --category-bg: #3d3d3d;
-    --danger-bg: #4a2a2a;
-    --danger-text: #ff8a8a;
-    --success-bg: #22c55e;
-    --success-text: #ffffff;
-    --warning-bg: #eab308;
-    --link-color: #8b9eff;
-}
-
-/* Применяем переменные */
-body {
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Шапка - всегда с градиентом и белым текстом */
-.header {
-    background: var(--header-gradient);
-    color: var(--text-on-gradient);
-}
-
-.header h1,
-.header p {
-    color: var(--text-on-gradient);
-}
-
-/* Карточки продуктов */
-.product-item {
-    background: var(--card-bg);
-    border-color: var(--border-color);
-    color: var(--text-primary);
-}
-
-.product-item.selected {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: var(--text-on-gradient);
-}
-
-.product-item.selected .product-name,
-.product-item.selected .product-icon {
-    color: var(--text-on-gradient);
-}
-
-/* Кнопки категорий */
-.category-btn {
-    background: var(--category-bg);
-    color: var(--text-secondary);
-    border: none;
-}
-
-.category-btn.active {
-    background: #667eea;
-    color: var(--text-on-gradient);
-}
-
-.dark-theme .category-btn.active {
-    background: #8b9eff;
-    color: var(--text-on-gradient);
-}
-
-/* Статистика */
-.stats-bar {
-    background: var(--category-bg);
-    color: var(--text-secondary);
-}
-
-.stats-bar span {
-    color: var(--text-secondary);
-}
-
-/* Кнопки в футере */
-.footer-btn.primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: var(--text-on-gradient);
-}
-
-.footer-btn.secondary {
-    background: var(--category-bg);
-    color: var(--text-secondary);
-}
-
-.footer-btn.danger {
-    background: var(--danger-bg);
-    color: var(--danger-text);
-}
-
-/* Поле поиска */
-.search-container input {
-    background: var(--input-bg);
-    border-color: var(--border-color);
-    color: var(--text-primary);
-}
-
-.search-container input::placeholder {
-    color: var(--text-muted);
-}
-
 #clearSearch {
-    background: var(--category-bg);
-    color: var(--text-secondary);
+    padding: 0 20px;
+    background: #f1f5f9;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
 }
 
-/* Карточки рецептов */
-.recipe-card {
-    background: var(--card-bg);
-    box-shadow: 0 10px 30px var(--shadow-color);
-}
-
-.recipe-title {
-    color: var(--text-primary);
-}
-
-.recipe-category {
-    background: var(--category-bg);
-    color: var(--text-secondary);
-}
-
-.recipe-ingredients {
-    color: var(--text-muted);
-}
-
-/* Метчинг бейдж */
-.match-badge {
-    color: var(--text-on-gradient);
-}
-
-/* Кнопка назад */
-.back-btn {
-    background: var(--category-bg);
-    color: var(--text-secondary);
-}
-
-.back-btn:hover {
-    background: var(--border-color);
-}
-
-/* Фильтр чипсы */
-.filter-chip {
-    background: var(--category-bg);
-    color: var(--text-secondary);
-}
-
-.filter-chip.active {
-    background: #667eea;
-    color: var(--text-on-gradient);
-}
-
-.dark-theme .filter-chip.active {
-    background: #8b9eff;
-}
-
-/* Счетчик выбранных продуктов */
-.selected-count {
-    color: var(--text-muted);
-    border-top-color: var(--border-color);
-}
-
-/* Детальный рецепт */
-.recipe-detail {
-    background: var(--card-bg);
-}
-
-.recipe-detail h1,
-.recipe-detail h3 {
-    color: var(--text-primary);
-}
-
-.ingredients-list {
-    background: var(--category-bg);
-}
-
-.ingredients-list li {
-    background: var(--card-bg);
-    color: var(--text-primary);
-}
-
-.ingredients-list li span {
-    color: var(--text-primary);
-}
-
-.ingredients-list li span:last-child {
-    color: #667eea;
-}
-
-.instructions {
-    color: var(--text-secondary);
-}
-
-.instructions li {
-    color: var(--text-secondary);
-}
-
-.instructions li span {
-    background: #667eea;
-    color: var(--text-on-gradient);
-}
-
-/* Текст "Не хватает" */
-p[style*="color: #ef4444"] {
-    color: var(--danger-text) !important;
-    background: var(--danger-bg) !important;
-}
-
-p[style*="color: #22c55e"] {
-    color: var(--success-text) !important;
-    background: var(--success-bg) !important;
-}
-
-/* Исправление для синего текста */
-.dark-theme [style*="color: #667eea"] {
-    color: #8b9eff !important;
-}
-
-.dark-theme .product-item.selected {
-    color: var(--text-on-gradient) !important;
-}
-
-/* Футер */
-.footer-bar {
-    background: var(--footer-bg);
-    border-top-color: var(--border-color);
-}
-
-/* Адаптация для мобильных */
-@media (max-width: 768px) {
-    .footer-bar {
-        background: var(--footer-bg);
-    }
-}
-
-/* ============ ИСПРАВЛЕННЫЙ ПОИСК ============ */
-/* Контейнер поиска */
-.search-container {
-    position: relative;
-    z-index: 10;
-    transition: all 0.3s ease;
-}
-
-/* Режим поиска - футер скрыт */
 body.search-mode .footer-bar {
     transform: translateY(100%);
     opacity: 0;
     pointer-events: none;
-    transition: all 0.3s ease;
 }
 
-/* Категории в режиме поиска */
 body.search-mode .categories {
     opacity: 0.7;
     pointer-events: none;
 }
 
-/* Результаты поиска не перекрываются */
-body.search-mode .products-grid {
-    margin-bottom: 20px;
-}
-
-/* Поле поиска при фокусе */
-#searchInput:focus {
-    border-color: #667eea !important;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
-    outline: none;
-}
-
-/* Кнопка очистки */
-#clearSearch {
-    transition: all 0.2s ease;
-}
-
-#clearSearch:hover {
-    background: #e2e8f0;
-}
-
-.dark-theme #clearSearch:hover {
-    background: #4a4a4a;
-}
-
-/* Анимация для поиска */
-@keyframes searchFocus {
-    from {
-        transform: scale(1);
-    }
-    to {
-        transform: scale(1.02);
-    }
-}
-
-#searchInput:focus {
-    animation: searchFocus 0.2s ease forwards;
-}
-
-/* Исправление для пустого квадрата */
-.footer-bar {
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    will-change: transform, opacity;
-}
-
-/* Гарантируем, что футер не занимает место когда скрыт */
-body.search-mode .footer-bar {
-    position: fixed;
-    bottom: -100px;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-}
-
-/* Возвращаем футер в нормальное положение */
-body:not(.search-mode) .footer-bar {
-    position: relative;
-    bottom: auto;
-}
-
-/* Улучшения для мобильных */
+/* ============ АДАПТАЦИЯ ============ */
 @media (max-width: 768px) {
-    body.search-mode .footer-bar {
-        bottom: -100px;
-    }
-    
-    .search-container {
-        margin-bottom: 10px;
-    }
+    .container { padding: 15px; }
+    .header h1 { font-size: 1.8em; }
+    .products-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+    .categories { flex-wrap: nowrap; overflow-x: auto; }
 }
 
-/* Плавное появление/исчезновение */
-.footer-bar {
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+@media (max-width: 480px) {
+    .footer-btn { padding: 10px 8px; font-size: 12px; min-width: 70px; }
+    .products-grid { grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); }
+    .product-icon { font-size: 1.3em; }
+    .product-name { font-size: 10px; }
+    .category-btn { padding: 6px 12px; font-size: 12px; }
+    .header h1 { font-size: 1.5em; }
 }
 
-body.search-mode .footer-bar {
-    opacity: 0;
-    visibility: hidden;
+/* ============ ТЕМНАЯ ТЕМА ============ */
+:root {
+    --bg-primary: #f8fafc;
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --card-bg: #ffffff;
+    --category-bg: #f1f5f9;
+    --danger-bg: #fee2e2;
+    --danger-text: #ef4444;
+    --success-bg: #22c55e;
 }
 
-/* Затемнение категорий при поиске */
-.categories {
-    transition: opacity 0.3s ease;
+body.dark-theme {
+    --bg-primary: #1a1a1a;
+    --text-primary: #ffffff;
+    --text-secondary: #e0e0e0;
+    --text-muted: #a0a0a0;
+    --border-color: #404040;
+    --card-bg: #2d2d2d;
+    --category-bg: #3d3d3d;
+    --danger-bg: #4a2a2a;
+    --danger-text: #ff8a8a;
+    --success-bg: #22c55e;
 }
 
-/* Подсказка для поиска */
-.search-hint {
-    animation: fadeIn 0.3s ease;
-    color: var(--text-muted);
-    font-size: 12px;
-    margin-top: 5px;
-    text-align: center;
+body.dark-theme {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+/* Темная тема - основные элементы */
+.dark-theme .header {
+    background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
 }
 
-/* Адаптация под тему Telegram */
-body {
-    background-color: var(--bg-primary) !important;
-    color: var(--text-primary) !important;
-}
-
-/* Исправление для скролла */
-.content {
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-}
-
-/* Убираем пустой квадрат */
-.footer-bar:empty {
-    display: none;
-}
-
-/* Гарантируем, что продукты видны */
-.products-grid {
-    min-height: 200px;
-}
-
-/* Стили для индикатора загрузки */
-.loading-spinner {
-    border-color: var(--border-color);
-    border-top-color: #667eea;
-}
-
-/* Адаптация для очень маленьких экранов */
-@media (max-width: 380px) {
-    .footer-buttons {
-        flex-direction: column;
-    }
-    
-    .footer-btn {
-        width: 100%;
-    }
-    
-    body.search-mode .footer-bar {
-        bottom: -150px;
-    }
-}
-
-/* ============ ИСПРАВЛЕНИЯ ДЛЯ ТЕМНОЙ ТЕМЫ ============ */
-
-/* Футер с кнопками */
-.dark-theme .footer-bar {
-    background: #2d2d2d !important;
-    border-top-color: #404040 !important;
-}
-
-.dark-theme .footer-btn.secondary {
-    background: #3d3d3d !important;
-    color: #e0e0e0 !important;
-}
-
-.dark-theme .footer-btn.danger {
-    background: #4a2a2a !important;
-    color: #ff8a8a !important;
-}
-
-.dark-theme .footer-btn.primary {
-    background: linear-gradient(135deg, #8b9eff 0%, #9f7aea 100%) !important;
-    color: white !important;
-}
-
-.dark-theme .footer-btn.primary:disabled {
-    background: #3d3d3d !important;
-    color: #808080 !important;
-}
-
-/* Крестик в поиске */
-.dark-theme #clearSearch {
-    background: #3d3d3d !important;
-    color: #e0e0e0 !important;
-    border: none !important;
-}
-
-.dark-theme #clearSearch:hover {
-    background: #4a4a4a !important;
-}
-
-/* Кнопка "Назад" */
-.dark-theme .back-btn {
-    background: #3d3d3d !important;
-    color: #e0e0e0 !important;
-}
-
-.dark-theme .back-btn:hover {
-    background: #4a4a4a !important;
-}
-
-/* Фильтры (Супы, Основные и т.д.) */
-.dark-theme .filter-chip {
-    background: #3d3d3d !important;
-    color: #e0e0e0 !important;
-}
-
-.dark-theme .filter-chip.active {
-    background: #8b9eff !important;
-    color: white !important;
-}
-
-.dark-theme .filter-chip:hover:not(.active) {
-    background: #4a4a4a !important;
-}
-
-/* Статистика */
-.dark-theme .stats-bar {
-    background: #3d3d3d !important;
-    color: #e0e0e0 !important;
-}
-
-.dark-theme .stats-bar span {
-    color: #e0e0e0 !important;
-}
-
-/* Поле поиска */
-.dark-theme #searchInput {
-    background: #3d3d3d !important;
-    border-color: #404040 !important;
-    color: white !important;
-}
-
-.dark-theme #searchInput::placeholder {
-    color: #a0a0a0 !important;
-}
-
-/* Категории */
-.dark-theme .category-btn {
-    background: #3d3d3d !important;
-    color: #e0e0e0 !important;
-}
-
-.dark-theme .category-btn.active {
-    background: #8b9eff !important;
-    color: white !important;
-}
-
-/* Карточки продуктов */
 .dark-theme .product-item {
-    background: #2d2d2d !important;
-    border-color: #404040 !important;
-    color: white !important;
+    background: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--text-primary);
 }
 
 .dark-theme .product-item.selected {
-    background: linear-gradient(135deg, #8b9eff 0%, #9f7aea 100%) !important;
-    color: white !important;
+    background: linear-gradient(135deg, #8b9eff 0%, #9f7aea 100%);
 }
 
-/* Карточки рецептов */
+.dark-theme .category-btn {
+    background: var(--category-bg);
+    color: var(--text-secondary);
+}
+
+.dark-theme .category-btn.active {
+    background: #8b9eff;
+    color: white;
+}
+
+.dark-theme .footer-bar {
+    background: var(--card-bg);
+    border-top-color: var(--border-color);
+}
+
+.dark-theme .footer-btn.secondary {
+    background: var(--category-bg);
+    color: var(--text-secondary);
+}
+
+.dark-theme .footer-btn.danger {
+    background: var(--danger-bg);
+    color: var(--danger-text);
+}
+
+.dark-theme .footer-btn.primary {
+    background: linear-gradient(135deg, #8b9eff 0%, #9f7aea 100%);
+}
+
+.dark-theme #searchInput {
+    background: var(--category-bg);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+.dark-theme #clearSearch {
+    background: var(--category-bg);
+    color: var(--text-secondary);
+}
+
+.dark-theme .stats-bar {
+    background: var(--category-bg);
+    color: var(--text-secondary);
+}
+
 .dark-theme .recipe-card {
-    background: #2d2d2d !important;
+    background: var(--card-bg);
 }
 
 .dark-theme .recipe-title {
-    color: white !important;
+    color: var(--text-primary);
 }
 
 .dark-theme .recipe-category {
-    background: #3d3d3d !important;
-    color: #a0a0a0 !important;
+    background: var(--category-bg);
+    color: var(--text-muted);
 }
 
-/* Текст "Не хватает" */
-.dark-theme p[style*="color: #ef4444"] {
-    background: #4a2a2a !important;
-    color: #ff8a8a !important;
+.dark-theme .back-btn {
+    background: var(--category-bg);
+    color: var(--text-secondary);
 }
 
-.dark-theme p[style*="color: #22c55e"] {
-    background: #22c55e !important;
-    color: white !important;
+.dark-theme .filter-chip {
+    background: var(--category-bg);
+    color: var(--text-secondary);
 }
 
-/* Счетчик */
+.dark-theme .filter-chip.active {
+    background: #8b9eff;
+    color: white;
+}
+
 .dark-theme .selected-count {
-    color: #a0a0a0 !important;
-    border-top-color: #404040 !important;
+    color: var(--text-muted);
+    border-top-color: var(--border-color);
 }
 
-/* Детальный рецепт */
+/* ============ ТЕМНАЯ ТЕМА - ДЕТАЛЬНЫЙ РЕЦЕПТ ============ */
 .dark-theme .recipe-detail {
-    background: #2d2d2d !important;
-}
-
-.dark-theme .ingredients-list {
-    background: #3d3d3d !important;
-}
-
-.dark-theme .ingredients-list li {
-    background: #2d2d2d !important;
-    color: white !important;
-}
-
-.dark-theme .ingredients-list li span:last-child {
-    color: #8b9eff !important;
-}
-
-.dark-theme .instructions {
-    color: #e0e0e0 !important;
-}
-
-.dark-theme .instructions li span {
-    background: #8b9eff !important;
-    color: white !important;
-}
-
-/* ============ ИСПРАВЛЕНИЕ БЕЛОЙ ОБЛАСТИ ИНГРЕДИЕНТОВ ============ */
-
-.dark-theme .ingredients-list {
-    background: #3d3d3d !important;
-}
-
-.dark-theme .ingredients-list li {
-    background: #2d2d2d !important;
-    color: white !important;
-    border: 1px solid #404040 !important;
-}
-
-.dark-theme .ingredients-list li span {
-    color: white !important;
-}
-
-.dark-theme .ingredients-list li span:last-child {
-    color: #8b9eff !important;
-    font-weight: 600;
-}
-
-.dark-theme .ingredients-list h3 {
-    color: white !important;
-}
-
-/* Если есть другие белые элементы внутри рецепта */
-.dark-theme .recipe-detail {
-    background: #2d2d2d !important;
-}
-
-.dark-theme .instructions {
-    color: #e0e0e0 !important;
-}
-
-.dark-theme .instructions li {
-    color: #e0e0e0 !important;
-}
-
-.dark-theme .instructions li span {
-    background: #8b9eff !important;
-    color: white !important;
-}
-
-.dark-theme .recipe-meta .meta-item {
-    background: #3d3d3d !important;
-    color: #e0e0e0 !important;
-}
-
-/* ============ ИСПРАВЛЕНИЕ ДЕТАЛЬНОГО РЕЦЕПТА ============ */
-
-.dark-theme .recipe-detail {
-    background: #2d2d2d !important;
-    color: white !important;
+    background: var(--card-bg);
+    color: var(--text-primary);
 }
 
 .dark-theme .recipe-detail h1,
 .dark-theme .recipe-detail h3 {
+    color: var(--text-primary);
+}
+
+.dark-theme .ingredients-list {
+    background: var(--category-bg);
+}
+
+.dark-theme .ingredients-list li {
+    background: var(--card-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.dark-theme .ingredients-list li span:first-child {
+    color: var(--text-primary);
+}
+
+.dark-theme .ingredients-list li span:last-child {
+    color: #8b9eff;
+}
+
+.dark-theme .meta-item {
+    background: var(--category-bg);
+    color: var(--text-secondary);
+}
+
+.dark-theme .instructions {
+    color: var(--text-secondary);
+}
+
+.dark-theme .instructions li span {
+    background: #8b9eff;
+    color: white;
+}
+
+/* ============ ТЕКСТ "НЕ ХВАТАЕТ" ============ */
+.dark-theme p[style*="color: #ef4444"] {
+    background: var(--danger-bg) !important;
+    color: var(--danger-text) !important;
+}
+
+.dark-theme p[style*="color: #22c55e"] {
+    background: var(--success-bg) !important;
     color: white !important;
-}
-
-.dark-theme .recipe-detail .ingredients-list {
-    background: #3d3d3d !important;
-}
-
-.dark-theme .recipe-detail .ingredients-list li {
-    background: #2d2d2d !important;
-    color: white !important;
-    border: 1px solid #404040 !important;
-    padding: 10px !important;
-    margin: 5px 0 !important;
-    border-radius: 10px !important;
-}
-
-.dark-theme .recipe-detail .ingredients-list li span {
-    color: white !important;
-}
-
-.dark-theme .recipe-detail .ingredients-list li span:last-child {
-    color: #8b9eff !important;
-    font-weight: bold;
-}
-
-.dark-theme .recipe-detail .instructions {
-    color: #e0e0e0 !important;
-}
-
-.dark-theme .recipe-detail .instructions li {
-    color: #e0e0e0 !important;
-    margin: 10px 0 !important;
-}
-
-.dark-theme .recipe-detail .instructions li span {
-    background: #8b9eff !important;
-    color: white !important;
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    border-radius: 12px;
-    text-align: center;
-    line-height: 24px;
-    margin-right: 10px;
-}
-
-.dark-theme .recipe-detail .meta-item {
-    background: #3d3d3d !important;
-    color: #e0e0e0 !important;
-    padding: 8px 16px !important;
-    border-radius: 30px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-}
-
-.dark-theme .recipe-detail .meta-item span {
-    color: #e0e0e0 !important;
-}
-
-/* Исправление для блока с количеством (500 г, 800 г и т.д.) */
-.dark-theme .recipe-detail .ingredients-list li {
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-}
-
-.dark-theme .recipe-detail .ingredients-list li span:first-child {
-    color: white !important;
-}
-
-.dark-theme .recipe-detail .ingredients-list li span:last-child {
-    color: #8b9eff !important;
-    font-size: 1.1em;
 }
