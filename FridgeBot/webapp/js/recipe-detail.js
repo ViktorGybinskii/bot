@@ -30,7 +30,7 @@ function displayRecipeDetail(recipe) {
     if (!container) return;
     
     container.innerHTML = `
-        <img src="${recipe.image}" alt="${recipe.name}" class="recipe-detail-image">
+        <div style="font-size: 5em; text-align: center;">${recipe.emoji || '🍽️'}</div>
         
         <div class="recipe-detail-content">
             <h1 class="recipe-detail-title">${recipe.name}</h1>

@@ -614,6 +614,13 @@ function showRecipesPage() {
             return product ? product.name : id;
         });
     
+    console.log('Выбранные продукты:', selectedNames);
+    
+    if (selectedNames.length === 0) {
+        alert('Выберите хотя бы один продукт!');
+        return;
+    }
+    
     window.location.href = `recipes.html?ingredients=${encodeURIComponent(selectedNames.join(','))}`;
 }
 
@@ -814,18 +821,53 @@ function renderProductsPage() {
 
 // Отрисовка страницы с рецептами
 function renderRecipesPage() {
-    const content = document.getElementById('content');
-    
+    // В начале функции renderRecipesPage добавьте:
+    console.log('URL параметры:', window.location.search);
+    console.log('🔥 renderRecipesPage ВЫЗВАНА!');
+    console.log('URL:', window.location.href);
+    console.log('currentRecipes ДО обработки:', currentRecipes ? currentRecipes.length : 0)
+
     const urlParams = new URLSearchParams(window.location.search);
     const isAllMode = urlParams.has('all');
+    const ingredientsParam = urlParams.get('ingredients');
     const urlSearchQuery = urlParams.get('search') || '';
+
+    // Если есть параметр ingredients - это поиск по продуктам
+    if (ingredientsParam && !isAllMode) {
+        console.log('Режим: поиск по продуктам', ingredientsParam);
+        
+        const ingredients = ingredientsParam.split(',');
+        const searchResults = findRecipesByIngredients(ingredients);
+        
+        if (searchResults && searchResults.length > 0) {
+            currentRecipes = searchResults;
+            window._allRecipes = [...searchResults];
+            window._paginationData = {
+                total: searchResults.length,
+                currentPage: 1,
+                totalPages: Math.ceil(searchResults.length / 50),
+                limit: 50
+            };
+        } else {
+            console.warn('Рецептов не найдено');
+            currentRecipes = [];
+            window._allRecipes = [];
+            window._paginationData = {
+                total: 0,
+                currentPage: 1,
+                totalPages: 0,
+                limit: 50
+            };
+        }
+    }
+    const content = document.getElementById('content');
     
-   let recipesHtml = `
-    <div class="results-header" style="display: flex; justify-content: ${isAllMode ? 'center' : 'space-between'}; align-items: center; margin-bottom: 15px;">
-        ${!isAllMode ? '<button class="back-btn" onclick="goBackToProducts()" style="background: #f1f5f9; border: none; padding: 8px 15px; border-radius: 30px; cursor: pointer;">← Назад</button>' : ''}
-        <span style="font-weight: 600; color: #475569;">Найдено: ${currentRecipes.length}</span>
-    </div>
-`;
+    let recipesHtml = `
+        <div class="results-header" style="display: flex; justify-content: ${isAllMode ? 'center' : 'space-between'}; align-items: center; margin-bottom: 15px;">
+            ${!isAllMode ? '<button class="back-btn" onclick="goBackToProducts()" style="background: #f1f5f9; border: none; padding: 8px 15px; border-radius: 30px; cursor: pointer;">← Назад</button>' : ''}
+            <span style="font-weight: 600; color: #475569;">Найдено: ${window._paginationData?.total || currentRecipes.length}</span>
+        </div>
+    `;
     
     if (isAllMode) {
         recipesHtml += `
@@ -856,7 +898,7 @@ function renderRecipesPage() {
             <span class="filter-chip ${currentFilterCategory === 'dessert' ? 'active' : ''}" onclick="filterRecipes(event, 'dessert')">Десерты</span>
         </div>
         
-        <div class="recipes-grid">
+        <div class="recipes-grid" id="recipesGrid">
     `;
     
     if (currentRecipes.length === 0) {
@@ -905,7 +947,36 @@ function renderRecipesPage() {
     }
     
     recipesHtml += `</div>`;
+    
+    // Добавляем триггер для подгрузки, если есть ещё страницы
+    if (window._paginationData && window._paginationData.currentPage < window._paginationData.totalPages) {
+        recipesHtml += `
+            <div id="scroll-trigger" style="height: 20px; margin: 20px 0;"></div>
+            <div id="loading-indicator" style="text-align: center; padding: 20px; display: none;">
+                <div class="loading-spinner" style="width: 30px; height: 30px; border: 3px solid #f3f3f3; border-top: 3px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+                <p style="margin-top: 10px; color: #64748b;">Загрузка...</p>
+            </div>
+        `;
+    }
+    
     content.innerHTML = recipesHtml;
+    
+    // Добавляем наблюдатель для бесконечной прокрутки
+    if (window._paginationData && window._paginationData.currentPage < window._paginationData.totalPages) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !isLoading) {
+                    isLoading = true;
+                    const loadingIndicator = document.getElementById('loading-indicator');
+                    if (loadingIndicator) loadingIndicator.style.display = 'block';
+                    loadMoreRecipes();
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '100px' });
+        
+        const trigger = document.getElementById('scroll-trigger');
+        if (trigger) observer.observe(trigger);
+    }
     
     if (isAllMode) {
         const searchInput = document.getElementById('recipeSearchInput');
@@ -979,7 +1050,15 @@ window.filterRecipes = function(event, category) {
         );
     }
     
-    currentRecipes = filtered;
+    // Обновляем пагинацию для отфильтрованных результатов
+    window._paginationData = {
+        total: filtered.length,
+        currentPage: 1,
+        totalPages: Math.ceil(filtered.length / 50),
+        limit: 50
+    };
+    
+    currentRecipes = filtered.slice(0, 50);
     renderRecipesPage();
 };
 
@@ -1198,6 +1277,7 @@ style.textContent = `
 document.head.appendChild(style);
 
 // Определяем страницу
+// Определяем страницу
 document.addEventListener('DOMContentLoaded', () => {
     const path = window.location.pathname;
     
@@ -1205,32 +1285,110 @@ document.addEventListener('DOMContentLoaded', () => {
         loadSelectedProducts();
         
         const urlParams = new URLSearchParams(window.location.search);
+        const isAllMode = urlParams.has('all');
+        const ingredientsParam = urlParams.get('ingredients');
         
-        if (urlParams.has('all')) {
-            currentPage = 'recipes';
-            currentFilterCategory = 'all';
+        console.log('Страница рецептов, режимы - all:', isAllMode, 'ingredients:', ingredientsParam);
+        
+        if (isAllMode) {
+            console.log('Режим: Все рецепты');
             
-            currentRecipes = getAllRecipes().map(recipe => ({
+            // Проверяем, что функция getAllRecipes существует
+            if (typeof getAllRecipes !== 'function') {
+                console.error('Функция getAllRecipes не найдена! Проверьте подключение recipes.js');
+                const content = document.getElementById('content');
+                if (content) {
+                    content.innerHTML = `
+                        <div style="text-align: center; padding: 50px;">
+                            <span style="font-size: 48px;">😕</span>
+                            <h2>Ошибка загрузки</h2>
+                            <p>Не удалось загрузить рецепты</p>
+                            <button onclick="location.reload()" style="padding: 10px 20px; margin-top: 20px; background: #667eea; color: white; border: none; border-radius: 30px; cursor: pointer;">
+                                🔄 Перезагрузить
+                            </button>
+                        </div>
+                    `;
+                }
+                return;
+            }
+            
+            // ПОЛУЧАЕМ ДАННЫЕ С ПАГИНАЦИЕЙ (страница 1, лимит 50)
+            const recipesData = getAllRecipes(1, 50);
+            
+            currentRecipes = recipesData.recipes.map(recipe => ({
                 ...recipe,
                 matchPercentage: 100,
                 missingIngredients: []
             }));
             
-            window._allRecipes = [...currentRecipes];
+            // Сохраняем ВСЕ рецепты для фильтрации и поиска
+            window._allRecipes = (window.recipesDatabase || []).map(recipe => ({
+                ...recipe,
+                matchPercentage: 100,
+                missingIngredients: []
+            }));
+            
+            // Запоминаем данные пагинации для дальнейшей подгрузки
+            window._paginationData = {
+                total: recipesData.total,
+                currentPage: 1,
+                totalPages: recipesData.totalPages,
+                limit: 50
+            };
             
             const urlSearchQuery = urlParams.get('search') || '';
             if (urlSearchQuery) {
-                currentRecipes = currentRecipes.filter(recipe =>
+                // Поиск по ВСЕЙ базе
+                const filteredRecipes = window._allRecipes.filter(recipe =>
                     recipe.name.toLowerCase().includes(urlSearchQuery.toLowerCase()) ||
-                    recipe.category.toLowerCase().includes(urlSearchQuery.toLowerCase())
+                    (recipe.category && recipe.category.toLowerCase().includes(urlSearchQuery.toLowerCase()))
                 );
+                
+                // Обновляем данные с учётом поиска
+                window._paginationData.total = filteredRecipes.length;
+                window._paginationData.totalPages = Math.ceil(filteredRecipes.length / 50);
+                
+                // Берём первую страницу отфильтрованных рецептов
+                currentRecipes = filteredRecipes.slice(0, 50);
             }
             
+            // ВЫЗЫВАЕМ ОТРИСОВКУ
             renderRecipesPage();
-        } else if (urlParams.has('ingredients')) {
-            const ingredients = urlParams.get('ingredients').split(',');
-            currentRecipes = findRecipesByIngredients(ingredients);
-            window._allRecipes = [...currentRecipes];
+        }
+        else if (ingredientsParam) {
+            console.log('Режим: Поиск по продуктам');
+            
+            // Проверяем, что функция поиска существует
+            if (typeof findRecipesByIngredients !== 'function') {
+                console.error('Функция findRecipesByIngredients не найдена!');
+                return;
+            }
+            
+            const ingredients = ingredientsParam.split(',');
+            const searchResults = findRecipesByIngredients(ingredients);
+            
+            if (searchResults && searchResults.length > 0) {
+                currentRecipes = searchResults;
+                window._allRecipes = [...searchResults];
+                window._paginationData = {
+                    total: searchResults.length,
+                    currentPage: 1,
+                    totalPages: Math.ceil(searchResults.length / 50),
+                    limit: 50
+                };
+            } else {
+                console.warn('Рецептов не найдено');
+                currentRecipes = [];
+                window._allRecipes = [];
+                window._paginationData = {
+                    total: 0,
+                    currentPage: 1,
+                    totalPages: 0,
+                    limit: 50
+                };
+            }
+            
+            // ВЫЗЫВАЕМ ОТРИСОВКУ
             renderRecipesPage();
         }
     } else {
@@ -1266,6 +1424,310 @@ window.handleSearchFocus = handleSearchFocus;
 window.toggleProduct = toggleProduct;
 window.filterRecipes = filterRecipes;
 window.viewRecipe = viewRecipe;
+window.goBackToProducts = goBackToProducts;
+
+// Функция для загрузки следующей страницы рецептов
+window.loadMoreRecipes = function() {
+    if (!window._paginationData) {
+        isLoading = false;
+        return;
+    }
+    
+    const nextPage = window._paginationData.currentPage + 1;
+    if (nextPage > window._paginationData.totalPages) {
+        isLoading = false;
+        const loadingIndicator = document.getElementById('loading-indicator');
+        if (loadingIndicator) loadingIndicator.style.display = 'none';
+        return;
+    }
+    
+    const recipesData = getAllRecipes(nextPage, 50);
+    
+    const newRecipes = recipesData.recipes.map(recipe => ({
+        ...recipe,
+        matchPercentage: 100,
+        missingIngredients: []
+    }));
+    
+    // Добавляем новые рецепты к текущим
+    currentRecipes = [...currentRecipes, ...newRecipes];
+    window._paginationData.currentPage = nextPage;
+    
+    // Обновляем отображение
+    appendRecipesToGrid(newRecipes);
+    
+    // Обновляем счётчик
+    const resultsSpan = document.querySelector('.results-header span');
+    if (resultsSpan) {
+        resultsSpan.textContent = `Найдено: ${window._paginationData.total}`;
+    }
+    
+    isLoading = false;
+    const loadingIndicator = document.getElementById('loading-indicator');
+    if (loadingIndicator) loadingIndicator.style.display = 'none';
+    
+    // Если загрузили последнюю страницу, убираем триггер
+    if (nextPage >= window._paginationData.totalPages) {
+        const trigger = document.getElementById('scroll-trigger');
+        if (trigger) trigger.style.display = 'none';
+    }
+};
+
+// Функция для добавления рецептов в сетку
+function appendRecipesToGrid(recipes) {
+    const grid = document.getElementById('recipesGrid');
+    if (!grid) return;
+    
+    recipes.forEach(recipe => {
+        const recipeCard = createRecipeCard(recipe);
+        grid.appendChild(recipeCard);
+    });
+}
+
+// Функция создания карточки рецепта
+function createRecipeCard(recipe) {
+    const card = document.createElement('div');
+    card.className = 'recipe-card';
+    card.onclick = () => viewRecipe(recipe.id);
+    
+    let badgeColor = '#ef4444';
+    if (recipe.matchPercentage >= 80) badgeColor = '#22c55e';
+    else if (recipe.matchPercentage >= 50) badgeColor = '#eab308';
+    
+    const missingText = recipe.missingIngredients && recipe.missingIngredients.length > 0 
+        ? `❌ Не хватает: ${recipe.missingIngredients.slice(0, 3).join(', ')}${recipe.missingIngredients.length > 3 ? '...' : ''}`
+        : recipe.missingIngredients && recipe.missingIngredients.length === 0
+        ? '✅ Все продукты есть!'
+        : '';
+    
+    card.innerHTML = `
+        <div class="recipe-image" style="height: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; display: flex; align-items: center; justify-content: center; font-size: 3em;">
+            ${recipe.emoji || '🍽️'}
+        </div>
+        <div class="recipe-info" style="padding: 15px;">
+            <h3 class="recipe-title" style="font-size: 16px; margin-bottom: 5px;">${recipe.name}</h3>
+            <span class="recipe-category" style="font-size: 12px; color: #64748b;">${recipe.category || ''} · ${recipe.time || ''}</span>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0;">
+                <span class="match-badge" style="background: ${badgeColor}; padding: 4px 8px; border-radius: 20px; font-size: 12px; color: white;">
+                    Совпадение: ${recipe.matchPercentage}%
+                </span>
+                <span style="font-size: 12px; color: #64748b;">${recipe.calories || ''} ккал</span>
+            </div>
+            ${missingText ? `
+                <p style="font-size: 12px; color: ${recipe.missingIngredients && recipe.missingIngredients.length === 0 ? '#22c55e' : '#ef4444'}; margin-top: 5px; padding: 5px; background: #f8fafc; border-radius: 8px;">
+                    ${missingText}
+                </p>
+            ` : ''}
+        </div>
+    `;
+    
+    return card;
+}
 
 injectDarkThemeStyles();
 applyTheme();
+
+// ============ НОВЫЕ ФУНКЦИИ ДЛЯ СТРАНИЦЫ РЕЦЕПТОВ ============
+
+// Показать/скрыть футер на странице рецептов
+function toggleRecipesFooter(show) {
+    const footerBar = document.querySelector('.footer-bar');
+    if (!footerBar) return;
+    
+    if (show) {
+        footerBar.style.display = 'block';
+        footerBar.style.transform = 'translateY(0)';
+        footerBar.style.opacity = '1';
+        footerBar.style.pointerEvents = 'auto';
+    } else {
+        footerBar.style.display = 'none';
+    }
+}
+
+// Обработчик кнопки "На главную"
+function setupBackToMainButton() {
+    const backBtn = document.getElementById('backToMainBtn');
+    if (backBtn) {
+        backBtn.addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+    }
+}
+
+// Обновлённая функция renderRecipesPage (с кнопкой назад в хедере)
+function renderRecipesPage() {
+    const content = document.getElementById('content');
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const isAllMode = urlParams.has('all');
+    const urlSearchQuery = urlParams.get('search') || '';
+    
+    // ПОКАЗЫВАЕМ ФУТЕР на странице рецептов
+    toggleRecipesFooter(true);
+    setupBackToMainButton();
+    
+    let recipesHtml = `
+        <div class="results-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <button class="back-btn" onclick="goBackToRecipes()" style="background: #f1f5f9; border: none; padding: 8px 15px; border-radius: 30px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;">
+                ← Назад
+            </button>
+            <span style="font-weight: 600; color: #475569;">Найдено: ${window._paginationData?.total || currentRecipes.length}</span>
+        </div>
+    `;
+    
+    // Добавляем поиск (только в режиме "все рецепты")
+    if (isAllMode) {
+        recipesHtml += `
+            <div class="search-container" style="margin-bottom: 15px;">
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" 
+                        id="recipeSearchInput" 
+                        placeholder="🔍 Поиск по названию рецепта..." 
+                        value="${urlSearchQuery}"
+                        style="flex: 1; padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 30px; font-size: 16px; transition: all 0.3s ease;">
+                    <button id="clearRecipeSearch" 
+                            style="padding: 0 20px; background: #f1f5f9; border: none; border-radius: 30px; cursor: pointer; font-size: 18px;">
+                        ✕
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Фильтры
+    recipesHtml += `
+        <div class="filter-chips" style="display: flex; gap: 8px; overflow-x: auto; padding: 10px 0; margin-bottom: 15px;">
+            <span class="filter-chip ${currentFilterCategory === 'all' ? 'active' : ''}" onclick="filterRecipes(event, 'all')">Все</span>
+            <span class="filter-chip ${currentFilterCategory === 'breakfast' ? 'active' : ''}" onclick="filterRecipes(event, 'breakfast')">Завтраки</span>
+            <span class="filter-chip ${currentFilterCategory === 'soup' ? 'active' : ''}" onclick="filterRecipes(event, 'soup')">Супы</span>
+            <span class="filter-chip ${currentFilterCategory === 'main' ? 'active' : ''}" onclick="filterRecipes(event, 'main')">Основные</span>
+            <span class="filter-chip ${currentFilterCategory === 'salad' ? 'active' : ''}" onclick="filterRecipes(event, 'salad')">Салаты</span>
+            <span class="filter-chip ${currentFilterCategory === 'baking' ? 'active' : ''}" onclick="filterRecipes(event, 'baking')">Выпечка</span>
+            <span class="filter-chip ${currentFilterCategory === 'dessert' ? 'active' : ''}" onclick="filterRecipes(event, 'dessert')">Десерты</span>
+        </div>
+        
+        <div class="recipes-grid" id="recipesGrid">
+    `;
+    
+    // Отображаем рецепты
+    if (currentRecipes.length === 0) {
+        recipesHtml += `
+            <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+                <span style="font-size: 48px;">😔</span>
+                <p style="margin-top: 20px; font-size: 18px;">Рецептов не найдено</p>
+                <p style="font-size: 14px; color: #64748b;">Попробуйте изменить запрос</p>
+            </div>
+        `;
+    } else {
+        currentRecipes.forEach(recipe => {
+            let badgeColor = '#ef4444';
+            if (recipe.matchPercentage >= 80) badgeColor = '#22c55e';
+            else if (recipe.matchPercentage >= 50) badgeColor = '#eab308';
+            
+            const missingText = recipe.missingIngredients && recipe.missingIngredients.length > 0 
+                ? `❌ Не хватает: ${recipe.missingIngredients.slice(0, 3).join(', ')}${recipe.missingIngredients.length > 3 ? '...' : ''}`
+                : recipe.missingIngredients && recipe.missingIngredients.length === 0
+                ? '✅ Все продукты есть!'
+                : '';
+            
+            recipesHtml += `
+                <div class="recipe-card" onclick="viewRecipe(${recipe.id})">
+                    <div class="recipe-image" style="height: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; display: flex; align-items: center; justify-content: center; font-size: 3em;">
+                        ${recipe.emoji || '🍽️'}
+                    </div>
+                    <div class="recipe-info" style="padding: 15px;">
+                        <h3 class="recipe-title" style="font-size: 16px; margin-bottom: 5px;">${recipe.name}</h3>
+                        <span class="recipe-category" style="font-size: 12px; color: #64748b;">${recipe.category} · ${recipe.time}</span>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0;">
+                            <span class="match-badge" style="background: ${badgeColor}; padding: 4px 8px; border-radius: 20px; font-size: 12px; color: white;">
+                                Совпадение: ${recipe.matchPercentage}%
+                            </span>
+                            <span style="font-size: 12px; color: #64748b;">${recipe.calories} ккал</span>
+                        </div>
+                        ${missingText ? `
+                            <p style="font-size: 12px; color: ${recipe.missingIngredients && recipe.missingIngredients.length === 0 ? '#22c55e' : '#ef4444'}; margin-top: 5px; padding: 5px; background: #f8fafc; border-radius: 8px;">
+                                ${missingText}
+                            </p>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        });
+    }
+    
+    recipesHtml += `</div>`;
+    
+    // Триггер для подгрузки
+    if (window._paginationData && window._paginationData.currentPage < window._paginationData.totalPages) {
+        recipesHtml += `
+            <div id="scroll-trigger" style="height: 20px; margin: 20px 0;"></div>
+            <div id="loading-indicator" style="text-align: center; padding: 20px; display: none;">
+                <div class="loading-spinner" style="width: 30px; height: 30px; border: 3px solid #f3f3f3; border-top: 3px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+                <p style="margin-top: 10px; color: #64748b;">Загрузка...</p>
+            </div>
+        `;
+    }
+    
+    content.innerHTML = recipesHtml;
+    
+    // Наблюдатель для бесконечной прокрутки
+    if (window._paginationData && window._paginationData.currentPage < window._paginationData.totalPages) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !isLoading) {
+                    isLoading = true;
+                    const loadingIndicator = document.getElementById('loading-indicator');
+                    if (loadingIndicator) loadingIndicator.style.display = 'block';
+                    loadMoreRecipes();
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '100px' });
+        
+        const trigger = document.getElementById('scroll-trigger');
+        if (trigger) observer.observe(trigger);
+    }
+    
+    // Обработчики поиска
+    if (isAllMode) {
+        const searchInput = document.getElementById('recipeSearchInput');
+        const clearSearch = document.getElementById('clearRecipeSearch');
+        
+        if (searchInput) {
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const query = searchInput.value.trim();
+                    const url = new URL(window.location);
+                    if (query) {
+                        url.searchParams.set('search', query);
+                    } else {
+                        url.searchParams.delete('search');
+                    }
+                    window.location.href = url.toString();
+                }
+            });
+        }
+        
+        if (clearSearch) {
+            clearSearch.addEventListener('click', () => {
+                const url = new URL(window.location);
+                url.searchParams.delete('search');
+                window.location.href = url.toString();
+            });
+        }
+    }
+}
+
+// Функция возврата на главную
+window.goBackToRecipes = function() {
+    window.location.href = 'index.html';
+};
+
+// Переопределяем функцию для детального просмотра
+const originalViewRecipe = window.viewRecipe;
+window.viewRecipe = function(id) {
+    // Скрываем футер на детальной странице
+    toggleRecipesFooter(false);
+    // Вызываем оригинальную функцию
+    originalViewRecipe(id);
+};

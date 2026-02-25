@@ -11,12 +11,33 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- Только контент, без нижней панели -->
-        <div class="content" id="content" style="padding-bottom: 20px;">
+        <!-- Контент с рецептами -->
+        <div class="content" id="content">
             <!-- Сюда будут загружаться рецепты -->
+        </div>
+        
+        <!-- Футер с кнопкой "На главную" -->
+        <div class="footer-bar" id="footerBar" style="display: none;">
+            <div class="footer-buttons" id="footerButtons">
+                <button class="footer-btn primary" id="backToMainBtn" style="width: 100%;">
+                    🏠 На главную
+                </button>
+            </div>
         </div>
     </div>
 
+    <!-- Все категории рецептов -->
+    <script src="js/recipes/main-dishes.js"></script>
+    <script src="js/recipes/salads.js"></script>
+    <script src="js/recipes/soups.js"></script>
+    <script src="js/recipes/breakfast.js"></script>
+    <script src="js/recipes/baking.js"></script>
+    <script src="js/recipes/desserts.js"></script>
+    
+    <!-- Загрузчик -->
+    <script src="js/recipes/loader.js"></script>
+    
+    <!-- Основные скрипты -->
     <script src="js/recipes.js"></script>
     <script src="js/main.js"></script>
 </body>
