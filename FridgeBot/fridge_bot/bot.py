@@ -68,34 +68,34 @@ async def get_webapp_url(user_id: int, page: str) -> str:
     """Возвращает URL с правильным параметром premium"""
     subscription = await get_user_subscription(user_id)
     
-    # Определяем базовый URL и параметры
-    if '?' in page:
-        base_url, existing_params = page.split('?', 1)
-        separator = '&'
-    else:
-        base_url = page
-        existing_params = ''
-        separator = '?'
-    
-    # Добавляем параметр premium
     premium_param = "1" if subscription else "0"
     
-    # Собираем финальный URL
-    if existing_params:
-        full_url = f"{WEB_APP_URL}/{base_url}?{existing_params}{separator}premium={premium_param}"
+    if '?' in page:
+        url = f"{WEB_APP_URL}/{page}&premium={premium_param}"
     else:
-        full_url = f"{WEB_APP_URL}/{base_url}{separator}premium={premium_param}"
+        url = f"{WEB_APP_URL}/{page}?premium={premium_param}"
     
-    print(f"🔗 Сгенерирован URL для user {user_id}: {full_url} (premium={premium_param})")
-    return full_url
+    print(f"🔗 Сгенерирован URL для user {user_id}: {url}")
+    return url
 
-# ============ КЛАВИАТУРЫ ============
-def get_main_menu():
+# ============ ФУНКЦИЯ ДЛЯ СОЗДАНИЯ ГЛАВНОГО МЕНЮ ============
+async def get_main_menu(user_id: int):
+    """Создаёт меню с кнопками, которые сразу открывают WebApp"""
     builder = ReplyKeyboardBuilder()
-    # Это просто текст кнопок, они НЕ открывают WebApp напрямую
-    builder.button(text="🍳 Выбрать продукты")
+    
+    subscription = await get_user_subscription(user_id)
+    premium_param = "1" if subscription else "0"
+    
+    # Кнопки СРАЗУ открывают WebApp
+    builder.button(
+        text="🍳 Выбрать продукты", 
+        web_app=WebAppInfo(url=await get_webapp_url(user_id, "index.html"))
+    )
     builder.button(text="🌟 Подписка")
-    builder.button(text="📚 Все рецепты")
+    builder.button(
+        text="📚 Все рецепты", 
+        web_app=WebAppInfo(url=await get_webapp_url(user_id, "recipes.html?all=true"))
+    )
     builder.adjust(2, 1)
     return builder.as_markup(resize_keyboard=True)
 
@@ -117,8 +117,8 @@ async def cmd_start(message: types.Message):
         f"━━━━━━━━━━━━━━━━━━━━━━\n\n"
         f"{'🌟 <b>Premium активен</b>' if subscription else '🎁 <b>Бесплатно:</b> 300 рецептов'}\n"
         f"{status_text}\n\n"
-        f"👇 <b>Выбери действие в меню ниже</b>",
-        reply_markup=get_main_menu(),
+        f"👇 <b>Нажмите на кнопку ниже чтобы открыть Mini App</b>",
+        reply_markup=await get_main_menu(user_id),
         parse_mode="HTML"
     )
 
@@ -151,62 +151,16 @@ async def cmd_give_premium(message: types.Message):
     
     expires = await update_user_subscription(user_id, username, first_name, 365)
     
-    url = await get_webapp_url(user_id, "index.html")
-    
+    # Обновляем меню с новым статусом
     await message.answer(
         f"✅ <b>Premium активирован!</b>\n\n"
         f"📅 Действует до: {expires.strftime('%d.%m.%Y')}\n"
-        f"👑 Теперь вам доступны все 1825 рецептов!\n\n"
-        f"👇 <b>Нажмите кнопку ниже</b>",
-        reply_markup=ReplyKeyboardMarkup(
-            keyboard=[[KeyboardButton(text="🍳 Открыть Fridge Chef", web_app=WebAppInfo(url=url))]],
-            resize_keyboard=True
-        ),
+        f"👑 Теперь вам доступны все 1825 рецептов!",
+        reply_markup=await get_main_menu(user_id),
         parse_mode="HTML"
     )
 
-# ============ ОБРАБОТЧИКИ ТЕКСТОВЫХ КНОПОК ============
-@dp.message(lambda message: message.text == "🍳 Выбрать продукты")
-async def open_products(message: types.Message):
-    user_id = message.from_user.id
-    subscription = await get_user_subscription(user_id)
-    
-    premium_param = "1" if subscription else "0"
-    url = f"{WEB_APP_URL}/index.html?premium={premium_param}"
-    
-    print(f"🔗 Открываем Mini App для {user_id}: {url}")
-    
-    # Используем INLINE кнопку вместо обычной
-    keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="🍳 Открыть Fridge Chef", web_app=WebAppInfo(url=url))]
-    ])
-    
-    await message.answer(
-        "👇 Нажмите кнопку чтобы открыть",
-        reply_markup=keyboard,
-        parse_mode="HTML"
-    )
-
-@dp.message(lambda message: message.text == "📚 Все рецепты")
-async def open_all_recipes(message: types.Message):
-    user_id = message.from_user.id
-    subscription = await get_user_subscription(user_id)
-    
-    premium_param = "1" if subscription else "0"
-    url = f"{WEB_APP_URL}/recipes.html?all=true&premium={premium_param}"
-    
-    print(f"🔗 Открываем Все рецепты для {user_id}: {url}")
-    
-    keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="📚 Открыть все рецепты", web_app=WebAppInfo(url=url))]
-    ])
-    
-    await message.answer(
-        "👇 Нажмите кнопку чтобы открыть",
-        reply_markup=keyboard,
-        parse_mode="HTML"
-    )
-
+# ============ КНОПКА ПОДПИСКИ ============
 @dp.message(lambda message: message.text == "🌟 Подписка")
 async def cmd_subscribe(message: types.Message):
     user_id = message.from_user.id
@@ -221,8 +175,8 @@ async def cmd_subscribe(message: types.Message):
             f"Подписка продлевается автоматически.\n"
             f"Управление подпиской в настройках Telegram."
         )
+        # Убрана кнопка "Мои подписки", оставлена только "Пополнить баланс"
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton(text="📋 Мои подписки", url="https://t.me/stars?start=subscriptions")],
             [InlineKeyboardButton(text="⭐ Пополнить баланс", url="https://t.me/stars?start=topup")]
         ])
     else:
@@ -280,17 +234,12 @@ async def payment_success_handler(message: types.Message):
     
     expires = await update_user_subscription(user_id, username, first_name)
     
-    url = await get_webapp_url(user_id, "index.html?premium=1")
-    
     await message.answer(
         f"✅ <b>Оплата прошла успешно!</b>\n\n"
         f"🌟 Premium активирован до: {expires.strftime('%d.%m.%Y')}\n"
         f"💫 Списано: 150 ⭐\n\n"
-        f"👇 <b>Нажмите кнопку ниже чтобы открыть Mini App</b>",
-        reply_markup=ReplyKeyboardMarkup(
-            keyboard=[[KeyboardButton(text="🍳 Открыть Fridge Chef", web_app=WebAppInfo(url=url))]],
-            resize_keyboard=True
-        ),
+        f"Теперь вам доступны все 1825 рецептов!",
+        reply_markup=await get_main_menu(user_id),
         parse_mode="HTML"
     )
 
