@@ -89,24 +89,10 @@ async def get_webapp_url(user_id: int, page: str) -> str:
     print(f"🔗 Сгенерирован URL для user {user_id}: {full_url} (premium={premium_param})")
     return full_url
 
-# ============ ФУНКЦИЯ ДЛЯ ОТПРАВКИ КНОПКИ ============
-async def send_webapp_button(message: types.Message, text: str, page: str):
-    """Отправляет кнопку с WebApp, учитывая статус подписки"""
-    user_id = message.from_user.id
-    url = await get_webapp_url(user_id, page)
-    
-    await message.answer(
-        f"🍳 Открываю...",
-        reply_markup=ReplyKeyboardMarkup(
-            keyboard=[[KeyboardButton(text=text, web_app=WebAppInfo(url=url))]],
-            resize_keyboard=True
-        )
-    )
-
 # ============ КЛАВИАТУРЫ ============
 def get_main_menu():
     builder = ReplyKeyboardBuilder()
-    # Кнопки будут обновляться динамически через отдельные обработчики
+    # Это просто текст кнопок, они НЕ открывают WebApp напрямую
     builder.button(text="🍳 Выбрать продукты")
     builder.button(text="🌟 Подписка")
     builder.button(text="📚 Все рецепты")
@@ -180,15 +166,45 @@ async def cmd_give_premium(message: types.Message):
     )
 
 # ============ ОБРАБОТЧИКИ ТЕКСТОВЫХ КНОПОК ============
-# ============ ОБРАБОТЧИКИ ТЕКСТОВЫХ КНОПОК ============
 @dp.message(lambda message: message.text == "🍳 Выбрать продукты")
 async def open_products(message: types.Message):
-    await send_webapp_button(message, "🍳 Выбрать продукты", "index.html")
+    user_id = message.from_user.id
+    subscription = await get_user_subscription(user_id)
+    
+    # Формируем URL с параметром premium
+    premium_param = "1" if subscription else "0"
+    url = f"{WEB_APP_URL}/index.html?premium={premium_param}"
+    
+    print(f"🔗 Открываем Mini App для {user_id}: {url}")
+    
+    # Отправляем ТОЛЬКО кнопку, без текста
+    await message.answer(
+        "👇 Нажмите чтобы открыть",
+        reply_markup=ReplyKeyboardMarkup(
+            keyboard=[[KeyboardButton(text="🍳 Выбрать продукты", web_app=WebAppInfo(url=url))]],
+            resize_keyboard=True,
+            one_time_keyboard=False  # Кнопка остаётся в меню
+        )
+    )
 
 @dp.message(lambda message: message.text == "📚 Все рецепты")
 async def open_all_recipes(message: types.Message):
-    await send_webapp_button(message, "📚 Все рецепты", "recipes.html?all=true")
-
+    user_id = message.from_user.id
+    subscription = await get_user_subscription(user_id)
+    
+    premium_param = "1" if subscription else "0"
+    url = f"{WEB_APP_URL}/recipes.html?all=true&premium={premium_param}"
+    
+    print(f"🔗 Открываем Все рецепты для {user_id}: {url}")
+    
+    await message.answer(
+        "👇 Нажмите чтобы открыть",
+        reply_markup=ReplyKeyboardMarkup(
+            keyboard=[[KeyboardButton(text="📚 Все рецепты", web_app=WebAppInfo(url=url))]],
+            resize_keyboard=True,
+            one_time_keyboard=False
+        )
+    )
 
 @dp.message(lambda message: message.text == "🌟 Подписка")
 async def cmd_subscribe(message: types.Message):
