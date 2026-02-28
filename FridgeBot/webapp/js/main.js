@@ -1173,32 +1173,7 @@ window.filterRecipes = function(event, category) {
     
     currentFilterCategory = category;
     
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlSearchQuery = urlParams.get('search') || '';
-    
-    // Фильтруем рецепты
-    let filtered = window._allRecipes || [];
-    
-    if (category !== 'all') {
-        filtered = filtered.filter(r => r.category === categoryMap[category]);
-    }
-    
-    if (urlSearchQuery) {
-        filtered = filtered.filter(recipe =>
-            recipe.name.toLowerCase().includes(urlSearchQuery.toLowerCase()) ||
-            (recipe.category && recipe.category.toLowerCase().includes(urlSearchQuery.toLowerCase()))
-        );
-    }
-    
-    // Для бесплатной версии показываем только бесплатные
-    if (!userSubscription.isPremium) {
-        currentRecipes = filtered.filter(r => isRecipeFree(r));
-    } else {
-        currentRecipes = filtered;
-    }
-    
-    console.log('📊 После фильтрации:', currentRecipes.length, 'рецептов');
-    
+    // Просто обновляем отображение, не меняя currentRecipes
     renderRecipesPage();
 };
 
