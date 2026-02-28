@@ -96,9 +96,9 @@ async def send_webapp_button(message: types.Message, text: str, page: str):
     url = await get_webapp_url(user_id, page)
     
     await message.answer(
-        text,
+        f"🍳 Открываю...",
         reply_markup=ReplyKeyboardMarkup(
-            keyboard=[[KeyboardButton(text=text.split()[0] + " 🍳", web_app=WebAppInfo(url=url))]],
+            keyboard=[[KeyboardButton(text=text, web_app=WebAppInfo(url=url))]],
             resize_keyboard=True
         )
     )
@@ -180,6 +180,7 @@ async def cmd_give_premium(message: types.Message):
     )
 
 # ============ ОБРАБОТЧИКИ ТЕКСТОВЫХ КНОПОК ============
+# ============ ОБРАБОТЧИКИ ТЕКСТОВЫХ КНОПОК ============
 @dp.message(lambda message: message.text == "🍳 Выбрать продукты")
 async def open_products(message: types.Message):
     await send_webapp_button(message, "🍳 Выбрать продукты", "index.html")
@@ -187,6 +188,7 @@ async def open_products(message: types.Message):
 @dp.message(lambda message: message.text == "📚 Все рецепты")
 async def open_all_recipes(message: types.Message):
     await send_webapp_button(message, "📚 Все рецепты", "recipes.html?all=true")
+
 
 @dp.message(lambda message: message.text == "🌟 Подписка")
 async def cmd_subscribe(message: types.Message):
