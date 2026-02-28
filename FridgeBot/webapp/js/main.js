@@ -964,19 +964,21 @@ function renderRecipesPage() {
     // Фильтруем по категории для отображения
     let filteredForDisplay = baseRecipes;
     let categoryDisplayCount = 0;
-    
+
+    // СОЗДАЁМ categoryMap ЗДЕСЬ
+    const categoryMap = {
+        'breakfast': 'Завтрак',
+        'soup': 'Суп',
+        'main': 'Основное блюдо',
+        'salad': 'Салат',
+        'baking': 'Выпечка',
+        'dessert': 'Десерт'
+    };
+
     if (currentFilterCategory !== 'all') {
-        const categoryMap = {
-            'breakfast': 'Завтрак',
-            'soup': 'Суп',
-            'main': 'Основное блюдо',
-            'salad': 'Салат',
-            'baking': 'Выпечка',
-            'dessert': 'Десерт'
-        };
         filteredForDisplay = baseRecipes.filter(r => r.category === categoryMap[currentFilterCategory]);
     }
-    
+
     // Подсчитываем количество для отображения
     if (userSubscription.isPremium) {
         categoryDisplayCount = filteredForDisplay.length;
@@ -1151,6 +1153,15 @@ function renderRecipesPage() {
 // ============ ФИЛЬТРАЦИЯ ПО КАТЕГОРИЯМ ============
 window.filterRecipes = function(event, category) {
     console.log('🔍 Фильтрация по категории:', category);
+    
+    const categoryMap = {
+        'breakfast': 'Завтрак',
+        'soup': 'Суп',
+        'main': 'Основное блюдо',
+        'salad': 'Салат',
+        'baking': 'Выпечка',
+        'dessert': 'Десерт'
+    };
     
     document.querySelectorAll('.filter-chip').forEach(chip => {
         chip.classList.remove('active');
