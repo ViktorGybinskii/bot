@@ -1405,42 +1405,64 @@ window.showPremiumModal = function(event) {
                 <h2>Fridge Chef Premium</h2>
             </div>
             
-            <div class="premium-banner" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 120px; border-radius: 15px; margin: 20px 0; display: flex; align-items: center; justify-content: center; color: white; font-size: 48px;">
-                🍳👨‍🍳
+            <div class="premium-banner" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 120px; border-radius: 15px; margin: 20px 0; display: flex; align-items: center; justify-content: center; color: white; font-size: 48px; position: relative; overflow: hidden;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22 preserveAspectRatio=%22none%22><polygon points=%220,0 100,0 80,100 0,100%22 fill=%22rgba(255,255,255,0.1)%22/></svg>'); background-size: cover;"></div>
+                <span style="position: relative; z-index: 2;">🍳✨</span>
+            </div>
+            
+            <div style="text-align: center; margin-bottom: 20px;">
+                <p style="color: #64748b; font-size: 14px; margin: 0;">
+                    Откройте доступ ко всем рецептам
+                </p>
             </div>
             
             <div class="premium-features">
-                <div class="feature">
-                    <span class="feature-check">✅</span>
+                <div class="feature" style="display: flex; gap: 15px; margin-bottom: 20px; align-items: flex-start;">
+                    <span style="font-size: 24px; min-width: 32px; color: #22c55e;">✅</span>
                     <div>
-                        <strong>Все 1825 рецептов</strong>
-                        <p>Салаты, супы, завтраки, выпечка, десерты</p>
+                        <strong style="font-size: 16px; display: block; margin-bottom: 4px; color: #1e293b;">Все 1825 рецептов</strong>
+                        <p style="margin: 0; font-size: 14px; color: #64748b;">Салаты, супы, завтраки, выпечка, десерты и основные блюда</p>
                     </div>
                 </div>
-                <div class="feature">
-                    <span class="feature-check">✅</span>
+                
+                <div class="feature" style="display: flex; gap: 15px; margin-bottom: 20px; align-items: flex-start;">
+                    <span style="font-size: 24px; min-width: 32px; color: #22c55e;">✅</span>
                     <div>
-                        <strong>300 бесплатных + 1525 премиум</strong>
-                        <p>50 бесплатных в каждой категории</p>
+                        <strong style="font-size: 16px; display: block; margin-bottom: 4px; color: #1e293b;">Новые рецепты каждую неделю</strong>
+                        <p style="margin: 0; font-size: 14px; color: #64748b;">+5 премиум-рецептов еженедельно</p>
+                    </div>
+                </div>
+                
+                <div class="feature" style="display: flex; gap: 15px; margin-bottom: 20px; align-items: flex-start;">
+                    <span style="font-size: 24px; min-width: 32px; color: #22c55e;">✅</span>
+                    <div>
+                        <strong style="font-size: 16px; display: block; margin-bottom: 4px; color: #1e293b;">300 бесплатных + 1525 премиум</strong>
+                        <p style="margin: 0; font-size: 14px; color: #64748b;">50 бесплатных рецептов в каждой категории</p>
                     </div>
                 </div>
             </div>
             
-            <div class="premium-price">
-                <div class="price-tag">
-                    <span class="stars">150 ⭐</span>
-                    <span class="period">/ месяц</span>
+            <div class="premium-price" style="text-align: center; margin: 30px 0 20px; padding: 20px; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 20px;">
+                <div style="font-size: 36px; font-weight: 700; color: #1e293b;">
+                    <span style="background: linear-gradient(135deg, #FFD700, #FFA500); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">150 ⭐</span>
+                    <span style="font-size: 16px; color: #64748b; font-weight: normal;">/ месяц</span>
                 </div>
-                <p class="price-note">Автоматическое продление • Отмена в любой момент</p>
+                <p style="font-size: 12px; color: #94a3b8; margin-top: 8px;">Автоматическое продление • Отмена в любой момент</p>
             </div>
             
-            <div class="premium-actions">
-                <button class="buy-button" onclick="openBotPayment()">
+            <div class="premium-actions" style="display: flex; flex-direction: column; gap: 10px;">
+                <button class="buy-button" onclick="openBotPayment()" style="width: 100%; padding: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 30px; font-size: 18px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);">
                     💫 Купить Premium
                 </button>
-                <button class="cancel-button" onclick="closePremiumModal(event)">
+                <button class="cancel-button" onclick="closePremiumModal(event)" style="width: 100%; padding: 12px; background: transparent; color: #64748b; border: 2px solid #e2e8f0; border-radius: 30px; font-size: 14px; cursor: pointer; transition: all 0.2s ease;">
                     Остаться в бесплатной версии
                 </button>
+            </div>
+            
+            <div style="text-align: center; margin-top: 15px;">
+                <p style="font-size: 11px; color: #94a3b8;">
+                    Оплата через Telegram Stars • Подписка управляется в настройках Telegram
+                </p>
             </div>
         </div>
     `;
