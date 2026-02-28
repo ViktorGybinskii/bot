@@ -577,7 +577,6 @@ try {
     if (tg.initDataUnsafe?.user?.id) {
         userId = tg.initDataUnsafe.user.id;
     } else if (tg.initData) {
-        // Пробуем распарсить initData (на всякий случай)
         const params = new URLSearchParams(tg.initData);
         const userStr = params.get('user');
         if (userStr) {
