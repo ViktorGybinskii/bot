@@ -171,20 +171,20 @@ async def open_products(message: types.Message):
     user_id = message.from_user.id
     subscription = await get_user_subscription(user_id)
     
-    # Формируем URL с параметром premium
     premium_param = "1" if subscription else "0"
     url = f"{WEB_APP_URL}/index.html?premium={premium_param}"
     
     print(f"🔗 Открываем Mini App для {user_id}: {url}")
     
-    # Отправляем ТОЛЬКО кнопку, без текста
+    # Используем INLINE кнопку вместо обычной
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🍳 Открыть Fridge Chef", web_app=WebAppInfo(url=url))]
+    ])
+    
     await message.answer(
-        "👇 Нажмите чтобы открыть",
-        reply_markup=ReplyKeyboardMarkup(
-            keyboard=[[KeyboardButton(text="🍳 Выбрать продукты", web_app=WebAppInfo(url=url))]],
-            resize_keyboard=True,
-            one_time_keyboard=False  # Кнопка остаётся в меню
-        )
+        "👇 Нажмите кнопку чтобы открыть",
+        reply_markup=keyboard,
+        parse_mode="HTML"
     )
 
 @dp.message(lambda message: message.text == "📚 Все рецепты")
@@ -197,13 +197,14 @@ async def open_all_recipes(message: types.Message):
     
     print(f"🔗 Открываем Все рецепты для {user_id}: {url}")
     
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="📚 Открыть все рецепты", web_app=WebAppInfo(url=url))]
+    ])
+    
     await message.answer(
-        "👇 Нажмите чтобы открыть",
-        reply_markup=ReplyKeyboardMarkup(
-            keyboard=[[KeyboardButton(text="📚 Все рецепты", web_app=WebAppInfo(url=url))]],
-            resize_keyboard=True,
-            one_time_keyboard=False
-        )
+        "👇 Нажмите кнопку чтобы открыть",
+        reply_markup=keyboard,
+        parse_mode="HTML"
     )
 
 @dp.message(lambda message: message.text == "🌟 Подписка")
