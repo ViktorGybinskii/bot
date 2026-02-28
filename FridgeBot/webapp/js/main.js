@@ -979,8 +979,13 @@ function renderRecipesPage() {
         filteredForDisplay = baseRecipes.filter(r => r.category === categoryMap[currentFilterCategory]);
     }
 
-    // Подсчитываем количество для отображения (ВСЕ рецепты в категории)
-    categoryDisplayCount = filteredForDisplay.length;
+    // Подсчитываем количество для отображения
+    if (userSubscription.isPremium) {
+        categoryDisplayCount = filteredForDisplay.length;
+    } else {
+        // Для бесплатных показываем ТОЛЬКО количество бесплатных
+        categoryDisplayCount = filteredForDisplay.filter(r => isRecipeFree(r)).length;
+    }
     
     // Заголовок с кнопкой назад и счётчиком
     let recipesHtml = `
@@ -1097,7 +1102,7 @@ function renderRecipesPage() {
                             <div class="recipe-info" style="padding: 15px; text-align: center;">
                                 <h3 class="recipe-title" style="font-size: 16px; margin-bottom: 5px;">Премиум-рецепты</h3>
                                 <span style="font-size: 14px; color: #64748b; display: block; margin-bottom: 10px;">
-                                    ${premiumRecipes.length} рецептов доступно с Premium
+                                    Ещё ${premiumRecipes.length} рецептов доступно с Premium
                                 </span>
                                 <button onclick="showPremiumModal(event)" style="padding: 10px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 30px; font-size: 14px; cursor: pointer; width: 100%;">
                                     🌟 Открыть Premium за 150 ⭐
