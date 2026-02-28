@@ -979,12 +979,8 @@ function renderRecipesPage() {
         filteredForDisplay = baseRecipes.filter(r => r.category === categoryMap[currentFilterCategory]);
     }
 
-    // Подсчитываем количество для отображения
-    if (userSubscription.isPremium) {
-        categoryDisplayCount = filteredForDisplay.length;
-    } else {
-        categoryDisplayCount = filteredForDisplay.filter(r => isRecipeFree(r)).length;
-    }
+    // Подсчитываем количество для отображения (ВСЕ рецепты в категории)
+    categoryDisplayCount = filteredForDisplay.length;
     
     // Заголовок с кнопкой назад и счётчиком
     let recipesHtml = `
@@ -1050,12 +1046,49 @@ function renderRecipesPage() {
                 </div>
             `;
         } else {
-            // Для бесплатной версии показываем премиум-блок если есть премиум-рецепты
-            if (!userSubscription.isPremium) {
+            // ДЛЯ ПРЕМИУМ-ПОЛЬЗОВАТЕЛЕЙ - показываем ВСЕ рецепты
+            if (userSubscription.isPremium) {
+                filteredForDisplay.forEach(item => {
+                    let badgeColor = '#ef4444';
+                    if (item.matchPercentage >= 80) badgeColor = '#22c55e';
+                    else if (item.matchPercentage >= 50) badgeColor = '#eab308';
+                    
+                    const missingText = item.missingIngredients && item.missingIngredients.length > 0 
+                        ? `❌ Не хватает: ${item.missingIngredients.slice(0, 3).join(', ')}${item.missingIngredients.length > 3 ? '...' : ''}`
+                        : item.missingIngredients && item.missingIngredients.length === 0
+                        ? '✅ Все продукты есть!'
+                        : '';
+                    
+                    recipesHtml += `
+                        <div class="recipe-card" onclick="viewRecipe(${item.id})">
+                            <div class="recipe-image" style="height: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; display: flex; align-items: center; justify-content: center; font-size: 3em;">
+                                ${item.emoji || '🍽️'}
+                            </div>
+                            <div class="recipe-info" style="padding: 15px;">
+                                <h3 class="recipe-title" style="font-size: 16px; margin-bottom: 5px;">${item.name}</h3>
+                                <span class="recipe-category" style="font-size: 12px; color: #64748b;">${item.category} · ${item.time}</span>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0;">
+                                    <span class="match-badge" style="background: ${badgeColor}; padding: 4px 8px; border-radius: 20px; font-size: 12px; color: white;">
+                                        Совпадение: ${item.matchPercentage}%
+                                    </span>
+                                    <span style="font-size: 12px; color: #64748b;">${item.calories} ккал</span>
+                                </div>
+                                ${missingText ? `
+                                    <p style="font-size: 12px; color: ${item.missingIngredients && item.missingIngredients.length === 0 ? '#22c55e' : '#ef4444'}; margin-top: 5px; padding: 5px; background: #f8fafc; border-radius: 8px;">
+                                        ${missingText}
+                                    </p>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                // ДЛЯ БЕСПЛАТНЫХ - показываем премиум-блок + бесплатные рецепты
+                
+                // Показываем премиум-блок если есть премиум-рецепты
                 const premiumRecipes = filteredForDisplay.filter(r => !isRecipeFree(r));
                 
                 if (premiumRecipes.length > 0) {
-                    // Показываем премиум-блок
                     recipesHtml += `
                         <div class="recipe-card premium-block" onclick="showPremiumModal(event)">
                             <div class="recipe-image" style="height: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; display: flex; align-items: center; justify-content: center; font-size: 3em; position: relative;">
@@ -1073,45 +1106,45 @@ function renderRecipesPage() {
                         </div>
                     `;
                 }
-            }
-            
-            // Показываем бесплатные рецепты
-            const freeToShow = filteredForDisplay.filter(r => isRecipeFree(r));
-            
-            freeToShow.forEach(item => {
-                let badgeColor = '#ef4444';
-                if (item.matchPercentage >= 80) badgeColor = '#22c55e';
-                else if (item.matchPercentage >= 50) badgeColor = '#eab308';
                 
-                const missingText = item.missingIngredients && item.missingIngredients.length > 0 
-                    ? `❌ Не хватает: ${item.missingIngredients.slice(0, 3).join(', ')}${item.missingIngredients.length > 3 ? '...' : ''}`
-                    : item.missingIngredients && item.missingIngredients.length === 0
-                    ? '✅ Все продукты есть!'
-                    : '';
+                // Показываем бесплатные рецепты
+                const freeToShow = filteredForDisplay.filter(r => isRecipeFree(r));
                 
-                recipesHtml += `
-                    <div class="recipe-card" onclick="viewRecipe(${item.id})">
-                        <div class="recipe-image" style="height: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; display: flex; align-items: center; justify-content: center; font-size: 3em;">
-                            ${item.emoji || '🍽️'}
-                        </div>
-                        <div class="recipe-info" style="padding: 15px;">
-                            <h3 class="recipe-title" style="font-size: 16px; margin-bottom: 5px;">${item.name}</h3>
-                            <span class="recipe-category" style="font-size: 12px; color: #64748b;">${item.category} · ${item.time}</span>
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0;">
-                                <span class="match-badge" style="background: ${badgeColor}; padding: 4px 8px; border-radius: 20px; font-size: 12px; color: white;">
-                                    Совпадение: ${item.matchPercentage}%
-                                </span>
-                                <span style="font-size: 12px; color: #64748b;">${item.calories} ккал</span>
+                freeToShow.forEach(item => {
+                    let badgeColor = '#ef4444';
+                    if (item.matchPercentage >= 80) badgeColor = '#22c55e';
+                    else if (item.matchPercentage >= 50) badgeColor = '#eab308';
+                    
+                    const missingText = item.missingIngredients && item.missingIngredients.length > 0 
+                        ? `❌ Не хватает: ${item.missingIngredients.slice(0, 3).join(', ')}${item.missingIngredients.length > 3 ? '...' : ''}`
+                        : item.missingIngredients && item.missingIngredients.length === 0
+                        ? '✅ Все продукты есть!'
+                        : '';
+                    
+                    recipesHtml += `
+                        <div class="recipe-card" onclick="viewRecipe(${item.id})">
+                            <div class="recipe-image" style="height: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; display: flex; align-items: center; justify-content: center; font-size: 3em;">
+                                ${item.emoji || '🍽️'}
                             </div>
-                            ${missingText ? `
-                                <p style="font-size: 12px; color: ${item.missingIngredients && item.missingIngredients.length === 0 ? '#22c55e' : '#ef4444'}; margin-top: 5px; padding: 5px; background: #f8fafc; border-radius: 8px;">
-                                    ${missingText}
-                                </p>
-                            ` : ''}
+                            <div class="recipe-info" style="padding: 15px;">
+                                <h3 class="recipe-title" style="font-size: 16px; margin-bottom: 5px;">${item.name}</h3>
+                                <span class="recipe-category" style="font-size: 12px; color: #64748b;">${item.category} · ${item.time}</span>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0;">
+                                    <span class="match-badge" style="background: ${badgeColor}; padding: 4px 8px; border-radius: 20px; font-size: 12px; color: white;">
+                                        Совпадение: ${item.matchPercentage}%
+                                    </span>
+                                    <span style="font-size: 12px; color: #64748b;">${item.calories} ккал</span>
+                                </div>
+                                ${missingText ? `
+                                    <p style="font-size: 12px; color: ${item.missingIngredients && item.missingIngredients.length === 0 ? '#22c55e' : '#ef4444'}; margin-top: 5px; padding: 5px; background: #f8fafc; border-radius: 8px;">
+                                        ${missingText}
+                                    </p>
+                                ` : ''}
+                            </div>
                         </div>
-                    </div>
-                `;
-            });
+                    `;
+                });
+            }
         }
     }
     
