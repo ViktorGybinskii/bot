@@ -551,52 +551,56 @@ function isRecipeFree(recipe) {
     if (!recipe || !recipe.id) return false;
     
     // Основные блюда (3001-3400)
-    if (recipe.id >= 3001 && recipe.id <= 3400) {
-        return recipe.id <= 3050;
-    }
+    if (recipe.id >= 3001 && recipe.id <= 3400) return recipe.id <= 3050;
     // Салаты (1001-1350)
-    else if (recipe.id >= 1001 && recipe.id <= 1350) {
-        return recipe.id <= 1050;
-    }
+    if (recipe.id >= 1001 && recipe.id <= 1350) return recipe.id <= 1050;
     // Супы (2001-2300)
-    else if (recipe.id >= 2001 && recipe.id <= 2300) {
-        return recipe.id <= 2050;
-    }
+    if (recipe.id >= 2001 && recipe.id <= 2300) return recipe.id <= 2050;
     // Завтраки (4001-4250)
-    else if (recipe.id >= 4001 && recipe.id <= 4250) {
-        return recipe.id <= 4050;
-    }
+    if (recipe.id >= 4001 && recipe.id <= 4250) return recipe.id <= 4050;
     // Выпечка (5001-5225)
-    else if (recipe.id >= 5001 && recipe.id <= 5225) {
-        return recipe.id <= 5050;
-    }
+    if (recipe.id >= 5001 && recipe.id <= 5225) return recipe.id <= 5050;
     // Десерты (6001-6300)
-    else if (recipe.id >= 6001 && recipe.id <= 6300) {
-        return recipe.id <= 6050;
-    }
+    if (recipe.id >= 6001 && recipe.id <= 6300) return recipe.id <= 6050;
     
     return false;
 }
 
+// ============ ИНИЦИАЛИЗАЦИЯ TELEGRAM ============
+const tg = window.Telegram.WebApp;
+tg.ready();
+tg.expand();
+
+// ============ ПОЛУЧЕНИЕ USER_ID ============
+let userId = null;
+try {
+    if (tg.initDataUnsafe?.user?.id) {
+        userId = tg.initDataUnsafe.user.id;
+    } else if (tg.initData) {
+        // Пробуем распарсить initData (на всякий случай)
+        const params = new URLSearchParams(tg.initData);
+        const userStr = params.get('user');
+        if (userStr) {
+            const user = JSON.parse(decodeURIComponent(userStr));
+            userId = user.id;
+        }
+    }
+    console.log('👤 User ID из Telegram:', userId);
+} catch (e) {
+    console.log('Не удалось получить user_id:', e);
+}
+
 // ============ ЗАГРУЗКА СТАТУСА ПОДПИСКИ ============
-function loadSubscriptionStatusFromURL() {
+function loadSubscriptionStatus() {
     const urlParams = new URLSearchParams(window.location.search);
     const premium = urlParams.get('premium');
     
     console.log('📊 Статус из URL:', { premium });
+    console.log('📍 Текущий URL:', window.location.href);
     
-    // ПОЛУЧАЕМ USER_ID ИЗ TELEGRAM WEBAPP
-    let userId = null;
-    try {
-        userId = tg.initDataUnsafe.user?.id;
-        console.log('👤 User ID из Telegram:', userId);
-    } catch (e) {
-        console.log('Не удалось получить user_id');
-    }
-    
-    // ЕСЛИ ЭТО АДМИН (903712248) - АКТИВИРУЕМ ПРЕМИУМ ПРИНУДИТЕЛЬНО!
+    // ПРОВЕРКА НА АДМИНА
     if (userId === 903712248) {
-        console.log('👑 АДМИН ОБНАРУЖЕН! Принудительная активация Premium');
+        console.log('👑 АДМИН! Принудительная активация Premium');
         userSubscription.isPremium = true;
         const expiryDate = new Date();
         expiryDate.setFullYear(expiryDate.getFullYear() + 1);
@@ -604,25 +608,23 @@ function loadSubscriptionStatusFromURL() {
             isPremium: true,
             expires: expiryDate.toISOString()
         }));
-        console.log('✅ Premium активирован принудительно для админа');
         return true;
     }
     
-    // Если в URL есть premium=1 - активируем Premium
+    // Если есть параметр premium=1
     if (premium === '1') {
+        console.log('✅ Premium активирован через URL');
         userSubscription.isPremium = true;
-        // Сохраняем в localStorage чтобы не потерять при перезагрузке
         const expiryDate = new Date();
-        expiryDate.setMonth(expiryDate.getMonth() + 1); // +1 месяц
+        expiryDate.setMonth(expiryDate.getMonth() + 1);
         localStorage.setItem('fridge_premium', JSON.stringify({
             isPremium: true,
             expires: expiryDate.toISOString()
         }));
-        console.log('✅ Premium активирован через URL');
         return true;
     }
     
-    // Если в URL нет premium=1, проверяем localStorage
+    // Проверяем localStorage
     const saved = localStorage.getItem('fridge_premium');
     if (saved) {
         try {
@@ -642,10 +644,18 @@ function loadSubscriptionStatusFromURL() {
     return false;
 }
 
-// ВАЖНО: ВЫЗЫВАЕМ ФУНКЦИЮ СРАЗУ!
-loadSubscriptionStatusFromURL();
+// ВЫЗЫВАЕМ ПРОВЕРКУ
+loadSubscriptionStatus();
 
-// Функция для сортировки рецептов с премиум-блоком сверху
+function applyTheme() {
+    const isDark = tg.colorScheme === 'dark';
+    document.body.classList.toggle('dark-theme', isDark);
+}
+
+applyTheme();
+tg.onEvent('themeChanged', applyTheme);
+
+// Функция для сортировки рецептов с премиум-блоком
 function sortRecipesWithPremiumBlock(recipes) {
     if (userSubscription.isPremium || !recipes) {
         return recipes || [];
@@ -666,38 +676,6 @@ function sortRecipesWithPremiumBlock(recipes) {
     
     return [premiumBlock, ...freeRecipes];
 }
-
-// Инициализация Telegram
-const tg = window.Telegram.WebApp;
-tg.ready();
-tg.expand();
-tg.disableVerticalSwipes();
-
-// ============ ПРОВЕРКА АДМИНА ============
-try {
-    const userId = tg.initDataUnsafe.user?.id;
-    console.log('👤 Текущий пользователь:', userId);
-    
-    // Принудительная активация для админа (903712248)
-    if (userId === 903712248) {
-        console.log('👑 АДМИН ОБНАРУЖЕН! Активируем Premium');
-        userSubscription.isPremium = true;
-        localStorage.setItem('fridge_premium', JSON.stringify({
-            isPremium: true,
-            expires: new Date(Date.now() + 365*24*60*60*1000).toISOString()
-        }));
-    }
-} catch (e) {
-    console.log('Не удалось получить данные пользователя:', e);
-}
-
-function applyTheme() {
-    const isDark = tg.colorScheme === 'dark';
-    document.body.classList.toggle('dark-theme', isDark);
-}
-
-applyTheme();
-tg.onEvent('themeChanged', applyTheme);
 
 function loadSelectedProducts() {
     const saved = sessionStorage.getItem('selectedProducts');
