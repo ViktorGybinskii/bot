@@ -21,28 +21,35 @@ let hasMoreProducts = true;
 function injectDarkThemeStyles() {
     const style = document.createElement('style');
     style.textContent = `
-        /* Прямое внедрение стилей для темной темы */
+        /* Основные цвета для тёмной темы */
+        body.dark-theme {
+            background: #1a1a1a !important;
+            color: #e5e5e5 !important;
+        }
+        
+        body.dark-theme .header {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%) !important;
+        }
+        
+        /* Детальный рецепт */
         body.dark-theme .recipe-detail .ingredients-list {
-            background: #3d3d3d !important;
+            background: #2d2d2d !important;
         }
         
         body.dark-theme .recipe-detail .ingredients-list li {
-            background: #2d2d2d !important;
-            border: 1px solid #404040 !important;
-            color: white !important;
-        }
-        
-        body.dark-theme .recipe-detail .ingredients-list li span:first-child {
-            color: white !important;
+            background: #1a1a1a !important;
+            border: 1px solid #333 !important;
+            color: #e5e5e5 !important;
         }
         
         body.dark-theme .recipe-detail .ingredients-list li span:last-child {
             color: #8b9eff !important;
         }
         
+        /* Фильтры */
         body.dark-theme .filter-chips .filter-chip {
-            background: #3d3d3d !important;
-            color: #e0e0e0 !important;
+            background: #2d2d2d !important;
+            color: #e5e5e5 !important;
         }
         
         body.dark-theme .filter-chips .filter-chip.active {
@@ -50,23 +57,139 @@ function injectDarkThemeStyles() {
             color: white !important;
         }
         
+        /* Кнопки */
         body.dark-theme .back-btn {
-            background: #3d3d3d !important;
-            color: #e0e0e0 !important;
+            background: #2d2d2d !important;
+            color: #e5e5e5 !important;
         }
         
+        body.dark-theme .back-btn:hover {
+            background: #3d3d3d !important;
+        }
+        
+        /* Мета-информация */
         body.dark-theme .meta-item {
-            background: #3d3d3d !important;
-            color: #e0e0e0 !important;
+            background: #2d2d2d !important;
+            color: #e5e5e5 !important;
         }
         
+        /* Инструкции */
         body.dark-theme .instructions {
-            color: #e0e0e0 !important;
+            color: #e5e5e5 !important;
         }
         
-        body.dark-theme .instructions li span {
+        body.dark-theme .instructions .step-number {
             background: #8b9eff !important;
             color: white !important;
+        }
+        
+        /* Сообщения об ошибках/отсутствии */
+        body.dark-theme p[style*="color: #ef4444"] {
+            background: #4a2a2a !important;
+            color: #ffb3b3 !important;
+            border: 1px solid #662 !important;
+        }
+        
+        body.dark-theme p[style*="color: #22c55e"] {
+            background: #1a3a1a !important;
+            color: #b3ffb3 !important;
+            border: 1px solid #262 !important;
+        }
+        
+        body.dark-theme div[style*="color: #64748b"] {
+            color: #a0a0a0 !important;
+        }
+        
+        /* Текст "Найдено:" и другие серые тексты */
+        body.dark-theme span[style*="color: #475569"],
+        body.dark-theme span[style*="color: #64748b"] {
+            color: #c0c0c0 !important;
+        }
+        
+        /* PREMIUM MODAL - тёмная тема */
+        body.dark-theme .premium-modal-content {
+            background: #2d2d2d !important;
+            color: #e5e5e5 !important;
+            border: 1px solid #404040 !important;
+        }
+        
+        body.dark-theme .premium-modal-content h2,
+        body.dark-theme .premium-modal-content h3,
+        body.dark-theme .premium-modal-content strong {
+            color: white !important;
+        }
+        
+        body.dark-theme .premium-modal-content p {
+            color: #b0b0b0 !important;
+        }
+        
+        body.dark-theme .premium-price {
+            background: #1a1a1a !important;
+            border: 1px solid #404040 !important;
+        }
+        
+        body.dark-theme .premium-price .price-tag {
+            color: white !important;
+        }
+        
+        body.dark-theme .premium-price .stars {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        body.dark-theme .premium-price .price-note {
+            color: #a0a0a0 !important;
+        }
+        
+        body.dark-theme .feature strong {
+            color: white !important;
+        }
+        
+        body.dark-theme .feature p {
+            color: #b0b0b0 !important;
+        }
+        
+        body.dark-theme .close-modal {
+            background: #3d3d3d !important;
+            color: #e5e5e5 !important;
+        }
+        
+        body.dark-theme .close-modal:hover {
+            background: #4d4d4d !important;
+        }
+        
+        body.dark-theme .cancel-button {
+            background: transparent !important;
+            color: #b0b0b0 !important;
+            border: 2px solid #404040 !important;
+        }
+        
+        body.dark-theme .cancel-button:hover {
+            background: #3d3d3d !important;
+        }
+        
+        /* Коронка в счётчике */
+        body.dark-theme .crown-counter {
+            color: #e5e5e5 !important;
+        }
+        
+        /* Премиум-блок */
+        body.dark-theme .recipe-card.premium-block .recipe-info {
+            background: #2d2d2d !important;
+        }
+        
+        body.dark-theme .recipe-card.premium-block span {
+            color: #b0b0b0 !important;
+        }
+        
+        /* Сообщение "В этой категории нет рецептов" */
+        body.dark-theme div[style*="text-align: center; padding: 60px 20px;"] p {
+            color: #b0b0b0 !important;
+        }
+        
+        body.dark-theme div[style*="text-align: center; padding: 60px 20px;"] span {
+            color: #e5e5e5 !important;
         }
     `;
     document.head.appendChild(style);
@@ -992,6 +1115,7 @@ function renderProductsPage() {
     }
     
     attachProductsEventListeners();
+    updatePremiumHeaderBadge();
 }
 
 // ============ ФУНКЦИЯ ПРОВЕРКИ СТАТУСА ПРИ РЕНДЕРЕ ============
@@ -1286,6 +1410,8 @@ function renderRecipesPage() {
             });
         }
     }
+
+    updatePremiumHeaderBadge();
 }
 
 // ============ ФИЛЬТРАЦИЯ ПО КАТЕГОРИЯМ ============
