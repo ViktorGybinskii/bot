@@ -1,0 +1,7 @@
+INFO:aiogram.dispatcher:Start polling
+INFO:aiogram.dispatcher:Run polling for bot @FridgeMonitoring_Bot id=8442285913 - 'Fridge Chef'
+WARNING:aiogram.dispatcher:Received SIGINT signal
+INFO:aiogram.dispatcher:Polling stopped for bot @FridgeMonitoring_Bot id=8442285913 - 'Fridge Chef'
+INFO:aiogram.dispatcher:Polling stopped
+✅ База данных инициализирована
+🚀 Бот запущен!

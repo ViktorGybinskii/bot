@@ -73,6 +73,128 @@ function injectDarkThemeStyles() {
     console.log('Стили для темной темы внедрены');
 }
 
+// ============ ПРЕМИУМ-СТИЛИ ============
+function injectPremiumStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+        /* Премиум-флажок (треугольник) */
+        .premium-flag {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 40px 40px 0;
+            border-color: transparent #667eea transparent transparent;
+            z-index: 5;
+        }
+        
+        .premium-flag-star {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 16px;
+            color: white;
+            z-index: 6;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transform: rotate(45deg);
+        }
+        
+        /* Тёмная тема для флажка */
+        body.dark-theme .premium-flag {
+            border-color: transparent #8b9eff transparent transparent;
+        }
+        
+        /* Подсветка карточек для премиум */
+        .recipe-card.premium-card {
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(135deg, #667eea40, #764ba240) border-box;
+            transition: all 0.3s ease;
+        }
+        
+        body.dark-theme .recipe-card.premium-card {
+            background: linear-gradient(#2d2d2d, #2d2d2d) padding-box,
+                        linear-gradient(135deg, #8b9eff40, #9f7aea40) border-box;
+        }
+        
+        .recipe-card.premium-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        /* Премиум-коронка в шапке */
+        .premium-header-crown {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #667eea20, #764ba220);
+            padding: 8px 16px;
+            border-radius: 40px;
+            border: 1px solid #667eea40;
+            margin-left: 10px;
+            font-size: 14px;
+            color: #667eea;
+            backdrop-filter: blur(5px);
+        }
+        
+        .premium-header-crown span {
+            font-size: 18px;
+            animation: crownGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes crownGlow {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 2px 4px rgba(102,126,234,0.3)); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 4px 8px rgba(102,126,234,0.5)); }
+        }
+        
+        body.dark-theme .premium-header-crown {
+            background: linear-gradient(135deg, #8b9eff20, #9f7aea20);
+            border-color: #8b9eff40;
+            color: #8b9eff;
+        }
+        
+        /* Коронка в счётчике */
+        .crown-counter {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+            color: #475569;
+        }
+        
+        .crown-counter span:first-child {
+            font-size: 20px;
+            filter: drop-shadow(0 2px 4px rgba(255,215,0,0.3));
+        }
+        
+        body.dark-theme .crown-counter {
+            color: #e0e0e0;
+        }
+        
+        /* Адаптация для мобильных */
+        @media (max-width: 480px) {
+            .premium-header-crown {
+                padding: 4px 10px;
+                font-size: 12px;
+                margin-left: 5px;
+            }
+            
+            .premium-header-crown span {
+                font-size: 14px;
+            }
+            
+            .crown-counter span:first-child {
+                font-size: 16px;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
 // База данных продуктов (РАСШИРЕННАЯ - 300+ продуктов)
 const productsDatabase = [
      // ============ ОВОЩИ (40 шт) ============
@@ -993,7 +1115,10 @@ function renderRecipesPage() {
             <button class="back-btn" onclick="goBackToProducts()" style="background: #f1f5f9; border: none; padding: 8px 15px; border-radius: 30px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;">
                 ← Назад
             </button>
-            <span style="font-weight: 600; color: #475569;">Найдено: ${categoryDisplayCount}</span>
+            <div class="crown-counter">
+                <span>👑</span>
+                <span>Найдено: ${categoryDisplayCount}</span>
+            </div>
         </div>
     `;
     
@@ -1517,7 +1642,110 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
+// ============ ФУНКЦИЯ СОЗДАНИЯ КАРТОЧКИ РЕЦЕПТА ============
+function createRecipeCard(recipe) {
+    const card = document.createElement('div');
+    
+    // Проверяем, бесплатный ли рецепт
+    const isFree = isRecipeFree(recipe);
+    const isPremium = !isFree;
+    const isLocked = isPremium && !userSubscription.isPremium;
+    
+    let className = 'recipe-card';
+    if (isLocked) {
+        className += ' premium-locked';
+    } else if (isPremium && userSubscription.isPremium) {
+        // Премиум-рецепты для премиум-пользователей подсвечиваются
+        className += ' premium-card';
+    }
+    card.className = className;
+    
+    card.onclick = (e) => {
+        if (isLocked) {
+            e.preventDefault();
+            e.stopPropagation();
+            showPremiumModal();
+            return;
+        }
+        viewRecipe(recipe.id);
+    };
+    
+    let badgeColor = '#ef4444';
+    if (recipe.matchPercentage >= 80) badgeColor = '#22c55e';
+    else if (recipe.matchPercentage >= 50) badgeColor = '#eab308';
+    
+    // Для заблокированных премиум-рецептов
+    if (isLocked) {
+        card.innerHTML = `
+            <div class="recipe-image" style="height: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; display: flex; align-items: center; justify-content: center; font-size: 3em; position: relative;">
+                <div class="premium-flag"></div>
+                <div class="premium-flag-star">🌟</div>
+                <div style="position: relative; z-index: 2;">🌟</div>
+            </div>
+            <div class="recipe-info" style="padding: 15px; text-align: center;">
+                <div style="margin: 10px 0;">
+                    <span style="font-size: 14px; color: #64748b; display: block; margin-bottom: 10px;">
+                        🔒 Премиум-рецепт
+                    </span>
+                    <button onclick="showPremiumModal(event)" style="padding: 10px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 30px; font-size: 14px; cursor: pointer; width: 100%;">
+                        🌟 Открыть Premium за 150 ⭐
+                    </button>
+                </div>
+            </div>
+        `;
+        return card;
+    }
+    
+    // Для доступных рецептов (бесплатных или премиум для премиум-пользователей)
+    let imageHtml = '';
+    if (isPremium && userSubscription.isPremium) {
+        // Премиум-рецепт для премиум-пользователя
+        imageHtml = `
+            <div class="recipe-image" style="height: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; display: flex; align-items: center; justify-content: center; font-size: 3em; position: relative;">
+                <div class="premium-flag"></div>
+                <div class="premium-flag-star">🌟</div>
+                <div style="position: relative; z-index: 2;">${recipe.emoji || '🍽️'}</div>
+            </div>
+        `;
+    } else {
+        // Обычный бесплатный рецепт
+        imageHtml = `
+            <div class="recipe-image" style="height: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; display: flex; align-items: center; justify-content: center; font-size: 3em;">
+                ${recipe.emoji || '🍽️'}
+            </div>
+        `;
+    }
+    
+    const missingText = recipe.missingIngredients && recipe.missingIngredients.length > 0 
+        ? `❌ Не хватает: ${recipe.missingIngredients.slice(0, 3).join(', ')}${recipe.missingIngredients.length > 3 ? '...' : ''}`
+        : recipe.missingIngredients && recipe.missingIngredients.length === 0
+        ? '✅ Все продукты есть!'
+        : '';
+    
+    card.innerHTML = `
+        ${imageHtml}
+        <div class="recipe-info" style="padding: 15px;">
+            <h3 class="recipe-title" style="font-size: 16px; margin-bottom: 5px;">${recipe.name}</h3>
+            <span class="recipe-category" style="font-size: 12px; color: #64748b;">${recipe.category} · ${recipe.time}</span>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0;">
+                <span class="match-badge" style="background: ${badgeColor}; padding: 4px 8px; border-radius: 20px; font-size: 12px; color: white;">
+                    Совпадение: ${recipe.matchPercentage}%
+                </span>
+                <span style="font-size: 12px; color: #64748b;">${recipe.calories} ккал</span>
+            </div>
+            ${missingText ? `
+                <p style="font-size: 12px; color: ${recipe.missingIngredients && recipe.missingIngredients.length === 0 ? '#22c55e' : '#ef4444'}; margin-top: 5px; padding: 5px; background: #f8fafc; border-radius: 8px;">
+                    ${missingText}
+                </p>
+            ` : ''}
+        </div>
+    `;
+    
+    return card;
+}
+
 injectDarkThemeStyles();
+injectPremiumStyles();
 applyTheme();
 
 // Запуск
