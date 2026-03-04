@@ -230,37 +230,66 @@ function injectPremiumStyles() {
             background: linear-gradient(135deg, #8b9eff, #9f7aea);
         }
         
-        /* Коронка в счётчике (только для премиум) */
-        .crown-counter {
-            display: flex;
+        /* НОВЫЙ ПРЕМИУМ-БЕЙДЖ ДЛЯ СЧЁТЧИКА */
+        .premium-count-badge {
+            display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 14px;
             font-weight: 600;
-            color: #475569;
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(5px);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
         
-        .crown-counter span:first-child {
-            font-size: 20px;
+        .premium-count-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+        }
+        
+        .premium-count-badge .star-icon {
+            font-size: 18px;
             filter: drop-shadow(0 2px 4px rgba(255,215,0,0.3));
+            animation: starPulse 2s ease-in-out infinite;
         }
         
-        body.dark-theme .crown-counter {
-            color: #e0e0e0;
+        .premium-count-badge .count-number {
+            font-size: 16px;
+            font-weight: 700;
+            margin-right: 2px;
+        }
+        
+        .premium-count-badge .count-text {
+            opacity: 0.9;
+            font-weight: 500;
+        }
+        
+        @keyframes starPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 2px 4px rgba(255,215,0,0.3)); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 4px 8px rgba(255,215,0,0.5)); }
+        }
+        
+        body.dark-theme .premium-count-badge {
+            background: linear-gradient(135deg, #8b9eff, #9f7aea);
         }
         
         @media (max-width: 480px) {
-            .premium-header-badge {
-                padding: 2px 8px;
-                font-size: 10px;
-                margin-left: 5px;
-            }
-            
-            .premium-header-badge span {
+            .premium-count-badge {
+                padding: 4px 12px;
                 font-size: 12px;
             }
             
-            .crown-counter span:first-child {
-                font-size: 16px;
+            .premium-count-badge .star-icon {
+                font-size: 14px;
+            }
+            
+            .premium-count-badge .count-number {
+                font-size: 14px;
             }
         }
     `;
@@ -1207,12 +1236,13 @@ function renderRecipesPage() {
             </button>
     `;
 
-    // Коронка ТОЛЬКО для премиум-пользователей
+    // Премиум-бейдж для счётчика (только для премиум)
     if (userSubscription.isPremium) {
         recipesHtml += `
-            <div class="crown-counter">
-                <span>👑</span>
-                <span>Найдено: ${categoryDisplayCount}</span>
+            <div class="premium-count-badge">
+                <span class="star-icon">🌟</span>
+                <span class="count-number">${categoryDisplayCount}</span>
+                <span class="count-text">найдено</span>
             </div>
         `;
     } else {
